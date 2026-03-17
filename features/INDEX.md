@@ -17,7 +17,7 @@
 | PROJ-3 | Läufe-Übersicht | In Progress | [PROJ-3](PROJ-3-laeufe-uebersicht.md) | 2026-03-17 |
 | PROJ-4 | Läufe-Verwaltung (CRUD) | In Progress | [PROJ-4](PROJ-4-laeufe-crud.md) | 2026-03-17 |
 | PROJ-5 | Strava-Webhook-Integration | Planned | [PROJ-5](PROJ-5-strava-webhook.md) | 2026-03-17 |
-| PROJ-6 | Benutzerverwaltung (Admin) | In Progress | [PROJ-6](PROJ-6-benutzerverwaltung-admin.md) | 2026-03-17 |
+| PROJ-6 | Benutzerverwaltung (Admin) | In Review | [PROJ-6](PROJ-6-benutzerverwaltung-admin.md) | 2026-03-17 |
 
 <!-- Add features above this line -->
 

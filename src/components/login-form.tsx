@@ -82,13 +82,13 @@ export function LoginForm() {
 
     const { data: profile } = await supabase
       .from('runner_profiles')
-      .select('typo3_uid, typo3_name')
+      .select('typo3_uid')
       .eq('user_id', user.id)
       .single()
 
     if (!profile) {
       // User hat keinen Laeufer zugeordnet - Admin-User duerfen trotzdem weiter
-      const role = user.user_metadata?.role
+      const role = user.app_metadata?.role
       if (role !== 'admin') {
         setIsLoading(false)
         setError(

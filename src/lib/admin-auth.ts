@@ -36,7 +36,7 @@ export async function requireAdmin(): Promise<AdminCheckResult> {
     }
   }
 
-  const role = user.user_metadata?.role
+  const role = user.app_metadata?.role
   if (role !== 'admin') {
     return {
       authorized: false,

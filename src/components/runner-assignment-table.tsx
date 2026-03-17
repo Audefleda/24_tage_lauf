@@ -31,7 +31,6 @@ interface AdminUser {
   created_at: string
   role: string
   typo3_uid: number | null
-  typo3_name: string | null
 }
 
 interface Runner {
@@ -120,7 +119,6 @@ export function RunnerAssignmentTable() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           typo3_uid: runner.uid,
-          typo3_name: runner.name,
         }),
       })
 
@@ -133,7 +131,7 @@ export function RunnerAssignmentTable() {
       setUsers((prev) =>
         prev.map((u) =>
           u.id === userId
-            ? { ...u, typo3_uid: runner.uid, typo3_name: runner.name }
+            ? { ...u, typo3_uid: runner.uid }
             : u
         )
       )
@@ -302,8 +300,8 @@ export function RunnerAssignmentTable() {
                       </Select>
                     ) : (
                       <span className="text-sm text-muted-foreground">
-                        {user.typo3_name
-                          ? `${user.typo3_name} (UID ${user.typo3_uid})`
+                        {user.typo3_uid !== null
+                          ? `UID ${user.typo3_uid}`
                           : '—'}
                       </span>
                     )}

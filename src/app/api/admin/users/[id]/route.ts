@@ -7,7 +7,6 @@ import { createAdminClient } from '@/lib/supabase-admin'
 
 const UpdateProfileSchema = z.object({
   typo3_uid: z.number().int().positive('TYPO3-UID muss eine positive Ganzzahl sein'),
-  typo3_name: z.string().min(1, 'TYPO3-Name darf nicht leer sein'),
 })
 
 export async function PATCH(
@@ -54,7 +53,7 @@ export async function PATCH(
     )
   }
 
-  const { typo3_uid, typo3_name } = parsed.data
+  const { typo3_uid } = parsed.data
   const supabase = createAdminClient()
 
   // Pruefen ob typo3_uid bereits von einem anderen User verwendet wird
@@ -78,7 +77,6 @@ export async function PATCH(
       {
         user_id: userId,
         typo3_uid,
-        typo3_name,
       },
       { onConflict: 'user_id' }
     )

@@ -36,7 +36,7 @@ export async function GET() {
   }
 
   const profileMap = new Map(
-    (profiles ?? []).map((p: { user_id: string; typo3_uid: number; typo3_name: string }) => [
+    (profiles ?? []).map((p: { user_id: string; typo3_uid: number }) => [
       p.user_id,
       p,
     ])
@@ -44,7 +44,7 @@ export async function GET() {
 
   const result = users.map((user) => {
     const profile = profileMap.get(user.id) as
-      | { user_id: string; typo3_uid: number; typo3_name: string }
+      | { user_id: string; typo3_uid: number }
       | undefined
 
     return {
@@ -53,7 +53,6 @@ export async function GET() {
       created_at: user.created_at,
       role: user.user_metadata?.role ?? 'user',
       typo3_uid: profile?.typo3_uid ?? null,
-      typo3_name: profile?.typo3_name ?? null,
     }
   })
 

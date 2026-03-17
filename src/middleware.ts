@@ -68,7 +68,7 @@ export async function middleware(request: NextRequest) {
 
   // Admin-Routen: Zusaetzliche Rollenprüfung
   if (isAdminRoute(pathname)) {
-    const role = user.user_metadata?.role
+    const role = user.app_metadata?.role
     if (role !== 'admin') {
       // API-Routen: 403 JSON Response
       if (pathname.startsWith('/api/')) {

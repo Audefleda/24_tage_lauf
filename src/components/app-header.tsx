@@ -29,18 +29,7 @@ export function AppHeader() {
       setUser(currentUser)
 
       if (currentUser) {
-        // Try to get runner profile name
-        const { data: profile } = await supabase
-          .from('runner_profiles')
-          .select('typo3_name')
-          .eq('user_id', currentUser.id)
-          .single()
-
-        if (profile?.typo3_name) {
-          setDisplayName(profile.typo3_name)
-        } else {
-          setDisplayName(currentUser.email ?? null)
-        }
+        setDisplayName(currentUser.email ?? null)
       }
     }
 
@@ -73,7 +62,7 @@ export function AppHeader() {
 
         {!isLoginPage && user && (
           <div className="flex items-center gap-3">
-            {user.user_metadata?.role === 'admin' && (
+            {user.app_metadata?.role === 'admin' && (
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/admin">
                   <Shield className="h-4 w-4 mr-1" />

@@ -74,9 +74,9 @@ Tabelle: runner_profiles
 - id          uuid (PK)
 - user_id     uuid (FK → auth.users, unique)
 - typo3_uid   integer (TYPO3 Läufer-UID)
-- typo3_name  text (Name zur Anzeige)
 - created_at  timestamptz
 ```
+> Kein `typo3_name` — der Name wird immer live aus TYPO3 geladen (verhindert Inkonsistenz bei Namensänderungen).
 
 **Middleware** (`src/middleware.ts`):
 - Prüft Supabase-Session auf allen Routen außer `/login`
