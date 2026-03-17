@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="de">
       <body className="antialiased min-h-screen bg-background">
         <AppHeader />
-        <main className="max-w-2xl mx-auto px-4 py-8">{children}</main>
+        <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
         <Toaster />
       </body>
     </html>

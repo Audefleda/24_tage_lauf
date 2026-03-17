@@ -16,7 +16,8 @@
       "Bash(kill:*)",
       "Bash(npx shadcn@latest add:*)",
       "Bash(ls:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(node -e \"require\\(''date-fns''\\); console.log\\(''date-fns ok''\\)\")"
     ]
   }
 }
