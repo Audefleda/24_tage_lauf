@@ -12,7 +12,13 @@
 
 | ID | Feature | Status | Spec | Created |
 |----|---------|--------|------|---------|
+| PROJ-1 | API-Konfiguration & Superuser-Authentifizierung | In Review | [PROJ-1](PROJ-1-api-konfiguration-superuser-auth.md) | 2026-03-17 |
+| PROJ-2 | Anmeldung (Supabase Auth Login) | In Progress | [PROJ-2](PROJ-2-anmeldung-supabase-auth.md) | 2026-03-17 |
+| PROJ-3 | Läufe-Übersicht | In Progress | [PROJ-3](PROJ-3-laeufe-uebersicht.md) | 2026-03-17 |
+| PROJ-4 | Läufe-Verwaltung (CRUD) | In Progress | [PROJ-4](PROJ-4-laeufe-crud.md) | 2026-03-17 |
+| PROJ-5 | Strava-Webhook-Integration | Planned | [PROJ-5](PROJ-5-strava-webhook.md) | 2026-03-17 |
+| PROJ-6 | Benutzerverwaltung (Admin) | In Progress | [PROJ-6](PROJ-6-benutzerverwaltung-admin.md) | 2026-03-17 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-1
+## Next Available ID: PROJ-7
