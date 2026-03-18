@@ -4,15 +4,30 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requireAdmin } from '@/lib/admin-auth'
 import { createAdminClient } from '@/lib/supabase-admin'
+import { rateLimit } from '@/lib/rate-limit'
 
 const UpdateProfileSchema = z.object({
-  typo3_uid: z.number().int().positive('TYPO3-UID muss eine positive Ganzzahl sein'),
+  typo3_uid: z
+    .union([
+      z.number().int().positive('TYPO3-UID muss eine positive Ganzzahl sein'),
+      z.null(),
+    ]),
 })
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Rate limiting: 20 requests per 60 seconds per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+  const rl = rateLimit(`admin-users-patch:${ip}`, { limit: 20, windowSeconds: 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Zu viele Anfragen. Bitte warten.' },
+      { status: 429, headers: { 'Retry-After': String(rl.resetIn) } }
+    )
+  }
+
   // Admin-Check
   const check = await requireAdmin()
   if (!check.authorized) {
@@ -55,6 +70,23 @@ export async function PATCH(
 
   const { typo3_uid } = parsed.data
   const supabase = createAdminClient()
+
+  // Zuordnung aufheben: typo3_uid === null -> Profil loeschen
+  if (typo3_uid === null) {
+    const { error: deleteError } = await supabase
+      .from('runner_profiles')
+      .delete()
+      .eq('user_id', userId)
+
+    if (deleteError) {
+      return NextResponse.json(
+        { error: `Zuordnung konnte nicht entfernt werden: ${deleteError.message}` },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({ user_id: userId, typo3_uid: null })
+  }
 
   // Pruefen ob typo3_uid bereits von einem anderen User verwendet wird
   const { data: existing } = await supabase

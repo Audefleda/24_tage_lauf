@@ -1,10 +1,21 @@
 // GET /api/admin/users — Alle Supabase-User mit runner_profiles
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
 import { createAdminClient } from '@/lib/supabase-admin'
+import { rateLimit } from '@/lib/rate-limit'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Rate limiting: 30 requests per 60 seconds per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+  const rl = rateLimit(`admin-users:${ip}`, { limit: 30, windowSeconds: 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Zu viele Anfragen. Bitte warten.' },
+      { status: 429, headers: { 'Retry-After': String(rl.resetIn) } }
+    )
+  }
+
   const check = await requireAdmin()
   if (!check.authorized) {
     return NextResponse.json({ error: check.message }, { status: check.status })
@@ -51,7 +62,7 @@ export async function GET() {
       id: user.id,
       email: user.email,
       created_at: user.created_at,
-      role: user.user_metadata?.role ?? 'user',
+      role: user.app_metadata?.role ?? 'user',
       typo3_uid: profile?.typo3_uid ?? null,
     }
   })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -44,6 +44,22 @@ export function ResetPasswordForm() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [sessionChecked, setSessionChecked] = useState(false)
+
+  // BUG-3 fix: Check for active session on mount.
+  // If no session exists, redirect to login instead of showing the form.
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        router.replace(
+          '/login?error=Bitte fordere einen neuen Link zum Zuruecksetzen deines Passworts an.'
+        )
+      } else {
+        setSessionChecked(true)
+      }
+    })
+  }, [router])
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -57,29 +73,30 @@ export function ResetPasswordForm() {
     setIsLoading(true)
     setError(null)
 
-    const supabase = createClient()
-
-    const { error: updateError } = await supabase.auth.updateUser({
-      password: values.password,
+    // BUG-5 fix: Use server-side API route with Zod validation
+    const response = await fetch('/api/auth/update-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: values.password }),
     })
 
-    if (updateError) {
+    if (!response.ok) {
       setIsLoading(false)
-      if (updateError.message.includes('same password')) {
-        setError(
-          'Das neue Passwort darf nicht mit dem alten Passwort uebereinstimmen.'
-        )
-      } else {
-        setError(
+      const data = await response.json()
+      setError(
+        data.error ??
           'Fehler beim Setzen des neuen Passworts. Bitte versuche es erneut oder fordere einen neuen Link an.'
-        )
-      }
+      )
       return
     }
 
     // Passwort erfolgreich geaendert — zur Laeufe-Uebersicht weiterleiten
     router.push('/runs')
     router.refresh()
+  }
+
+  if (!sessionChecked) {
+    return null
   }
 
   return (

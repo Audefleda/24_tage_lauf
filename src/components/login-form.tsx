@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -44,6 +44,23 @@ export function LoginForm() {
   const [resetEmail, setResetEmail] = useState('')
   const [resetSent, setResetSent] = useState(false)
   const [resetLoading, setResetLoading] = useState(false)
+  const [resetCooldown, setResetCooldown] = useState(0)
+
+  // BUG-6 fix: Cooldown timer for rate limiting password reset requests
+  const cooldownActive = resetCooldown > 0
+  useEffect(() => {
+    if (!cooldownActive) return
+    const timer = setInterval(() => {
+      setResetCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [cooldownActive])
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -107,6 +124,8 @@ export function LoginForm() {
 
   async function handlePasswordReset() {
     if (!resetEmail) return
+    // BUG-6 fix: Enforce 60-second cooldown between reset requests
+    if (resetCooldown > 0) return
 
     setResetLoading(true)
     const supabase = createClient()
@@ -128,6 +147,7 @@ export function LoginForm() {
     }
 
     setResetSent(true)
+    setResetCooldown(60)
   }
 
   return (
@@ -260,13 +280,15 @@ export function LoginForm() {
                   <Button
                     onClick={handlePasswordReset}
                     className="w-full"
-                    disabled={resetLoading || !resetEmail}
+                    disabled={resetLoading || !resetEmail || resetCooldown > 0}
                   >
                     {resetLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Sende...
                       </>
+                    ) : resetCooldown > 0 ? (
+                      `Erneut senden in ${resetCooldown}s`
                     ) : (
                       'Passwort zuruecksetzen'
                     )}

@@ -18,7 +18,7 @@
 | PROJ-4 | Läufe-Verwaltung (CRUD) | In Review | [PROJ-4](PROJ-4-laeufe-crud.md) | 2026-03-17 |
 | PROJ-5 | Strava-Webhook-Integration | Planned | [PROJ-5](PROJ-5-strava-webhook.md) | 2026-03-17 |
 | PROJ-6 | Benutzerverwaltung (Admin) | In Review | [PROJ-6](PROJ-6-benutzerverwaltung-admin.md) | 2026-03-17 |
-| PROJ-7 | Passwort-Reset | In Progress | [PROJ-7](PROJ-7-passwort-reset.md) | 2026-03-18 |
+| PROJ-7 | Passwort-Reset | In Review | [PROJ-7](PROJ-7-passwort-reset.md) | 2026-03-18 |
 
 <!-- Add features above this line -->
 

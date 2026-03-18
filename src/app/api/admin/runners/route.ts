@@ -1,9 +1,10 @@
 // GET /api/admin/runners — TYPO3 Laeuferliste fuer Admin-Dropdown
 // Gibt Array von { uid, name } zurueck
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
 import { typo3Fetch, Typo3Error } from '@/lib/typo3-client'
+import { rateLimit } from '@/lib/rate-limit'
 
 interface Typo3Runner {
   uid: number
@@ -15,7 +16,17 @@ interface Typo3Runner {
   totaldistanceFromArray: number
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Rate limiting: 30 requests per 60 seconds per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+  const rl = rateLimit(`admin-runners:${ip}`, { limit: 30, windowSeconds: 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Zu viele Anfragen. Bitte warten.' },
+      { status: 429, headers: { 'Retry-After': String(rl.resetIn) } }
+    )
+  }
+
   // Admin-Check
   const check = await requireAdmin()
   if (!check.authorized) {

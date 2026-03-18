@@ -105,11 +105,10 @@ export function RunnerAssignmentTable() {
   }, [fetchUsers, fetchRunners])
 
   async function handleAssign(userId: string, runnerUidStr: string) {
-    // "none" means clear assignment — but we only support assigning, not clearing
-    // The select uses runner uid as value
-    const runnerUid = parseInt(runnerUidStr, 10)
-    const runner = runners.find((r) => r.uid === runnerUid)
-    if (!runner) return
+    const isClear = runnerUidStr === '__none__'
+    const runnerUid = isClear ? null : parseInt(runnerUidStr, 10)
+    const runner = isClear ? null : runners.find((r) => r.uid === runnerUid)
+    if (!isClear && !runner) return
 
     setSavingState((prev) => ({ ...prev, [userId]: 'saving' }))
 
@@ -118,7 +117,7 @@ export function RunnerAssignmentTable() {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          typo3_uid: runner.uid,
+          typo3_uid: runner ? runner.uid : null,
         }),
       })
 
@@ -131,13 +130,13 @@ export function RunnerAssignmentTable() {
       setUsers((prev) =>
         prev.map((u) =>
           u.id === userId
-            ? { ...u, typo3_uid: runner.uid }
+            ? { ...u, typo3_uid: runner ? runner.uid : null }
             : u
         )
       )
 
       setSavingState((prev) => ({ ...prev, [userId]: 'saved' }))
-      toast.success(`${runner.name} zugeordnet`)
+      toast.success(runner ? `${runner.name} zugeordnet` : 'Zuordnung entfernt')
 
       // Clear "saved" indicator after 2s
       setTimeout(() => {
@@ -260,7 +259,7 @@ export function RunnerAssignmentTable() {
                         value={
                           user.typo3_uid !== null
                             ? String(user.typo3_uid)
-                            : undefined
+                            : '__none__'
                         }
                         onValueChange={(value) => handleAssign(user.id, value)}
                         disabled={saving === 'saving'}
@@ -278,6 +277,9 @@ export function RunnerAssignmentTable() {
                           />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="__none__">
+                            <span className="text-muted-foreground">Keine Zuordnung</span>
+                          </SelectItem>
                           {runners.map((runner) => {
                             const isAssignedElsewhere =
                               assignedUids.has(runner.uid) &&

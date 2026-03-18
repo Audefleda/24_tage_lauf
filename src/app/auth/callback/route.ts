@@ -11,7 +11,17 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type')
-  const next = searchParams.get('next') ?? '/runs'
+  const nextParam = searchParams.get('next') ?? '/runs'
+
+  // BUG-4 fix: Prevent open redirect by validating the next parameter.
+  // Only allow relative paths that start with a single "/" (not "//").
+  const ALLOWED_REDIRECT_PATHS = ['/runs', '/reset-password', '/admin']
+  const next =
+    nextParam.startsWith('/') &&
+    !nextParam.startsWith('//') &&
+    ALLOWED_REDIRECT_PATHS.some((p) => nextParam === p || nextParam.startsWith(`${p}/`))
+      ? nextParam
+      : '/runs'
 
   if (token_hash && type) {
     const response = NextResponse.redirect(new URL(next, origin))
