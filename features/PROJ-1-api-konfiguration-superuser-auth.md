@@ -1,6 +1,6 @@
 # PROJ-1: API-Konfiguration & Superuser-Authentifizierung
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-17
 **Last Updated:** 2026-03-17
 
@@ -308,4 +308,8 @@ Note: Code-level review only. The `ApiStatus` component uses shadcn/ui Alert, Sk
 - **Recommendation:** Fix BUG-2 + BUG-5 (install `server-only` package and add import guard) and BUG-7 (HSTS header) before deployment. Other bugs can be addressed in subsequent sprints.
 
 ## Deployment
-_To be added by /deploy_
+
+- **Production URL:** https://24-tage-lauf.vercel.app
+- **Deployed:** 2026-03-18
+- **Platform:** Vercel (auto-deploy from GitHub main branch)
+- **High-priority bugs fixed before deploy:** BUG-2/5 (server-only guard), BUG-7 (HSTS header)

@@ -12,7 +12,7 @@
 
 | ID | Feature | Status | Spec | Created |
 |----|---------|--------|------|---------|
-| PROJ-1 | API-Konfiguration & Superuser-Authentifizierung | In Review | [PROJ-1](PROJ-1-api-konfiguration-superuser-auth.md) | 2026-03-17 |
+| PROJ-1 | API-Konfiguration & Superuser-Authentifizierung | Deployed | [PROJ-1](PROJ-1-api-konfiguration-superuser-auth.md) | 2026-03-17 |
 | PROJ-2 | Anmeldung (Supabase Auth Login) | In Progress | [PROJ-2](PROJ-2-anmeldung-supabase-auth.md) | 2026-03-17 |
 | PROJ-3 | Läufe-Übersicht | In Review | [PROJ-3](PROJ-3-laeufe-uebersicht.md) | 2026-03-17 |
 | PROJ-4 | Läufe-Verwaltung (CRUD) | In Review | [PROJ-4](PROJ-4-laeufe-crud.md) | 2026-03-17 |
