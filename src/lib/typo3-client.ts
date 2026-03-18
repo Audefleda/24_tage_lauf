@@ -21,6 +21,10 @@ export class Typo3Error extends Error {
 // On Vercel serverless, this resets on cold starts — re-auth happens automatically.
 let cachedCookie: string | null = null
 
+// Health check result cache — prevents TYPO3 login spam on repeated /api/health calls
+const HEALTH_CACHE_TTL_MS = 30_000
+let healthCache: { result: { ok: boolean; message: string }; at: number } | null = null
+
 function extractFormFields(
   html: string,
   baseUrl: string
@@ -203,6 +207,10 @@ export async function checkConnection(): Promise<{
   ok: boolean
   message: string
 }> {
+  if (healthCache && Date.now() - healthCache.at < HEALTH_CACHE_TTL_MS) {
+    return healthCache.result
+  }
+
   try {
     const body = new URLSearchParams({
       type: '195',
@@ -221,17 +229,20 @@ export async function checkConnection(): Promise<{
     })
 
     if (!resp.ok) {
-      return { ok: false, message: `API antwortet mit HTTP ${resp.status}` }
+      const result = { ok: false, message: `API antwortet mit HTTP ${resp.status}` }
+      healthCache = { result, at: Date.now() }
+      return result
     }
 
-    return { ok: true, message: 'Verbindung zur Lauf-Website erfolgreich' }
+    const result = { ok: true, message: 'Verbindung zur Lauf-Website erfolgreich' }
+    healthCache = { result, at: Date.now() }
+    return result
   } catch (error) {
-    if (error instanceof Typo3Error) {
-      return { ok: false, message: error.message }
-    }
-    return {
-      ok: false,
-      message: error instanceof Error ? error.message : 'Verbindung fehlgeschlagen',
-    }
+    const message = error instanceof Typo3Error
+      ? error.message
+      : error instanceof Error ? error.message : 'Verbindung fehlgeschlagen'
+    const result = { ok: false, message }
+    healthCache = { result, at: Date.now() }
+    return result
   }
 }

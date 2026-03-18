@@ -187,14 +187,14 @@
 - [ ] BUG-7: Missing `Strict-Transport-Security` header. Security rules require HSTS with `includeSubDomains`. Already reported in PROJ-3 and PROJ-6 QA but remains unfixed.
 
 #### Rate Limiting
-- [ ] BUG-8: No rate limiting on `/api/health` endpoint. An attacker could spam this endpoint to trigger repeated TYPO3 login attempts, potentially causing account lockout on the TYPO3 side. Security rules require rate limiting on auth-related endpoints.
+- [x] ~~BUG-8: No rate limiting on `/api/health`~~ — FIXED: `checkConnection()` caches result for 30s, prevents TYPO3 login spam
 
 #### Credential Handling in HTML Parser
 - [x] `extractFormFields()` correctly fills `user`/`pass` fields from server-side env vars only
 - [ ] BUG-9: The regex matching in `extractFormFields()` is greedy with field name matching. Any `<input>` with `type="email"` or a name containing "email" gets the superuser email, and any `<input>` with `type="password"` or name containing "pass" gets the password. If the TYPO3 page contains additional forms (e.g., newsletter signup), credentials could be sent to unintended form fields. The fields are only sent to the same TYPO3 domain, so this is low severity but a code quality concern.
 
 #### Infinite Re-Login Loop
-- [ ] BUG-10: If TYPO3 consistently returns 500 (server error), `typo3Fetch()` clears the cookie and re-authenticates, then retries. If the retry also returns 500, no further re-auth happens (the cookie is re-populated). However, the *next* call to `typo3Fetch()` will see 500 again and trigger another login cycle. This creates an infinite re-login loop pattern on persistent 500s.
+- [x] ~~BUG-10: Infinite re-login loop on persistent 500 errors~~ — Resolved by BUG-3 fix: 500 no longer triggers re-login, loop impossible
 
 ### Cross-Browser / Responsive Testing
 
