@@ -22,7 +22,7 @@
 - Als Nutzer möchte ich eine verständliche Fehlermeldung sehen, wenn die API nicht erreichbar ist oder die Anmeldung fehlschlägt.
 
 ## Acceptance Criteria
-- [ ] Superuser-Credentials (URL, Username, Passwort) sind als Env-Variablen konfigurierbar (`API_BASE_URL`, `API_SUPERUSER`, `API_PASSWORD`)
+- [ ] Superuser-Credentials sind als Env-Variablen konfigurierbar: `TYPO3_BASE_URL`, `TYPO3_LOGIN_PATH`, `TYPO3_EMAIL`, `TYPO3_PASSWORD`
 - [ ] Die App führt beim ersten API-Aufruf eine Authentifizierung durch und speichert das Session-Token (z.B. Cookie oder Bearer Token)
 - [ ] Alle API-Aufrufe verwenden den authentifizierten Client
 - [ ] Bei fehlgeschlagener Authentifizierung wird eine klare Fehlermeldung angezeigt (kein leerer Screen)
@@ -37,8 +37,8 @@
 
 ## Technical Requirements
 - Auth erfolgt server-seitig (Next.js API Route oder Server Action), damit Credentials nie im Browser landen
-- API-Client als Singleton in `src/lib/api-client.ts`
-- Umgebungsvariablen: `API_BASE_URL`, `API_SUPERUSER`, `API_PASSWORD` (alle server-only, kein `NEXT_PUBLIC_` Prefix)
+- API-Client als Singleton in `src/lib/typo3-client.ts`
+- Umgebungsvariablen: `TYPO3_BASE_URL`, `TYPO3_LOGIN_PATH`, `TYPO3_EMAIL`, `TYPO3_PASSWORD` (alle server-only, kein `NEXT_PUBLIC_` Prefix)
 
 ---
 <!-- Sections below are added by subsequent skills -->
@@ -122,7 +122,7 @@
 - [x] Cookie stored in server-side module variable `cachedCookie` (never exposed to client)
 - [x] `typo3-client.ts` is only imported by server-side API routes (verified via grep)
 - [x] No `NEXT_PUBLIC_` prefix on any TYPO3 env variables
-- [ ] BUG-2: `typo3-client.ts` does NOT use `import 'server-only'` guard. The `server-only` package is not even installed. While currently only imported from API routes, nothing prevents a future developer from accidentally importing it in a Client Component, which would leak credentials into the browser bundle.
+- [x] ~~BUG-2: Missing `server-only` guard~~ — FIXED: `import 'server-only'` added to `typo3-client.ts`, package installed (commit c0b54bd)
 
 **Verdict: PASS (current state is safe, but missing guardrail)**
 
@@ -144,7 +144,7 @@
 
 #### EC-2: Token ablaeuft waehrend App laeuft - Automatischer Re-Login
 - [x] `typo3Fetch()` checks response status; on 401/403/500 it clears `cachedCookie` and re-authenticates
-- [ ] BUG-3: Re-login on HTTP 500 is overly aggressive. Any 500 error from TYPO3 (e.g., a server-side bug unrelated to auth) triggers a re-login attempt, which could mask real errors and cause unnecessary auth traffic. The re-login should only trigger on 401/403, not 500.
+- [x] ~~BUG-3: Re-login triggered on HTTP 500~~ — FIXED: Re-login only on 401/403, 500 is treated as real server error
 
 **Verdict: PARTIAL PASS**
 

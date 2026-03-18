@@ -188,8 +188,8 @@ export async function typo3Fetch(
 
   const resp = await fetch(url, { ...options, headers })
 
-  // On auth errors (TYPO3 sometimes returns 500 for unauthenticated API calls)
-  if (resp.status === 401 || resp.status === 403 || resp.status === 500) {
+  // On auth errors, clear cookie and retry once
+  if (resp.status === 401 || resp.status === 403) {
     cachedCookie = null
     headers.Cookie = await getAuthCookie()
     return fetch(url, { ...options, headers })
