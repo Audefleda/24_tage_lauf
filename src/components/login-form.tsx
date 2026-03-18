@@ -37,7 +37,8 @@ export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirect') || '/runs'
-  const [error, setError] = useState<string | null>(null)
+  const callbackError = searchParams.get('error')
+  const [error, setError] = useState<string | null>(callbackError)
   const [isLoading, setIsLoading] = useState(false)
   const [showResetInfo, setShowResetInfo] = useState(false)
   const [resetEmail, setResetEmail] = useState('')
@@ -113,7 +114,7 @@ export function LoginForm() {
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(
       resetEmail,
       {
-        redirectTo: `${window.location.origin}/login`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
       }
     )
 

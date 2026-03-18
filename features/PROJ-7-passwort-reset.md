@@ -1,6 +1,6 @@
 # PROJ-7: Passwort-Reset
 
-## Status: Planned
+## Status: In Progress
 **Created:** 2026-03-18
 **Last Updated:** 2026-03-18
 
@@ -37,6 +37,23 @@
 - Die App benötigt eine Route `src/app/auth/callback/route.ts` die den Token gegen eine Session tauscht
 - Der `redirectTo`-Parameter beim `resetPasswordForEmail()`-Aufruf muss auf die Production-URL zeigen: `https://24-tage-lauf.vercel.app/auth/callback?next=/reset-password`
 - In Supabase Dashboard muss `https://24-tage-lauf.vercel.app/**` als erlaubte Redirect-URL eingetragen sein
+
+## Implementation Notes (Frontend)
+
+### Files Created
+- `src/app/auth/callback/route.ts` — Server-side route handler that exchanges the Supabase `token_hash` for a session via `verifyOtp()`, then redirects to `/reset-password`. On error, redirects to `/login?error=...`.
+- `src/app/reset-password/page.tsx` — Page with Suspense boundary and loading skeleton.
+- `src/components/reset-password-form.tsx` — Client component with two password fields (new + confirm), Zod validation (min 8 chars, must match), calls `supabase.auth.updateUser()`, redirects to `/runs` on success.
+
+### Files Modified
+- `src/middleware.ts` — Added `/auth/callback` and `/reset-password` to `PUBLIC_ROUTES` so unauthenticated users (and the callback itself) can access these routes.
+- `src/components/login-form.tsx` — Changed `redirectTo` in `resetPasswordForEmail()` from `/login` to `/auth/callback?next=/reset-password`. Added handling for `?error=` query param so callback errors are displayed on the login page.
+
+### Design Decisions
+- The "Passwort vergessen" section was already implemented as a toggled area within the login form (from PROJ-2). This was kept as-is since it provides a clean UX with clear separation.
+- The reset-password form follows the same Card + shadcn Form pattern as the login form for visual consistency.
+- Security: non-existent emails still show a generic success message (already implemented in PROJ-2).
+- The auth callback route uses `verifyOtp` with `token_hash` which supports cross-browser usage (no PKCE code verifier needed).
 
 ---
 <!-- Sections below are added by subsequent skills -->

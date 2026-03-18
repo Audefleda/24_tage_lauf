@@ -6,7 +6,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
 // Routen die ohne Authentifizierung zugaenglich sind
-const PUBLIC_ROUTES = ['/login', '/api/strava/webhook']
+const PUBLIC_ROUTES = ['/login', '/auth/callback', '/reset-password', '/api/strava/webhook']
 
 function isPublicRoute(pathname: string): boolean {
   return PUBLIC_ROUTES.some(

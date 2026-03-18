@@ -132,7 +132,182 @@ Kein separater Delete-Button. Leeres Feld oder 0 km = Lauf wird aus dem Array en
 - `runDistance`: Dezimalzahl ≥ 0, max. 3 Nachkommastellen (0 erlaubt = Lauf löschen)
 
 ## QA Test Results
-_To be added by /qa_
+
+**Tested:** 2026-03-18
+**App URL:** http://localhost:3000
+**Tester:** QA Engineer (AI)
+**Method:** Static code analysis + build verification (network requests blocked by sandbox)
+
+### Acceptance Criteria Status
+
+#### AC-1: Jede Zeile enthaelt ein direkt editierbares Distanzfeld (kein separater Edit-Screen)
+- [x] Each event day row in `runs-table.tsx` renders an `<Input>` element for distance
+- [x] No navigation to a separate page required
+- **PASS**
+
+#### AC-2: Das Distanzfeld ist vorausgefuellt mit der aktuellen Distanz (leer wenn kein Lauf)
+- [x] `inputValues` state initialized from `days` array: `day.distance > 0 ? formatDistanceDE(day.distance) : ''`
+- [x] Empty string for days without runs, formatted distance for days with runs
+- **PASS**
+
+#### AC-3: Beim Verlassen des Feldes (onBlur) wird automatisch gespeichert
+- [x] `onBlur={() => handleBlur(day)}` triggers validation and PUT request
+- [x] No save button exists -- blur is the only save trigger
+- **PASS**
+
+#### AC-4: Waehrend des Speicherns zeigt die Zeile einen Ladezustand
+- [x] `rowState.status === 'saving'` triggers: `opacity-60` on the row + `Loader2` spinner icon
+- [x] Input is disabled during save (`disabled={isSaving}`)
+- **PASS**
+
+#### AC-5: Bei erfolgreichem Speichern: kurze Erfolgsanzeige
+- [x] Green checkmark icon (`Check` from lucide) shown for 2 seconds on success
+- [x] Sonner toast notification: "Lauf gespeichert" or "Lauf entfernt"
+- **PASS**
+
+#### AC-6: Bei Fehler: Fehlermeldung direkt in/unter der Zeile, Wert wird zurueckgesetzt
+- [x] Error state shows red `AlertCircle` icon + error message text below the row (line 294-298)
+- [x] On save failure, original value restored (lines 207-213)
+- [x] Sonner toast.error also shown
+- **PASS**
+
+#### AC-7: Validierung: Distanz muss leer, 0 oder positive Dezimalzahl sein
+- [x] `validateDistance()` function handles: empty string (returns 0), comma-to-dot normalization, parseFloat, NaN check, negative check
+- [x] Max 3 decimal places enforced
+- [ ] BUG: Validation is client-side only. Server endpoint (`/api/runner/runs/route.ts`) does not validate individual run entries with Zod -- only checks `Array.isArray(runs)`. (Same as PROJ-3 BUG-2)
+- **PARTIAL PASS**
+
+#### AC-8: Leer oder 0 eintragen entfernt den Lauf (kein separater Loeschen-Button)
+- [x] `validateDistance('')` returns 0; `validateDistance('0')` returns 0
+- [x] When `newDistance === 0`, the run for that date is removed from the array (line 156: `if (newDistance > 0)` -- only adds if positive)
+- [x] Toast says "Lauf entfernt" for distance 0
+- **PASS**
+
+#### AC-9: Kein separater Edit-Screen -- /runs/[index]/edit entfaellt
+- [x] `/runs/[index]/edit/page.tsx` exists but only does `redirect('/runs')` -- old bookmarks still work
+- [x] `/runs/new/page.tsx` also redirects to `/runs`
+- **PASS**
+
+#### AC-10: Datenisolation -- typo3_uid wird ausschliesslich serverseitig aus Supabase-Profil gelesen
+- [x] `PUT /api/runner/runs` reads `typo3_uid` from `runner_profiles` table using authenticated `user.id` (lines 30-41)
+- [x] Client request body contains only `{ runs: [...] }` -- no UID field
+- [x] Even if a client sent a UID in the body, the server ignores it completely
+- **PASS**
+
+#### AC-11: Nur eigene Laeufe -- Runs-Array enthaelt nur Laeufe des eingeloggten Laeufers
+- [x] The server uses the session user's `typo3_uid` for both read and write operations
+- [x] `GET /api/runner` filters runners array to find only the matching runner by UID
+- [x] `PUT /api/runner/runs` sends the UID from the server-side profile, not from the client
+- **PASS**
+
+### Edge Cases Status
+
+#### EC-1: Schnelles Bearbeiten mehrerer Felder hintereinander
+- [x] Each row has independent `rowState` tracking -- parallel saves are possible
+- [ ] BUG: Potential race condition. When saving row A, the `allRunsRef.current` is used to build the complete runs array. If row B saves before row A's `onRunsUpdated()` refresh completes, row B may use stale data that does not include row A's change. Since TYPO3 replaces the entire array, row B's save could overwrite row A's change.
+- **FAIL** (see BUG-1)
+
+#### EC-2: Ungueltiger Wert (z.B. Buchstaben)
+- [x] `validateDistance()` returns error message for NaN values: "Bitte eine gueltige Zahl eingeben"
+- [x] Error is shown inline, save is prevented
+- **PASS**
+
+#### EC-3: Netzwerkfehler
+- [x] Fetch errors are caught, error message shown in row and via toast
+- [x] Original value restored on failure
+- **PASS**
+
+#### EC-4: TYPO3 success: false
+- [x] Server checks `typo3Body.success === false` and returns 422 with the message
+- [x] Client shows error from response body
+- **PASS**
+
+#### EC-5: Nutzer ohne typo3_uid
+- [x] Server returns 404 "Kein Laeufer-Profil gefunden" when profile not found
+- [x] Client shows this error message
+- **PASS**
+
+#### EC-6: Client schickt fremde UID
+- [x] Server ignores any UID from client -- always uses session-based profile lookup
+- **PASS**
+
+#### EC-7: URL mit Index ausserhalb des Event-Zeitraums
+- [x] `/runs/[index]/edit` redirects to `/runs` regardless of index value
+- **PASS**
+
+### Security Audit Results
+- [x] Authentication: PUT endpoint verifies Supabase session via `getUser()` -- returns 401 if not authenticated
+- [x] Authorization: UID isolation is solid -- `typo3_uid` never comes from client, always from server-side profile lookup
+- [x] Input validation (client): `validateDistance()` blocks non-numeric, negative, and >3 decimal place values
+- [ ] BUG: Input validation (server): No Zod schema validation on the runs array items. `runDate` and `runDistance` fields are not validated for format/type. An attacker could send `{"runs":[{"runDate":"<script>alert(1)</script>","runDistance":"9999999"}]}` -- TYPO3 would receive it.
+- [x] XSS: React renders all values safely. No `dangerouslySetInnerHTML` usage.
+- [ ] BUG: No rate limiting on the PUT endpoint. Automated scripts could flood the TYPO3 API.
+- [x] CSRF: Supabase auth cookies + server-side session check provide implicit CSRF protection
+- [x] Secret exposure: TYPO3 credentials are server-only (no NEXT_PUBLIC_ prefix)
+
+### Cross-Browser / Responsive Notes
+- Static analysis only. Key observations:
+  - Week cards use `grid-cols-1 md:grid-cols-2 xl:grid-cols-4` -- good responsive behavior
+  - Input fields use `inputMode="decimal"` -- triggers numeric keyboard on mobile
+  - `data-index` attribute on inputs enables Escape key handler to find the correct day
+  - `aria-label` on each input provides accessibility context
+
+### Bugs Found
+
+#### BUG-1: Race condition on rapid sequential saves (Data Loss)
+- **Severity:** High
+- **Steps to Reproduce:**
+  1. Edit distance for Day 1 and immediately tab to Day 2 and edit
+  2. Day 1 blur triggers save with current `allRunsRef.current` (original data)
+  3. Day 2 blur triggers save before Day 1's `onRunsUpdated()` refresh completes
+  4. Day 2's save uses `allRunsRef.current` which still has OLD data (without Day 1's change)
+  5. Expected: Both Day 1 and Day 2 saves are reflected
+  6. Actual: Day 2's save overwrites Day 1's change because it built its array from stale data
+- **Priority:** Fix before deployment
+
+#### BUG-2: Out-of-range runs deleted on save (same as PROJ-3 BUG-1)
+- **Severity:** High
+- **Steps to Reproduce:**
+  1. Runner has runs from dates outside 20.04-14.05.2026
+  2. Edit any day in the event range
+  3. `runs-table.tsx` line 171: `filteredRuns.filter(r => getIndexForDateStr(r.runDate) >= 0)` removes out-of-range runs
+  4. Expected: Out-of-range runs are preserved
+  5. Actual: Out-of-range runs are silently deleted
+- **Priority:** Fix before deployment
+
+#### BUG-3: No server-side Zod validation on runs payload
+- **Severity:** Medium
+- **Steps to Reproduce:**
+  1. PUT /api/runner/runs with `{"runs":[{"runDate":"invalid","runDistance":"notanumber"}]}`
+  2. Expected: 400 response with validation error
+  3. Actual: Malformed data is passed directly to TYPO3
+- **Priority:** Fix before deployment
+
+#### BUG-4: No rate limiting / debounce on save requests
+- **Severity:** Low
+- **Steps to Reproduce:**
+  1. Rapidly click into and out of input fields with changed values
+  2. Each blur triggers an immediate fetch + TYPO3 API call
+  3. Expected: Some debounce or rate limiting
+  4. Actual: Unlimited requests possible
+- **Priority:** Fix in next sprint
+
+#### BUG-5: inputValues state not re-initialized when parent data refreshes
+- **Severity:** Medium
+- **Steps to Reproduce:**
+  1. The `inputValues` state is initialized via `useState(() => {...})` which only runs once on mount
+  2. When `onRunsUpdated()` refreshes parent data and `days` prop changes, the `inputValues` state is NOT re-computed from the new `days`
+  3. Expected: After a refresh, all input values reflect the latest server data
+  4. Actual: Only the row that was just saved gets its input updated (lines 192-195). Other rows may show stale values if the server returned different data.
+- **Note:** This is partially mitigated because the parent's `refreshRunner()` updates `state.data` which re-renders `RunsTable` with new `days` prop, but `inputValues` useState initializer does not re-run. If another user (or Strava sync) changed a run on a different day, that change would not be reflected in the input values until a full page reload.
+- **Priority:** Fix before deployment
+
+### Summary
+- **Acceptance Criteria:** 10/11 passed (1 partial pass on AC-7 due to missing server-side validation)
+- **Bugs Found:** 5 total (0 critical, 2 high, 2 medium, 1 low)
+- **Security:** 2 issues found (missing server-side validation, no rate limiting)
+- **Production Ready:** NO
+- **Recommendation:** Fix BUG-1 (race condition), BUG-2 (out-of-range data loss), BUG-3 (server validation), and BUG-5 (stale input state) before deployment.
 
 ## Deployment
 _To be added by /deploy_

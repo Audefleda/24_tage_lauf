@@ -1,5 +1,6 @@
 // Server-only module — never import in Client Components
 // All TYPO3 credentials stay on the server
+import 'server-only'
 
 const BASE_URL = process.env.TYPO3_BASE_URL ?? ''
 const LOGIN_PATH = process.env.TYPO3_LOGIN_PATH ?? ''
