@@ -8,7 +8,6 @@ import {
   type EventDay,
   formatDistanceDE,
   toTypo3DateStr,
-  getIndexForDateStr,
 } from '@/lib/event-config'
 
 interface Run {
@@ -71,9 +70,13 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
   // Track per-row save status
   const [rowStates, setRowStates] = useState<Record<number, RowState>>({})
 
-  // Ref to track the latest allRuns so we always have up-to-date data for saving
+  // Ref to track the latest allRuns from parent
   const allRunsRef = useRef(allRuns)
   allRunsRef.current = allRuns
+
+  // Optimistic local copy — updated immediately after each save so rapid sequential
+  // saves don't overwrite each other (race condition fix)
+  const localRunsRef = useRef<Run[]>(allRuns)
 
   // Clear success indicator after a delay
   const clearSuccessTimeout = useRef<Record<number, ReturnType<typeof setTimeout>>>({})
@@ -143,39 +146,26 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         const typo3Date = toTypo3DateStr(day.date)
         const targetDatePart = typo3Date.split(' ')[0]
 
-        // Build updated runs array using the latest allRuns
-        const currentRuns = allRunsRef.current
+        // Build updated runs array using the optimistic local copy so rapid
+        // sequential saves don't overwrite each other
+        const updatedRuns = localRunsRef.current
+          .filter((r) => r.runDate.split(' ')[0] !== targetDatePart)
+          .concat(
+            newDistance > 0
+              ? [{ runDate: typo3Date, runDistance: newDistance.toString() }]
+              : []
+          )
+          .sort((a, b) =>
+            (a.runDate.split(' ')[0] ?? '').localeCompare(b.runDate.split(' ')[0] ?? '')
+          )
 
-        // Remove any existing run for this date
-        const filteredRuns = currentRuns.filter((r) => {
-          const runDatePart = r.runDate.split(' ')[0]
-          return runDatePart !== targetDatePart
-        })
-
-        // If distance > 0, add the new entry
-        if (newDistance > 0) {
-          filteredRuns.push({
-            runDate: typo3Date,
-            runDistance: newDistance.toString(),
-          })
-        }
-
-        // Sort by date
-        filteredRuns.sort((a, b) => {
-          const dateA = a.runDate.split(' ')[0] ?? ''
-          const dateB = b.runDate.split(' ')[0] ?? ''
-          return dateA.localeCompare(dateB)
-        })
-
-        // Only include runs within event range
-        const eventRuns = filteredRuns.filter(
-          (r) => getIndexForDateStr(r.runDate) >= 0
-        )
+        // Optimistically update local copy so the next save builds on this result
+        localRunsRef.current = updatedRuns
 
         const resp = await fetch('/api/runner/runs', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ runs: eventRuns }),
+          body: JSON.stringify({ runs: updatedRuns }),
         })
 
         if (!resp.ok) {
@@ -195,13 +185,17 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
             newDistance > 0 ? formatDistanceDE(newDistance) : '',
         }))
 
-        // Refresh parent data (updates stats and allRuns)
+        // Refresh parent data (updates stats and allRuns); sync local copy after
         await onRunsUpdated()
+        localRunsRef.current = allRunsRef.current
       } catch (error) {
         const message =
           error instanceof Error ? error.message : 'Fehler beim Speichern'
         setRowState(day.index, { status: 'error', errorMessage: message })
         toast.error(message)
+
+        // Revert optimistic update on failure
+        localRunsRef.current = allRunsRef.current
 
         // Restore original value
         setInputValues((prev) => ({
