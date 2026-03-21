@@ -24,6 +24,7 @@
 | P0 (MVP) | Läufe-Übersicht | In Progress |
 | P0 (MVP) | Läufe-Verwaltung (CRUD) | In Progress |
 | P1 | Benutzerverwaltung (Admin) | Planned |
+| P1 | TYPO3 Request Log (Admin) | Planned |
 | P2 | Strava-Webhook-Integration | Planned |
 
 ## Success Metrics
