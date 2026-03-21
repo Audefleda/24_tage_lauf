@@ -34,7 +34,8 @@ interface LogEntry {
   run_distance_km: number
   sent_at: string
   http_status: number | null
-  response_text: string | null
+  response_success: boolean | null
+  response_message: string | null
 }
 
 interface LogResponse {
@@ -46,7 +47,7 @@ interface LogResponse {
 
 const PAGE_SIZE = 50
 
-type SortColumn = 'sent_at' | 'typo3_runner_uid' | 'run_date' | 'run_distance_km' | 'http_status'
+type SortColumn = 'sent_at' | 'typo3_runner_uid' | 'run_date' | 'run_distance_km' | 'http_status' | 'response_success' | 'response_message'
 type SortDirection = 'asc' | 'desc'
 
 // --- Helpers ---
@@ -255,6 +256,7 @@ export function RequestLogTable() {
               <Skeleton className="h-5 w-20" />
               <Skeleton className="h-5 w-16" />
               <Skeleton className="h-5 w-12" />
+              <Skeleton className="h-5 w-12" />
               <Skeleton className="h-5 w-40" />
             </div>
           ))}
@@ -310,7 +312,18 @@ export function RequestLogTable() {
                     >
                       HTTP-Status<SortIcon column="http_status" />
                     </TableHead>
-                    <TableHead>Antwort</TableHead>
+                    <TableHead
+                      className="cursor-pointer select-none"
+                      onClick={() => handleSortClick('response_success')}
+                    >
+                      Success<SortIcon column="response_success" />
+                    </TableHead>
+                    <TableHead
+                      className="cursor-pointer select-none"
+                      onClick={() => handleSortClick('response_message')}
+                    >
+                      Message<SortIcon column="response_message" />
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -342,8 +355,17 @@ export function RequestLogTable() {
                             <Badge variant="secondary">{entry.http_status}</Badge>
                           )}
                         </TableCell>
-                        <TableCell className="text-sm max-w-[300px] truncate" title={entry.response_text ?? ''}>
-                          {entry.response_text ?? ''}
+                        <TableCell className="text-sm">
+                          {entry.response_success === null ? (
+                            <span className="text-muted-foreground">--</span>
+                          ) : entry.response_success ? (
+                            <Badge variant="secondary">true</Badge>
+                          ) : (
+                            <Badge variant="destructive">false</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-sm max-w-[300px] truncate" title={entry.response_message ?? ''}>
+                          {entry.response_message ?? ''}
                         </TableCell>
                       </TableRow>
                     )

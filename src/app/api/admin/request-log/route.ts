@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
   const offset = Math.max(offsetParam, 0)
 
   // Sorting — whitelist allowed columns
-  const SORTABLE_COLUMNS = ['sent_at', 'typo3_runner_uid', 'run_date', 'run_distance_km', 'http_status'] as const
+  const SORTABLE_COLUMNS = ['sent_at', 'typo3_runner_uid', 'run_date', 'run_distance_km', 'http_status', 'response_success', 'response_message'] as const
   type SortColumn = typeof SORTABLE_COLUMNS[number]
   const sortColumnParam = searchParams.get('sort_column') ?? 'sent_at'
   const sortColumn: SortColumn = (SORTABLE_COLUMNS as readonly string[]).includes(sortColumnParam)

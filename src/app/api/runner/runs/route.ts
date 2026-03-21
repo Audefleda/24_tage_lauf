@@ -12,6 +12,26 @@ interface RunPayload {
   runDistance: string
 }
 
+/** Parse TYPO3 response text to extract success and message fields */
+function parseTypo3Response(responseText: string): {
+  responseSuccess: boolean | null
+  responseMessage: string | null
+} {
+  try {
+    const json = JSON.parse(responseText)
+    const responseSuccess = typeof json.success === 'boolean' ? json.success : null
+    const responseMessage = typeof json.message === 'string' ? json.message : null
+    return { responseSuccess, responseMessage }
+  } catch {
+    // Not valid JSON (e.g. HTML error page, plain text)
+    // Per spec: response_success = null, response_message = raw text truncated to 2000 chars
+    return {
+      responseSuccess: null,
+      responseMessage: responseText ? responseText.slice(0, 2000) : null,
+    }
+  }
+}
+
 /** Log a TYPO3 updateruns request to Supabase (fire-and-forget, never throws) */
 async function logTypo3Request(params: {
   typo3RunnerUid: number
@@ -22,6 +42,9 @@ async function logTypo3Request(params: {
   try {
     const supabaseAdmin = createAdminClient()
 
+    // Parse the TYPO3 response to extract success and message fields separately
+    const { responseSuccess, responseMessage } = parseTypo3Response(params.responseText)
+
     // One log entry per request (not per individual run).
     // Store the first run's date/distance as representative, or use a summary.
     // Per spec edge case: "Pro Laeufer-Request ein Log-Eintrag (nicht pro Einzellauf)"
@@ -31,7 +54,8 @@ async function logTypo3Request(params: {
       run_date: run.runDate.split(' ')[0], // extract date part from "YYYY-MM-DD HH:MM:SS"
       run_distance_km: parseFloat(run.runDistance) || 0,
       http_status: params.httpStatus,
-      response_text: params.responseText,
+      response_success: responseSuccess,
+      response_message: responseMessage,
     }))
 
     // If there are no runs in the payload, still log with a placeholder
@@ -41,7 +65,8 @@ async function logTypo3Request(params: {
         run_date: new Date().toISOString().split('T')[0],
         run_distance_km: 0,
         http_status: params.httpStatus,
-        response_text: params.responseText,
+        response_success: responseSuccess,
+        response_message: responseMessage,
       })
     }
 
@@ -130,7 +155,7 @@ export async function PUT(request: NextRequest) {
       typo3RunnerUid: profile.typo3_uid,
       runs,
       httpStatus: resp.status,
-      responseText: responseText.slice(0, 2000), // truncate to avoid huge logs
+      responseText,
     })
 
     if (!resp.ok) {
