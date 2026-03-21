@@ -19,11 +19,23 @@ function isAdminRoute(pathname: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname, searchParams, origin } = request.nextUrl
 
   // Oeffentliche Routen durchlassen
   if (isPublicRoute(pathname)) {
     return NextResponse.next()
+  }
+
+  // PROJ-10 fix: Supabase invite/signup redirects land on the root URL with ?code=...
+  // because the email template uses redirect_to=https://app.vercel.app/ (no /auth/callback).
+  // Forward the code to /auth/callback so the token exchange can happen correctly.
+  const code = searchParams.get('code')
+  if (code) {
+    const callbackUrl = new URL('/auth/callback', origin)
+    callbackUrl.searchParams.set('code', code)
+    const type = searchParams.get('type')
+    if (type) callbackUrl.searchParams.set('type', type)
+    return NextResponse.redirect(callbackUrl)
   }
 
   // Supabase-Client fuer Middleware erstellen
