@@ -21,7 +21,8 @@
 | PROJ-7 | Passwort-Reset | In Review | [PROJ-7](PROJ-7-passwort-reset.md) | 2026-03-18 |
 | PROJ-8 | TYPO3 Request Log | Deployed | [PROJ-8](PROJ-8-typo3-request-log.md) | 2026-03-21 |
 | PROJ-9 | Läufer-Selbstzuordnung beim ersten Login | Deployed | [PROJ-9](PROJ-9-laeufer-selbstzuordnung.md) | 2026-03-21 |
+| PROJ-10 | Erstanmeldung — Initiales Passwort setzen | Deployed | [PROJ-10](PROJ-10-erstanmeldung-passwort-setzen.md) | 2026-03-21 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-10
+## Next Available ID: PROJ-11

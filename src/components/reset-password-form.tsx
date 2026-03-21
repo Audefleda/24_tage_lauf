@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -42,6 +42,8 @@ type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>
 
 export function ResetPasswordForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isWelcome = searchParams.get('welcome') === 'true'
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [sessionChecked, setSessionChecked] = useState(false)
@@ -104,10 +106,12 @@ export function ResetPasswordForm() {
       <Card className="w-full max-w-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
-            Neues Passwort setzen
+            {isWelcome ? 'Willkommen!' : 'Neues Passwort setzen'}
           </CardTitle>
           <CardDescription>
-            Gib dein neues Passwort ein. Mindestens 8 Zeichen.
+            {isWelcome
+              ? 'Bitte setze dein Passwort, um die App zu nutzen. Mindestens 8 Zeichen.'
+              : 'Gib dein neues Passwort ein. Mindestens 8 Zeichen.'}
           </CardDescription>
         </CardHeader>
         <CardContent>
