@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { PageHeader } from '@/components/page-header'
 import { StatsCard } from '@/components/stats-card'
 import { RunsTable } from '@/components/runs-table'
+import { RunnerSelectDialog } from '@/components/runner-select-dialog'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -24,6 +25,7 @@ interface RunnerData {
 type PageState =
   | { status: 'loading' }
   | { status: 'error'; message: string }
+  | { status: 'no-profile' }
   | { status: 'success'; data: RunnerData }
 
 export default function RunsPage() {
@@ -33,6 +35,11 @@ export default function RunsPage() {
     setState({ status: 'loading' })
     try {
       const resp = await fetch('/api/runner')
+      if (resp.status === 404) {
+        // No runner profile assigned yet — show assignment dialog
+        setState({ status: 'no-profile' })
+        return
+      }
       if (!resp.ok) {
         const body = await resp.json().catch(() => ({}))
         throw new Error(
@@ -67,6 +74,30 @@ export default function RunsPage() {
   useEffect(() => {
     fetchRunner()
   }, [fetchRunner])
+
+  // No profile state — show assignment dialog
+  if (state.status === 'no-profile') {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <Skeleton className="h-24" />
+          <Skeleton className="h-24" />
+        </div>
+        <Skeleton className="h-[600px]" />
+        <RunnerSelectDialog
+          open={true}
+          onAssigned={() => {
+            // After successful assignment, re-fetch runner data
+            fetchRunner()
+          }}
+        />
+      </div>
+    )
+  }
 
   // Loading state
   if (state.status === 'loading') {
