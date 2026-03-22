@@ -40,6 +40,32 @@ export function LoginForm() {
   const callbackError = searchParams.get('error')
   const [error, setError] = useState<string | null>(callbackError)
   const [isLoading, setIsLoading] = useState(false)
+
+  // PROJ-10: Handle implicit flow — Supabase invite emails set redirect_to to the
+  // root URL, so tokens arrive as hash fragments (#access_token=...&type=invite).
+  // The server never sees the hash; we must process it client-side.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const hash = window.location.hash.substring(1)
+    if (!hash.includes('access_token')) return
+
+    const params = new URLSearchParams(hash)
+    const access_token = params.get('access_token')
+    const refresh_token = params.get('refresh_token')
+    const type = params.get('type')
+
+    if (!access_token || !refresh_token) return
+
+    const supabase = createClient()
+    supabase.auth.setSession({ access_token, refresh_token }).then(({ error }) => {
+      if (error) {
+        setError('Einladungslink ungültig oder abgelaufen.')
+        return
+      }
+      const isFirstTimeUser = type === 'invite' || type === 'signup'
+      router.replace(isFirstTimeUser ? '/reset-password?welcome=true' : '/reset-password')
+    })
+  }, [router])
   const [showResetInfo, setShowResetInfo] = useState(false)
   const [resetEmail, setResetEmail] = useState('')
   const [resetSent, setResetSent] = useState(false)
