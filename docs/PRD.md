@@ -27,7 +27,7 @@
 | P1 | TYPO3 Request Log (Admin) | Planned |
 | P1 | Läufer-Selbstzuordnung beim ersten Login | Planned |
 | P1 | Erstanmeldung — Initiales Passwort setzen | Planned |
-| P2 | Strava-Webhook-Integration | Planned |
+| P2 | Strava-Webhook-Integration (OAuth + automatischer Lauf-Eintrag via Webhook) | Planned |
 
 ## Success Metrics
 - Alle Läufer können sich anmelden und ihre eigenen Läufe eintragen
