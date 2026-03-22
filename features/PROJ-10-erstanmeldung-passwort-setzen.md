@@ -158,3 +158,15 @@ _Skipped — change is minimal (single file, ~15 lines)._
 ### Bug Fixes shipped
 - BUG-1 (Low): `'signup'` zum Type-Cast in `verifyOtp()` ergänzt
 - BUG-2 (Low): Erstanmeldungs-UI — Callback übergibt `?welcome=true`, Formular zeigt "Willkommen!" für Einladungsflows
+
+### Post-Deploy Fix (2026-03-22): Implicit Flow
+
+**Root cause:** Die Einladungs-E-Mail von Supabase nutzt `redirect_to=https://24-tage-lauf.vercel.app/` (Root-URL, kein `/auth/callback`). Supabase verwendet für Invites den **Implicit Flow** (nicht PKCE) — die Tokens landen im **URL-Hash-Fragment** (`#access_token=...&type=invite`), nicht als `?code=`.
+
+**Problem:** Das Middleware sieht den Hash nicht (wird vom Browser nie an den Server gesendet). Es leitet unauthentifizierte Anfragen an `/` zu `/login` um. Der Browser bewahrt das Hash-Fragment beim Redirect. Die Login-Seite hat das Hash-Fragment nicht ausgewertet.
+
+**Fix 1** (`src/middleware.ts`): Leitet Anfragen mit `?code=` auf beliebigen Routen zu `/auth/callback` weiter (für PKCE-Flows, die nicht auf `/auth/callback` landen).
+
+**Fix 2** (`src/components/login-form.tsx`): `useEffect` erkennt `#access_token` im Hash, ruft `supabase.auth.setSession()` auf und leitet bei `type=invite`/`signup` zu `/reset-password?welcome=true` weiter.
+
+**Verifiziert:** 2026-03-22 — End-to-End-Test mit echtem Supabase-Einladungslink erfolgreich.

@@ -6,7 +6,13 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
 // Routen die ohne Authentifizierung zugaenglich sind
-const PUBLIC_ROUTES = ['/login', '/auth/callback', '/reset-password', '/api/strava/webhook']
+const PUBLIC_ROUTES = [
+  '/login',
+  '/auth/callback',
+  '/reset-password',
+  '/api/strava/webhook',
+  '/api/strava/callback', // Strava OAuth redirect — user session cookie handles auth
+]
 
 function isPublicRoute(pathname: string): boolean {
   return PUBLIC_ROUTES.some(
@@ -29,8 +35,9 @@ export async function middleware(request: NextRequest) {
   // PROJ-10 fix: Supabase invite/signup redirects land on the root URL with ?code=...
   // because the email template uses redirect_to=https://app.vercel.app/ (no /auth/callback).
   // Forward the code to /auth/callback so the token exchange can happen correctly.
+  // Exclude API routes: /api/strava/callback also carries ?code= but handles it itself.
   const code = searchParams.get('code')
-  if (code) {
+  if (code && !pathname.startsWith('/api/')) {
     const callbackUrl = new URL('/auth/callback', origin)
     callbackUrl.searchParams.set('code', code)
     const type = searchParams.get('type')
