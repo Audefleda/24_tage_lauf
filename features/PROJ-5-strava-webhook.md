@@ -1,6 +1,6 @@
 # PROJ-5: Strava-Webhook-Integration
 
-## Status: Planned
+## Status: In Progress
 **Created:** 2026-03-17
 **Last Updated:** 2026-03-22
 
@@ -80,7 +80,75 @@ STRAVA_VERIFY_TOKEN=...   # Selbst gewählter String zur Webhook-Verifizierung
 <!-- Sections below are added by subsequent skills -->
 
 ## Tech Design (Solution Architect)
-_To be added by /architecture_
+
+### Zwei unabhängige Flows
+
+**Flow 1: Nutzer verbindet Strava (einmalig)**
+Läufer → "Strava verbinden" → Strava OAuth → `/api/strava/callback` → Supabase speichert Tokens
+
+**Flow 2: Automatischer Lauf-Eintrag (dauerhaft)**
+Strava → `POST /api/strava/webhook` → Strava API (Aktivitätsdetails) → TYPO3 updateruns
+
+### Komponenten-Struktur
+
+```
+src/app/runs/page.tsx (bestehend, erweitert)
+└── StravaConnectSection (NEU: unterhalb RunsTable)
+    ├── Strava-Icon + Titel "Strava"
+    ├── Badge: "Verbunden" (grün) / "Nicht verbunden" (grau)
+    ├── Text: "Zuletzt synchronisiert: [Datum]" oder "Noch nicht synchronisiert"
+    └── Button: "Strava verbinden" → startet OAuth
+                "Strava trennen" → Verbindung löschen (mit Bestätigungs-Dialog)
+
+src/app/admin/page.tsx (bestehend, erweitert)
+└── Strava-Webhook-Setup-Bereich (NEU)
+    ├── Status: "Webhook registriert" / "Nicht registriert"
+    └── Button: "Webhook bei Strava registrieren" (einmalig)
+```
+
+### Neue API-Routen
+
+| Route | Zweck | Auth |
+|-------|-------|------|
+| `GET /api/strava/connect` | Leitet zu Strava OAuth weiter | Eingeloggt |
+| `GET /api/strava/callback` | Empfängt OAuth-Code, speichert Tokens | Öffentlich (Strava-Redirect) |
+| `DELETE /api/strava/connect` | Löscht Verbindung des aktuellen Nutzers | Eingeloggt |
+| `GET /api/strava/status` | Verbindungsstatus + letzter Sync | Eingeloggt |
+| `GET /api/strava/webhook` | Strava Hub Challenge Verification | Öffentlich |
+| `POST /api/strava/webhook` | Empfängt Aktivitäts-Events | Öffentlich (verify_token) |
+| `POST /api/admin/strava/register-webhook` | Globalen Webhook einmalig registrieren | Admin only |
+
+### Neue Supabase-Tabelle: `strava_connections`
+
+RLS: Jeder Nutzer sieht nur seine eigene Zeile. Webhook-Endpunkt verwendet Admin-Client.
+
+### Webhook-Verarbeitungs-Ablauf (Flow 2)
+
+1. Strava sendet `POST /api/strava/webhook` mit `object_type=activity`, `aspect_type=create`
+2. `verify_token` prüfen → sonst 403
+3. Nutzer anhand `owner_id` (Strava Athlete-ID) in `strava_connections` suchen
+4. Nutzer hat TYPO3-Profil? Sonst: HTTP 200, ignorieren
+5. Access-Token abgelaufen? → Refresh via Strava Token-Endpoint
+6. Aktivitätsdetails via Strava API abrufen
+7. Typ prüfen (Run/TrailRun/VirtualRun/Hike/Walk) → sonst ignorieren
+8. Alle bestehenden Läufe aus TYPO3 laden, neuen anhängen, komplette Liste zurückschreiben
+9. `last_synced_at` in DB aktualisieren
+10. Immer HTTP 200 zurück (Strava-Anforderung — sonst endlose Retries)
+
+### Technische Entscheidungen
+
+| Entscheidung | Grund |
+|---|---|
+| Tokens in Supabase (nicht Env) | Jeder Nutzer hat eigene Tokens |
+| `verify_token` validiert Webhook | Nur Strava kann echte Events senden |
+| Immer HTTP 200 vom Webhook | Strava-Anforderung — Fehler intern geloggt |
+| Bestehende TYPO3-Logik wiederverwenden | PROJ-8-Logging greift automatisch |
+| Kein Strava-SDK | Native `fetch` genügt, keine externe Abhängigkeit |
+
+### Neue Env-Variablen
+- `STRAVA_CLIENT_ID` — Strava App Client ID
+- `STRAVA_CLIENT_SECRET` — Strava App Client Secret
+- `STRAVA_VERIFY_TOKEN` — Selbst gewählter Verifikations-String
 
 ## QA Test Results
 _To be added by /qa_
