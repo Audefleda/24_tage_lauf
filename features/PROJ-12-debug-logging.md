@@ -60,7 +60,37 @@
 <!-- Sections below are added by subsequent skills -->
 
 ## Tech Design (Solution Architect)
-_To be added by /architecture_
+
+### Ansatz: Zentraler Logger als einzige neue Datei
+
+```
+src/lib/
+└── logger.ts  (NEU)
+
+Bestehende Dateien die erweitert werden:
+├── typo3-client.ts   → PROJ-1 Debug-Ausgaben
+├── typo3-runs.ts     → PROJ-4/8 Debug-Ausgaben
+└── strava.ts         → PROJ-5 Debug-Ausgaben
+```
+
+### Wie es funktioniert
+
+`logger.ts` liest beim Modulstart einmalig `process.env.LOG_LEVEL`. Ist der Wert `debug`, gibt `logger.debug()` Nachrichten aus — andernfalls tut es nichts. `logger.error()` gibt immer aus (unabhängig vom Level). Token-Maskierung (`abc12345...`) sitzt zentral in `logger.ts`.
+
+### Ausgabe-Format
+`[DEBUG][modul] Beschreibung: {daten}`
+
+### Technische Entscheidungen
+
+| Entscheidung | Grund |
+|---|---|
+| Keine externe Logging-Bibliothek | Vercel Logs zeigen `console.log` nativ |
+| `LOG_LEVEL` einmalig beim Modulstart gelesen | Performance: kein env-Lookup pro Aufruf |
+| Maskierung zentralisiert in `logger.ts` | Ein Ort, keine Wiederholung in Modulen |
+| Kein DB-Logging | Non-Goal laut Spec — Vercel Dashboard reicht |
+
+### Neue Env-Variable
+- `LOG_LEVEL=debug` — Vercel Dashboard → Settings → Environment Variables → Redeploy
 
 ## QA Test Results
 _To be added by /qa_

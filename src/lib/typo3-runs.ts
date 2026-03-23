@@ -3,6 +3,7 @@ import 'server-only'
 
 import { createAdminClient } from '@/lib/supabase-admin'
 import { typo3Fetch, Typo3Error } from '@/lib/typo3-client'
+import { debug } from '@/lib/logger'
 
 export interface RunPayload {
   runDate: string
@@ -112,6 +113,8 @@ export async function updateRunnerRuns(
     'request[arguments][runs]': JSON.stringify(runs),
   })
 
+  debug('typo3-runs', 'PUT-Anfrage an TYPO3 gestartet', { runnerUid: typo3Uid, runCount: runs.length })
+
   let responseText = ''
   let httpStatus: number | null = null
 
@@ -124,6 +127,9 @@ export async function updateRunnerRuns(
 
     httpStatus = resp.status
     responseText = await resp.text()
+
+    debug('typo3-runs', 'HTTP-Status der TYPO3-Antwort', { httpStatus })
+    debug('typo3-runs', 'TYPO3-Antwort-Body', responseText)
 
     await logTypo3Request({ typo3RunnerUid: typo3Uid, runs, httpStatus, responseText })
 

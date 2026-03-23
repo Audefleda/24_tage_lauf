@@ -2,6 +2,8 @@
 // All TYPO3 credentials stay on the server
 import 'server-only'
 
+import { debug, maskEmail, maskToken } from '@/lib/logger'
+
 const BASE_URL = process.env.TYPO3_BASE_URL ?? ''
 const LOGIN_PATH = process.env.TYPO3_LOGIN_PATH ?? ''
 const EMAIL = process.env.TYPO3_EMAIL ?? ''
@@ -80,6 +82,8 @@ async function login(): Promise<string> {
 
   const loginUrl = `${BASE_URL}${LOGIN_PATH}`
 
+  debug('typo3-auth', 'Login-Versuch gestartet', { url: loginUrl, email: maskEmail(EMAIL) })
+
   // Step 1: GET login page to extract form + session cookies for CSRF validation
   const getResp = await fetch(loginUrl, {
     headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'text/html' },
@@ -104,6 +108,10 @@ async function login(): Promise<string> {
 
   const html = await getResp.text()
   const { action, data } = extractFormFields(html, loginUrl)
+
+  debug('typo3-auth', 'Login-Formular erfolgreich geladen', { fieldCount: Object.keys(data).length })
+
+  debug('typo3-auth', 'Login-POST abgeschickt', { action })
 
   // Step 2: POST login form WITH session cookies so CSRF token validates correctly
   const postResp = await fetch(action, {
@@ -158,10 +166,13 @@ async function login(): Promise<string> {
   }
 
   if (!cookieMap.has('fe_typo_user')) {
+    debug('typo3-auth', 'Login fehlgeschlagen — fe_typo_user Cookie nicht gesetzt')
     throw new Typo3Error(
       'Login fehlgeschlagen: fe_typo_user Cookie nicht gesetzt. Bitte Credentials in .env.local prüfen.'
     )
   }
+
+  debug('typo3-auth', 'Login erfolgreich', { cookie: maskToken(cookieMap.get('fe_typo_user')) })
 
   return [...cookieMap.values()].join('; ')
 }
@@ -194,6 +205,8 @@ export async function typo3Fetch(
 
   // On auth errors, clear cookie and retry once
   if (resp.status === 401 || resp.status === 403) {
+    debug('typo3-auth', 'Re-Login ausgeloest', { reason: `HTTP ${resp.status}`, url })
+    debug('typo3-auth', 'Token-Cache invalidiert')
     cachedCookie = null
     headers.Cookie = await getAuthCookie()
     return fetch(url, { ...options, headers })

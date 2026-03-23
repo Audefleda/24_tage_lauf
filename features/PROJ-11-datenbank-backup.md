@@ -36,7 +36,7 @@
 ## Technical Requirements
 - Implementierung: Node.js Script (`scripts/backup-db.js`)
 - Abhängigkeiten: Nutzt bereits installiertes `@supabase/supabase-js` aus dem Projekt
-- Komprimierung: `.tar.gz` via natives `node:zlib` + `node:tar` (keine extra Abhängigkeit)
+- Komprimierung: `.tar.gz` via `tar` npm-Paket (devDependency) + natives `node:zlib`
 - Env-Parsing: `dotenv` als devDependency
 - Keine neue Env-Variable nötig — nutzt `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`
 - Lauffähig unter macOS und Linux

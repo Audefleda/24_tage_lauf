@@ -4,6 +4,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { exchangeStravaCode } from '@/lib/strava'
+import * as logger from '@/lib/logger'
 
 const STATE_COOKIE = 'strava_oauth_state'
 
@@ -40,6 +41,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const tokens = await exchangeStravaCode(code)
+
+    logger.debug('strava', 'OAuth-Callback empfangen', { athleteId: tokens.athlete_id, userId: user.id })
 
     // BUG-1 fix: onConflict:'user_id' now works — UNIQUE constraint added via migration
     const { error: upsertError } = await supabase

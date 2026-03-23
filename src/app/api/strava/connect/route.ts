@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { getStravaOAuthUrl } from '@/lib/strava'
 import { rateLimit } from '@/lib/rate-limit'
+import * as logger from '@/lib/logger'
 
 const STATE_COOKIE = 'strava_oauth_state'
 const STATE_TTL_SECONDS = 600 // 10 minutes
@@ -28,6 +29,8 @@ export async function GET(request: NextRequest) {
   // BUG-2 fix: generate CSRF state token, store in httpOnly cookie
   const state = crypto.randomUUID()
   const url = getStravaOAuthUrl(origin, state)
+
+  logger.debug('strava', 'OAuth-Flow gestartet', { userId: user.id, oauthUrl: url.split('?')[0] })
 
   const response = NextResponse.redirect(url)
   response.cookies.set(STATE_COOKIE, state, {
@@ -60,9 +63,10 @@ export async function DELETE() {
     .eq('user_id', user.id)
 
   if (deleteError) {
-    console.error('[PROJ-5] Failed to delete strava connection:', deleteError.message)
+    logger.error('strava', 'Verbindung trennen fehlgeschlagen', deleteError.message)
     return NextResponse.json({ error: 'Verbindung konnte nicht getrennt werden' }, { status: 500 })
   }
 
+  logger.debug('strava', 'Strava-Verbindung getrennt', { userId: user.id })
   return NextResponse.json({ ok: true })
 }

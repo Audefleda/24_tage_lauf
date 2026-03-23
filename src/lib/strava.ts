@@ -1,6 +1,8 @@
 // Strava API helpers — server-only
 import 'server-only'
 
+import { debug, maskToken } from '@/lib/logger'
+
 const CLIENT_ID = process.env.STRAVA_CLIENT_ID ?? ''
 const CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET ?? ''
 const VERIFY_TOKEN = process.env.STRAVA_VERIFY_TOKEN ?? ''
@@ -70,6 +72,7 @@ export async function exchangeStravaCode(code: string): Promise<StravaTokens & {
   }
 
   const data = await resp.json()
+  debug('strava', 'OAuth-Callback empfangen', { athleteId: data.athlete.id, scopes: data.scope ?? '(unknown)' })
   return {
     access_token: data.access_token,
     refresh_token: data.refresh_token,
@@ -122,7 +125,17 @@ export async function getValidAccessToken(connection: StravaConnection): Promise
     return { access_token: connection.access_token, newTokens: null }
   }
 
+  debug('strava', 'Token-Refresh ausgeloest', {
+    userId: connection.user_id,
+    reason: `Token laeuft ab um ${connection.token_expires_at}`,
+  })
+
   const newTokens = await refreshStravaToken(connection.refresh_token)
+
+  debug('strava', 'Token-Refresh erfolgreich', {
+    newExpiresAt: new Date(newTokens.expires_at * 1000).toISOString(),
+  })
+
   return { access_token: newTokens.access_token, newTokens }
 }
 

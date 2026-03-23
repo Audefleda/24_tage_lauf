@@ -11,6 +11,7 @@ import {
   fetchStravaActivity,
 } from '@/lib/strava'
 import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
+import * as logger from '@/lib/logger'
 
 // BUG-5 fix: Zod schema for incoming Strava webhook event
 const StravaEventSchema = z.object({
@@ -87,8 +88,11 @@ export async function POST(request: NextRequest) {
 
   const { object_type, aspect_type, object_id: activityId, owner_id: athleteId, subscription_id: subscriptionId } = parsed.data
 
+  logger.debug('strava', 'Webhook-Event empfangen', { object_type, aspect_type, activityId, athleteId, subscriptionId })
+
   // Only handle activity create events
   if (object_type !== 'activity' || aspect_type !== 'create') {
+    logger.debug('strava', 'Webhook-Event ignoriert (kein activity:create)', { object_type, aspect_type })
     return NextResponse.json({ ok: true })
   }
 
@@ -113,7 +117,7 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (!connection) {
-    // No user has connected this Strava account — ignore
+    logger.debug('strava', 'Webhook-Event ignoriert (kein User für athleteId)', { athleteId })
     return NextResponse.json({ ok: true })
   }
 
@@ -125,7 +129,7 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (!profile) {
-    // User has no TYPO3 runner assigned yet — ignore
+    logger.debug('strava', 'Webhook-Event ignoriert (kein TYPO3-Profil)', { userId: connection.user_id })
     return NextResponse.json({ ok: true })
   }
 
@@ -150,12 +154,15 @@ export async function POST(request: NextRequest) {
       const activity = await fetchStravaActivity(activityId, access_token)
 
       if (!activity) {
-        console.warn('[PROJ-5] Activity not found:', activityId)
+        logger.debug('strava', 'Aktivität nicht gefunden', { activityId })
         return
       }
 
+      logger.debug('strava', 'Aktivitätsdetails abgerufen', { activityId, type: activity.type, distance: activity.distance, date: activity.start_date })
+
       // Filter by allowed activity types
       if (!ALLOWED_ACTIVITY_TYPES.has(activity.type)) {
+        logger.debug('strava', 'Aktivitätstyp ignoriert', { type: activity.type, activityId })
         return
       }
 
@@ -177,9 +184,10 @@ export async function POST(request: NextRequest) {
         .from('strava_connections')
         .update({ last_synced_at: new Date().toISOString() })
         .eq('user_id', connection.user_id)
+
+      logger.debug('strava', 'Webhook-Event verarbeitet', { activityId, runDate: newRun.runDate, runDistance: newRun.runDistance })
     } catch (err) {
-      // Log error but never throw — Strava must receive HTTP 200
-      console.error('[PROJ-5] Error processing webhook event:', err)
+      logger.error('strava', 'Fehler beim Verarbeiten des Webhook-Events', err)
     }
   })
 
