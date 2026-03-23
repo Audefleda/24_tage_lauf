@@ -44,7 +44,7 @@ function validateDistance(value: string): number | string {
   const normalized = trimmed.replace(',', '.')
 
   const num = parseFloat(normalized)
-  if (isNaN(num)) return 'Bitte eine gueltige Zahl eingeben'
+  if (isNaN(num)) return 'Bitte eine gültige Zahl eingeben'
   if (num < 0) return 'Distanz muss 0 oder positiv sein'
 
   // Check max 3 decimal places
@@ -271,7 +271,7 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
             onKeyDown={handleKeyDown}
             disabled={isSaving}
             data-index={day.index}
-            aria-label={`Distanz fuer ${day.weekday}, ${day.formattedDate}`}
+            aria-label={`Distanz für ${day.weekday}, ${day.formattedDate}`}
           />
           <span className="w-4 shrink-0 flex items-center justify-center">
             {isSaving && (

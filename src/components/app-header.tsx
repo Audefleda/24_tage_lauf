@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
-import { LogOut, Loader2, Shield } from 'lucide-react'
+import { LogOut, Loader2, Shield, Activity } from 'lucide-react'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 
@@ -62,6 +62,12 @@ export function AppHeader() {
 
         {!isLoginPage && user && (
           <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/runs">
+                <Activity className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Läufe</span>
+              </Link>
+            </Button>
             {user.app_metadata?.role === 'admin' && (
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/admin">

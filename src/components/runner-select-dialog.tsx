@@ -48,7 +48,7 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
       if (!resp.ok) {
         const body = await resp.json().catch(() => ({}))
         throw new Error(
-          body.error ?? `Fehler beim Laden der Läuferliste (HTTP ${resp.status})`
+          body.error ?? `Fehler beim Laden der Läufer*innenliste (HTTP ${resp.status})`
         )
       }
       const runners: Runner[] = await resp.json()
@@ -59,7 +59,7 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
         message:
           error instanceof Error
             ? error.message
-            : 'Unbekannter Fehler beim Laden der Läuferliste',
+            : 'Unbekannter Fehler beim Laden der Läufer*innenliste',
       })
     }
   }, [])
@@ -115,9 +115,9 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
           aria-describedby="runner-select-description"
         >
           <DialogHeader>
-            <DialogTitle>Willkommen! Bitte wähle deinen Läufer</DialogTitle>
+            <DialogTitle>Willkommen! Bitte wähle deine Läufer*in</DialogTitle>
             <DialogDescription id="runner-select-description">
-              Wähle deinen Namen aus der Liste, um dein Konto mit deinem Läuferprofil zu verknüpfen.
+              Wähle deinen Namen aus der Liste, um dein Konto mit deinem Läufer*innenprofil zu verknüpfen.
             </DialogDescription>
           </DialogHeader>
 
@@ -131,7 +131,7 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
 
           {/* Loading state */}
           {fetchState.status === 'loading' && (
-            <div className="space-y-3 py-4" role="status" aria-label="Läuferliste wird geladen">
+            <div className="space-y-3 py-4" role="status" aria-label="Läufer*innenliste wird geladen">
               <Skeleton className="h-10 w-full" />
               <Skeleton className="h-4 w-3/4" />
             </div>
@@ -158,7 +158,7 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
                 <Alert className="py-4">
                   <Info className="h-4 w-4" aria-hidden="true" />
                   <AlertDescription>
-                    Alle Läufer sind bereits vergeben. Bitte wende dich an den Administrator.
+                    Alle Läufer*innen sind bereits vergeben. Bitte wende dich an die Administrator*in.
                   </AlertDescription>
                 </Alert>
               ) : (
@@ -171,9 +171,9 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
                   >
                     <SelectTrigger
                       className="w-full"
-                      aria-label="Läufer auswählen"
+                      aria-label="Läufer*in auswählen"
                     >
-                      <SelectValue placeholder="Läufer auswählen..." />
+                      <SelectValue placeholder="Läufer*in auswählen..." />
                     </SelectTrigger>
                     <SelectContent>
                       {fetchState.runners.map((runner) => (

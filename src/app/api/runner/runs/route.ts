@@ -31,7 +31,7 @@ export async function PUT(request: NextRequest) {
 
   if (profileError || !profile) {
     return NextResponse.json(
-      { error: 'Kein Laeufer-Profil gefunden' },
+      { error: 'Kein Läufer*in-Profil gefunden' },
       { status: 404 }
     )
   }
@@ -46,7 +46,7 @@ export async function PUT(request: NextRequest) {
     }
   } catch {
     return NextResponse.json(
-      { error: 'Ungueltiges Request-Format' },
+      { error: 'Ungültiges Request-Format' },
       { status: 400 }
     )
   }

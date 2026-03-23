@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
   const errorUrl = new URL('/login', origin)
   errorUrl.searchParams.set(
     'error',
-    'Der Link ist ungueltig oder abgelaufen. Bitte fordere einen neuen Link an.'
+    'Der Link ist ungültig oder abgelaufen. Bitte fordere einen neuen Link an.'
   )
   return NextResponse.redirect(errorUrl)
 }

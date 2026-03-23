@@ -70,7 +70,7 @@ export function RunnerAssignmentTable() {
       setUsers(data)
     } catch (err) {
       setErrorUsers(
-        err instanceof Error ? err.message : 'Fehler beim Laden der Nutzer'
+        err instanceof Error ? err.message : 'Fehler beim Laden der Nutzer*innen'
       )
     } finally {
       setLoadingUsers(false)
@@ -92,7 +92,7 @@ export function RunnerAssignmentTable() {
       setRunners(data)
     } catch (err) {
       setErrorRunners(
-        err instanceof Error ? err.message : 'Fehler beim Laden der Laeufer'
+        err instanceof Error ? err.message : 'Fehler beim Laden der Läufer*innen'
       )
     } finally {
       setLoadingRunners(false)
@@ -207,7 +207,7 @@ export function RunnerAssignmentTable() {
     <Alert variant="destructive" className="mb-4">
       <AlertCircle className="h-4 w-4" />
       <AlertDescription className="flex items-center justify-between">
-        <span>Laeuferliste: {errorRunners}</span>
+        <span>Läufer*innenliste: {errorRunners}</span>
         <Button variant="outline" size="sm" onClick={fetchRunners}>
           <RefreshCw className="h-4 w-4 mr-1" />
           Erneut laden
@@ -220,7 +220,7 @@ export function RunnerAssignmentTable() {
   if (users.length === 0) {
     return (
       <p className="text-muted-foreground text-sm py-4 text-center">
-        Keine Nutzer vorhanden. Nutzer werden im Supabase Dashboard angelegt.
+        Keine Nutzer*innen vorhanden. Nutzer*innen werden im Supabase Dashboard angelegt.
       </p>
     )
   }
@@ -234,7 +234,7 @@ export function RunnerAssignmentTable() {
           <TableHeader>
             <TableRow>
               <TableHead>E-Mail</TableHead>
-              <TableHead>Laeufer-Zuordnung</TableHead>
+              <TableHead>Läufer*innen-Zuordnung</TableHead>
               <TableHead className="hidden sm:table-cell">Erstellt</TableHead>
               <TableHead className="w-10"></TableHead>
             </TableRow>
@@ -266,7 +266,7 @@ export function RunnerAssignmentTable() {
                       >
                         <SelectTrigger
                           className="w-full max-w-[260px]"
-                          aria-label={`Laeufer-Zuordnung fuer ${user.email}`}
+                          aria-label={`Läufer*innen-Zuordnung für ${user.email}`}
                         >
                           <SelectValue
                             placeholder={
@@ -332,7 +332,7 @@ export function RunnerAssignmentTable() {
       {/* Summary */}
       <div className="mt-4 flex gap-4 text-xs text-muted-foreground">
         <span>
-          {users.length} Nutzer gesamt
+          {users.length} Nutzer*innen gesamt
         </span>
         <span>
           {users.filter((u) => u.typo3_uid === null).length} ohne Zuordnung

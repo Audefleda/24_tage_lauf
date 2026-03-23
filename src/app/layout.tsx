@@ -5,7 +5,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: '24 Tage Lauf',
-  description: 'Laeufe eintragen und verwalten',
+  description: 'Läufe eintragen und verwalten',
 }
 
 export default function RootLayout({

@@ -27,7 +27,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2 } from 'lucide-react'
 
 const loginSchema = z.object({
-  email: z.string().email('Bitte eine gueltige E-Mail-Adresse eingeben'),
+  email: z.string().email('Bitte eine gültige E-Mail-Adresse eingeben'),
   password: z.string().min(1, 'Passwort ist erforderlich'),
 })
 
@@ -167,7 +167,7 @@ export function LoginForm() {
 
     if (resetError) {
       setError(
-        'Fehler beim Senden der Passwort-Zuruecksetzung. Bitte erneut versuchen.'
+        'Fehler beim Senden der Passwort-Zurücksetzung. Bitte erneut versuchen.'
       )
       return
     }
@@ -182,7 +182,7 @@ export function LoginForm() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Anmelden</CardTitle>
           <CardDescription>
-            Melde dich mit deinem Account an, um deine Laeufe zu verwalten.
+            Melde dich mit deinem Account an, um deine Läufe zu verwalten.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -276,15 +276,15 @@ export function LoginForm() {
                 <Alert>
                   <AlertDescription>
                     Falls ein Account mit dieser E-Mail existiert, wurde eine
-                    E-Mail zum Zuruecksetzen des Passworts gesendet. Bitte
-                    pruefe deinen Posteingang.
+                    E-Mail zum Zurücksetzen des Passworts gesendet. Bitte
+                    prüfe deinen Posteingang.
                   </AlertDescription>
                 </Alert>
               ) : (
                 <>
                   <p className="text-sm text-muted-foreground">
                     Gib deine E-Mail-Adresse ein und wir senden dir einen Link
-                    zum Zuruecksetzen deines Passworts.
+                    zum Zurücksetzen deines Passworts.
                   </p>
                   <div className="space-y-2">
                     <Input
@@ -293,7 +293,7 @@ export function LoginForm() {
                       value={resetEmail}
                       onChange={(e) => setResetEmail(e.target.value)}
                       disabled={resetLoading}
-                      aria-label="E-Mail fuer Passwort-Zuruecksetzung"
+                      aria-label="E-Mail für Passwort-Zurücksetzung"
                     />
                   </div>
 
@@ -316,7 +316,7 @@ export function LoginForm() {
                     ) : resetCooldown > 0 ? (
                       `Erneut senden in ${resetCooldown}s`
                     ) : (
-                      'Passwort zuruecksetzen'
+                      'Passwort zurücksetzen'
                     )}
                   </Button>
                 </>
@@ -332,7 +332,7 @@ export function LoginForm() {
                   }}
                   className="text-sm text-muted-foreground underline-offset-4 hover:underline"
                 >
-                  Zurueck zum Login
+                  Zurück zum Login
                 </button>
               </div>
             </div>

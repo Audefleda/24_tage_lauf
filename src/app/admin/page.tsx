@@ -10,9 +10,9 @@ export default function AdminPage() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Benutzerverwaltung</CardTitle>
+          <CardTitle>Nutzer*innenverwaltung</CardTitle>
           <CardDescription>
-            Supabase-Nutzer mit TYPO3-Laeufern verknuepfen
+            Supabase-Nutzer*innen mit TYPO3-Läufer*innen verknüpfen
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -43,7 +43,7 @@ export default function AdminPage() {
           <Button variant="outline" asChild>
             <Link href="/admin/request-log">
               <FileText className="h-4 w-4 mr-2" />
-              Request Log oeffnen
+              Request Log öffnen
             </Link>
           </Button>
         </CardContent>

@@ -121,7 +121,7 @@ export function RunForm({
                 />
               </FormControl>
               <p className="text-xs text-muted-foreground">
-                0 eingeben um den Lauf fuer diesen Tag zu entfernen.
+                0 eingeben um den Lauf für diesen Tag zu entfernen.
               </p>
               <FormMessage />
             </FormItem>

@@ -44,7 +44,7 @@ export async function PATCH(
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
   if (!uuidRegex.test(userId)) {
     return NextResponse.json(
-      { error: 'Ungueltige User-ID' },
+      { error: 'Ungültige User-ID' },
       { status: 400 }
     )
   }
@@ -55,7 +55,7 @@ export async function PATCH(
     body = await request.json()
   } catch {
     return NextResponse.json(
-      { error: 'Ungueltiger JSON-Body' },
+      { error: 'Ungültiger JSON-Body' },
       { status: 400 }
     )
   }

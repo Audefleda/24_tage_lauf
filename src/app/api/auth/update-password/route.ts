@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const result = updatePasswordSchema.safeParse(body)
     if (!result.success) {
       return NextResponse.json(
-        { error: result.error.issues[0]?.message ?? 'Ungueltige Eingabe' },
+        { error: result.error.issues[0]?.message ?? 'Ungültige Eingabe' },
         { status: 400 }
       )
     }
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             error:
-              'Das neue Passwort darf nicht mit dem alten Passwort uebereinstimmen.',
+              'Das neue Passwort darf nicht mit dem alten Passwort übereinstimmen.',
           },
           { status: 422 }
         )
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json(
-      { error: 'Ungueltige Anfrage' },
+      { error: 'Ungültige Anfrage' },
       { status: 400 }
     )
   }

@@ -46,7 +46,7 @@ export async function GET() {
     return NextResponse.json(
       {
         error:
-          'Kein Laeufer-Profil gefunden. Bitte Admin kontaktieren.',
+          'Kein Läufer*in-Profil gefunden. Bitte Admin kontaktieren.',
       },
       { status: 404 }
     )
@@ -86,7 +86,7 @@ export async function GET() {
     if (!runner) {
       return NextResponse.json(
         {
-          error: `Laeufer mit UID ${profile.typo3_uid} nicht in TYPO3 gefunden`,
+          error: `Läufer*in mit UID ${profile.typo3_uid} nicht in TYPO3 gefunden`,
         },
         { status: 404 }
       )

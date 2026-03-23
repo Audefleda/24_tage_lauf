@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
   const parsed = AssignSchema.safeParse(body)
   if (!parsed.success) {
     return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? 'Ungueltige Eingabe' },
+      { error: parsed.error.issues[0]?.message ?? 'Ungültige Eingabe' },
       { status: 400 }
     )
   }
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     const validUids = new Set(typo3Data.runners.map((r) => r.uid))
     if (!validUids.has(typo3_uid)) {
       return NextResponse.json(
-        { error: 'Ungültiger Läufer — UID nicht in TYPO3 gefunden' },
+        { error: 'Ungültige Läufer*in — UID nicht in TYPO3 gefunden' },
         { status: 400 }
       )
     }
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
 
   if (existingProfile) {
     return NextResponse.json(
-      { error: 'Du hast bereits einen Läufer zugeordnet' },
+      { error: 'Du hast bereits eine Läufer*in zugeordnet' },
       { status: 409 }
     )
   }
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
 
   if (takenProfile) {
     return NextResponse.json(
-      { error: 'Dieser Läufer ist bereits einem anderen Benutzer zugeordnet' },
+      { error: 'Diese Läufer*in ist bereits einer anderen Nutzer*in zugeordnet' },
       { status: 409 }
     )
   }
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
     // Handle unique constraint violation (race condition)
     if (insertError.code === '23505') {
       return NextResponse.json(
-        { error: 'Zuordnung fehlgeschlagen — dieser Läufer wurde gerade von jemand anderem gewählt. Bitte wähle einen anderen.' },
+        { error: 'Zuordnung fehlgeschlagen — diese Läufer*in wurde gerade von jemand anderem gewählt. Bitte wähle eine andere.' },
         { status: 409 }
       )
     }
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json(
-    { message: 'Läufer erfolgreich zugeordnet' },
+    { message: 'Läufer*in erfolgreich zugeordnet' },
     { status: 201 }
   )
 }

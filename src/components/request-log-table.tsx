@@ -214,11 +214,11 @@ export function RequestLogTable() {
           <Input
             type="text"
             inputMode="numeric"
-            placeholder="Laeufer-UID filtern..."
+            placeholder="Läufer*in-UID filtern..."
             value={uidInputValue}
             onChange={(e) => handleUidInputChange(e.target.value)}
             className={`w-full sm:w-48 ${uidInputError ? 'border-destructive' : ''}`}
-            aria-label="Laeufer-UID Filter"
+            aria-label="Läufer*in-UID Filter"
             aria-invalid={!!uidInputError}
           />
           {uidInputError && (
@@ -275,7 +275,7 @@ export function RequestLogTable() {
 
           {data.logs.length === 0 ? (
             <p className="text-muted-foreground text-sm py-8 text-center">
-              Keine Log-Eintraege gefunden.
+              Keine Log-Einträge gefunden.
             </p>
           ) : (
             <div className="overflow-x-auto -mx-6 sm:mx-0">
@@ -292,7 +292,7 @@ export function RequestLogTable() {
                       className="cursor-pointer select-none"
                       onClick={() => handleSortClick('typo3_runner_uid')}
                     >
-                      Laeufer-UID<SortIcon column="typo3_runner_uid" />
+                      Läufer*in-UID<SortIcon column="typo3_runner_uid" />
                     </TableHead>
                     <TableHead
                       className="cursor-pointer select-none"
@@ -379,7 +379,7 @@ export function RequestLogTable() {
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <span className="text-sm text-muted-foreground">
-                {data.total} Eintraege gesamt, Seite {currentPage} von {totalPages}
+                {data.total} Einträge gesamt, Seite {currentPage} von {totalPages}
               </span>
               <div className="flex gap-2">
                 <Button
@@ -389,7 +389,7 @@ export function RequestLogTable() {
                   onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  Zurueck
+                  Zurück
                 </Button>
                 <Button
                   variant="outline"

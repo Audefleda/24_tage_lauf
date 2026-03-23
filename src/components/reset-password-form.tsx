@@ -34,7 +34,7 @@ const resetPasswordSchema = z
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwoerter stimmen nicht ueberein',
+    message: 'Passwörter stimmen nicht überein',
     path: ['confirmPassword'],
   })
 
@@ -55,7 +55,7 @@ export function ResetPasswordForm() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         router.replace(
-          '/login?error=Bitte fordere einen neuen Link zum Zuruecksetzen deines Passworts an.'
+          '/login?error=Bitte fordere einen neuen Link zum Zurücksetzen deines Passworts an.'
         )
       } else {
         setSessionChecked(true)
@@ -144,11 +144,11 @@ export function ResetPasswordForm() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Passwort bestaetigen</FormLabel>
+                    <FormLabel>Passwort bestätigen</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Passwort bestaetigen"
+                        placeholder="Passwort bestätigen"
                         autoComplete="new-password"
                         disabled={isLoading}
                         {...field}
@@ -188,7 +188,7 @@ export function ResetPasswordForm() {
               href="/login"
               className="text-sm text-muted-foreground underline-offset-4 hover:underline"
             >
-              Zurueck zum Login
+              Zurück zum Login
             </a>
           </div>
         </CardContent>
