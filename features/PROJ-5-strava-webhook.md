@@ -1,8 +1,8 @@
 # PROJ-5: Strava-Webhook-Integration
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-17
-**Last Updated:** 2026-03-22
+**Last Updated:** 2026-03-23
 
 ## Dependencies
 - Requires: PROJ-1 (API-Konfiguration & Superuser-Authentifizierung)
