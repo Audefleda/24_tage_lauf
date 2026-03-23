@@ -29,6 +29,7 @@
 | P1 | Erstanmeldung — Initiales Passwort setzen | Planned |
 | P2 | Strava-Webhook-Integration (OAuth + automatischer Lauf-Eintrag via Webhook) | Planned |
 | P2 | Datenbank-Backup (Shell-Script, CSV-Export, komprimiert) | Planned |
+| P2 | Debug-Logging (LOG_LEVEL=debug via Vercel Env, maskierte Tokens) | Planned |
 
 ## Success Metrics
 - Alle Läufer können sich anmelden und ihre eigenen Läufe eintragen

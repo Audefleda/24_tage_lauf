@@ -23,7 +23,8 @@
 | PROJ-9 | Läufer-Selbstzuordnung beim ersten Login | Deployed | [PROJ-9](PROJ-9-laeufer-selbstzuordnung.md) | 2026-03-21 |
 | PROJ-10 | Erstanmeldung — Initiales Passwort setzen | Deployed | [PROJ-10](PROJ-10-erstanmeldung-passwort-setzen.md) | 2026-03-21 |
 | PROJ-11 | Datenbank-Backup | Planned | [PROJ-11](PROJ-11-datenbank-backup.md) | 2026-03-23 |
+| PROJ-12 | Debug-Logging | Planned | [PROJ-12](PROJ-12-debug-logging.md) | 2026-03-23 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-12
+## Next Available ID: PROJ-13

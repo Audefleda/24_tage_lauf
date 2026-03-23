@@ -38,6 +38,18 @@
 - Was passiert, wenn zwei Nutzer denselben Strava-Account verbinden? → Sollte durch UI verhindert werden (unique constraint auf `athlete_id` in DB)
 - Was passiert, wenn `update`- oder `delete`-Events von Strava eingehen? → Werden ignoriert (nur `create`-Events lösen TYPO3-Updates aus)
 
+## Debug-Logging (PROJ-12)
+Bei aktiviertem `LOG_LEVEL=debug` werden folgende Ausgaben erzeugt:
+- OAuth-Flow gestartet (User-ID, OAuth-URL ohne Client Secret)
+- OAuth-Callback empfangen (Athlete-ID, gewährte Scopes)
+- Token-Refresh ausgelöst (User-ID, verbleibende Sekunden bis Ablauf)
+- Token-Refresh erfolgreich (neue `expires_at`)
+- Webhook-Event empfangen (vollständiger Body)
+- Aktivitätsdetails abgerufen (Activity-ID, Typ, Distanz in Metern, Datum)
+- Aktivitätstyp ignoriert (Typ, Grund)
+- Webhook-Event vollständig verarbeitet (Activity-ID, eingetragene Distanz in km)
+- Webhook-Event ignoriert (Grund: kein User gefunden, kein TYPO3-Profil, nicht erlaubter Typ)
+
 ## Technical Requirements
 
 ### Neue Supabase-Tabelle: `strava_connections`

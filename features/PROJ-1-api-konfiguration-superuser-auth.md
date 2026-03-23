@@ -35,6 +35,15 @@
 - Was passiert, wenn falsche Credentials konfiguriert sind? → Klare Fehlermeldung für den Admin
 - Was passiert, wenn die API eine unerwartete Antwortstruktur zurückgibt? → Graceful Error Handling
 
+## Debug-Logging (PROJ-12)
+Bei aktiviertem `LOG_LEVEL=debug` werden folgende Ausgaben erzeugt:
+- Login-Versuch gestartet (URL, E-Mail maskiert)
+- Login-Formular geladen (Anzahl gefundener Felder)
+- Login-POST abgeschickt (Ziel-URL)
+- Login erfolgreich / fehlgeschlagen (Cookie gesetzt oder nicht)
+- Re-Login ausgelöst (HTTP-Status als Grund)
+- Token-Cache invalidiert
+
 ## Technical Requirements
 - Auth erfolgt server-seitig (Next.js API Route oder Server Action), damit Credentials nie im Browser landen
 - API-Client als Singleton in `src/lib/typo3-client.ts`

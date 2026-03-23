@@ -22,6 +22,12 @@
 - Requires: PROJ-2 (Läufer-Auswahl)
 - Requires: PROJ-3 (Läufe-Übersicht)
 
+## Debug-Logging (PROJ-12)
+Bei aktiviertem `LOG_LEVEL=debug` werden folgende Ausgaben erzeugt:
+- PUT-Anfrage an TYPO3 gestartet (Runner-UID, Anzahl Läufe)
+- HTTP-Status der TYPO3-Antwort
+- TYPO3-Antwort-Body (vollständig)
+
 ## User Stories
 - Als Läufer möchte ich die Distanz direkt in der Tabellenzeile eingeben können, ohne einen separaten Screen aufrufen zu müssen.
 - Als Läufer möchte ich, dass meine Eingabe automatisch gespeichert wird wenn ich das Feld verlasse, damit ich nicht aktiv auf "Speichern" klicken muss.
