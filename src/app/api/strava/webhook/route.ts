@@ -2,6 +2,7 @@
 // POST /api/strava/webhook — receives activity events from Strava (public, validated via subscription_id)
 
 import { NextResponse, type NextRequest } from 'next/server'
+import { z } from 'zod'
 import { createAdminClient } from '@/lib/supabase-admin'
 import {
   STRAVA_VERIFY_TOKEN,
@@ -10,6 +11,15 @@ import {
   fetchStravaActivity,
 } from '@/lib/strava'
 import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
+
+// BUG-5 fix: Zod schema for incoming Strava webhook event
+const StravaEventSchema = z.object({
+  object_type: z.string(),
+  aspect_type: z.string(),
+  object_id: z.number(),
+  owner_id: z.number(),
+  subscription_id: z.number(),
+})
 
 // ---------------------------------------------------------------------------
 // Per-user in-memory mutex (serializes concurrent webhook events for same user)
@@ -62,31 +72,23 @@ export async function GET(request: NextRequest) {
 // ---------------------------------------------------------------------------
 export async function POST(request: NextRequest) {
   // Always respond 200 to Strava — errors are logged internally
-  let body: {
-    object_type?: string
-    aspect_type?: string
-    object_id?: number
-    owner_id?: number
-    subscription_id?: number
-  }
-
+  let rawBody: unknown
   try {
-    body = await request.json()
+    rawBody = await request.json()
   } catch {
-    // Malformed body — ignore silently
     return NextResponse.json({ ok: true })
   }
+
+  // BUG-5 fix: validate body shape with Zod before processing
+  const parsed = StravaEventSchema.safeParse(rawBody)
+  if (!parsed.success) {
+    return NextResponse.json({ ok: true })
+  }
+
+  const { object_type, aspect_type, object_id: activityId, owner_id: athleteId, subscription_id: subscriptionId } = parsed.data
 
   // Only handle activity create events
-  if (body.object_type !== 'activity' || body.aspect_type !== 'create') {
-    return NextResponse.json({ ok: true })
-  }
-
-  const activityId = body.object_id
-  const athleteId = body.owner_id
-  const subscriptionId = body.subscription_id
-
-  if (!activityId || !athleteId || !subscriptionId) {
+  if (object_type !== 'activity' || aspect_type !== 'create') {
     return NextResponse.json({ ok: true })
   }
 

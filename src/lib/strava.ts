@@ -38,7 +38,7 @@ export interface StravaActivity {
 }
 
 /** Generate the Strava OAuth authorization URL */
-export function getStravaOAuthUrl(origin: string): string {
+export function getStravaOAuthUrl(origin: string, state: string): string {
   if (!CLIENT_ID) throw new Error('STRAVA_CLIENT_ID is not configured')
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
@@ -46,6 +46,7 @@ export function getStravaOAuthUrl(origin: string): string {
     response_type: 'code',
     approval_prompt: 'auto',
     scope: 'activity:read_all',
+    state,
   })
   return `https://www.strava.com/oauth/authorize?${params}`
 }

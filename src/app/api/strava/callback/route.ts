@@ -5,9 +5,12 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { exchangeStravaCode } from '@/lib/strava'
 
+const STATE_COOKIE = 'strava_oauth_state'
+
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl
   const code = searchParams.get('code')
+  const state = searchParams.get('state')
   const errorParam = searchParams.get('error')
 
   // User denied access on Strava's authorization page
@@ -16,6 +19,13 @@ export async function GET(request: NextRequest) {
   }
 
   if (!code) {
+    return NextResponse.redirect(`${origin}/runs?strava=error`)
+  }
+
+  // BUG-2 fix: validate CSRF state token
+  const expectedState = request.cookies.get(STATE_COOKIE)?.value
+  if (!expectedState || expectedState !== state) {
+    console.error('[PROJ-5] OAuth state mismatch — possible CSRF attack')
     return NextResponse.redirect(`${origin}/runs?strava=error`)
   }
 
@@ -31,7 +41,7 @@ export async function GET(request: NextRequest) {
   try {
     const tokens = await exchangeStravaCode(code)
 
-    // Upsert: if user already connected, replace with new tokens
+    // BUG-1 fix: onConflict:'user_id' now works — UNIQUE constraint added via migration
     const { error: upsertError } = await supabase
       .from('strava_connections')
       .upsert(
@@ -46,11 +56,18 @@ export async function GET(request: NextRequest) {
       )
 
     if (upsertError) {
+      // BUG-3 fix: athlete_id already used by another account (unique constraint violation)
+      if (upsertError.code === '23505' && upsertError.message.includes('athlete_id')) {
+        return NextResponse.redirect(`${origin}/runs?strava=already_connected`)
+      }
       console.error('[PROJ-5] Failed to save strava tokens:', upsertError.message)
       return NextResponse.redirect(`${origin}/runs?strava=error`)
     }
 
-    return NextResponse.redirect(`${origin}/runs?strava=connected`)
+    // Clear the state cookie
+    const response = NextResponse.redirect(`${origin}/runs?strava=connected`)
+    response.cookies.delete(STATE_COOKIE)
+    return response
   } catch (err) {
     console.error('[PROJ-5] Strava OAuth callback error:', err)
     return NextResponse.redirect(`${origin}/runs?strava=error`)

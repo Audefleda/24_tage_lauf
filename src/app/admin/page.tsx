@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RunnerAssignmentTable } from '@/components/runner-assignment-table'
+import { StravaWebhookSetup } from '@/components/strava-webhook-setup'
 import { FileText } from 'lucide-react'
 
 export default function AdminPage() {
@@ -16,6 +17,18 @@ export default function AdminPage() {
         </CardHeader>
         <CardContent>
           <RunnerAssignmentTable />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Strava Webhook</CardTitle>
+          <CardDescription>
+            Globale Webhook-Subscription bei Strava registrieren
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <StravaWebhookSetup />
         </CardContent>
       </Card>
 

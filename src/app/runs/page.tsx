@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/page-header'
 import { StatsCard } from '@/components/stats-card'
 import { RunsTable } from '@/components/runs-table'
 import { RunnerSelectDialog } from '@/components/runner-select-dialog'
+import { StravaConnectSection } from '@/components/strava-connect-section'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -156,6 +157,7 @@ export default function RunsPage() {
         allRuns={data.runs}
         onRunsUpdated={refreshRunner}
       />
+      <StravaConnectSection />
     </div>
   )
 }
