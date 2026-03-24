@@ -104,6 +104,32 @@ async function exportTable(supabase, tableName, tmpDir) {
 }
 
 async function main() {
+  // Determine output directory: optional CLI argument or current working directory
+  const outputDir = process.argv[2]
+    ? path.resolve(process.argv[2])
+    : process.cwd();
+
+  // Ensure output directory exists (create recursively if needed)
+  try {
+    fs.mkdirSync(outputDir, { recursive: true });
+  } catch (err) {
+    console.error(`Fehler: Zielverzeichnis konnte nicht erstellt werden: ${outputDir}`);
+    console.error(err.message);
+    process.exit(1);
+  }
+
+  // Verify write permissions by attempting to create a temp file
+  const testFile = path.join(outputDir, `.backup-write-test-${Date.now()}`);
+  try {
+    fs.writeFileSync(testFile, '');
+    fs.unlinkSync(testFile);
+  } catch {
+    console.error(`Fehler: Keine Schreibrechte im Zielverzeichnis: ${outputDir}`);
+    process.exit(1);
+  }
+
+  console.log(`Zielverzeichnis: ${outputDir}`);
+
   // Build timestamp for archive name
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
@@ -117,7 +143,7 @@ async function main() {
     pad(now.getSeconds()),
   ].join('-');
   const archiveName = `backup_${timestamp}.tar.gz`;
-  const archivePath = path.join(process.cwd(), archiveName);
+  const archivePath = path.join(outputDir, archiveName);
 
   // Create temp directory for CSV files
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'db-backup-'));
