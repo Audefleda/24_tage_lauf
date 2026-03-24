@@ -27,7 +27,7 @@
 | PROJ-13 | Sprache — Umlaute & gendergerechte Formulierungen | Deployed | [PROJ-13](PROJ-13-sprache-umlaute-gendern.md) | 2026-03-23 |
 | PROJ-14 | CI-Design-System (BettercallXPaul Corporate Identity) | Deployed | [PROJ-14](PROJ-14-ci-design-system.md) | 2026-03-23 |
 | PROJ-15 | Dark Mode (CI-konform, systemgesteuert) | Deployed | [PROJ-15](PROJ-15-dark-mode.md) | 2026-03-23 |
-| PROJ-16 | Strava Webhook De-registrierung (Admin) | Planned | [PROJ-16](PROJ-16-strava-webhook-deregistrierung.md) | 2026-03-24 |
+| PROJ-16 | Strava Webhook De-registrierung (Admin) | In Progress | [PROJ-16](PROJ-16-strava-webhook-deregistrierung.md) | 2026-03-24 |
 
 <!-- Add features above this line -->
 

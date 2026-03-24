@@ -1,6 +1,6 @@
 # PROJ-16: Strava Webhook De-registrierung (Admin)
 
-## Status: Planned
+## Status: In Progress
 **Created:** 2026-03-24
 
 ## Dependencies
@@ -37,3 +37,69 @@
 - Strava gibt bei unbekannter Subscription HTTP 404 zurück → als Erfolg werten
 - UI: `StravaWebhookSetup`-Komponente erhält "Deregistrieren"-Button und `AlertDialog` zur Bestätigung
 - Kein neues UI-Komponent nötig — Erweiterung der bestehenden `StravaWebhookSetup`-Komponente
+
+---
+
+## Tech Design (Solution Architect)
+
+### Komponenten-Struktur
+
+```
+StravaWebhookSetup (strava-webhook-setup.tsx) — ERWEITERT
++-- Status-Anzeige (loading / error / loaded)
+|   +-- "Webhook aktiv" Badge (wenn registriert + Strava bestätigt)
+|   +-- "Lokal registriert, Strava nicht bestätigt" Badge
+|   +-- "Nicht registriert" Badge
++-- "Webhook registrieren" Button     (nur wenn NICHT registriert — unverändert)
++-- "Webhook deregistrieren" Button   (nur wenn registriert — NEU)
+    +-- AlertDialog (Bestätigung)     (NEU)
+        +-- Titel: "Webhook deregistrieren?"
+        +-- Beschreibung: "Neue Strava-Events werden nicht mehr verarbeitet."
+        +-- "Abbrechen" Button
+        +-- "Deregistrieren" Button → löst DELETE-Call aus
+```
+
+Keine neue Datei — `strava-webhook-setup.tsx` wird erweitert.
+`AlertDialog` ist bereits installiert (shadcn/ui).
+
+### API-Erweiterung
+
+Bestehende Datei `src/app/api/admin/strava/register-webhook/route.ts` erhält eine neue `DELETE`-Funktion:
+
+```
+DELETE /api/admin/strava/register-webhook
+  1. Admin-Prüfung (requireAdmin)
+  2. subscription_id aus app_settings lesen
+     → Nicht vorhanden: HTTP 404 "Kein Webhook registriert"
+  3. Strava API: DELETE push_subscriptions/{id} mit client_id + client_secret
+     → HTTP 204: Erfolg
+     → HTTP 404: Auch Erfolg (Subscription war bereits weg)
+     → Netzwerkfehler: HTTP 502, app_settings bleibt erhalten
+  4. subscription_id aus app_settings löschen
+  5. HTTP 200 OK zurück
+```
+
+### Datenfluss
+
+```
+Admin klickt "Webhook deregistrieren"
+  → AlertDialog öffnet sich
+  → Admin klickt "Deregistrieren"
+  → Frontend: DELETE /api/admin/strava/register-webhook
+  → Backend: Strava API-Call
+  → Backend: app_settings bereinigen
+  → Frontend: fetchStatus() neu laden
+  → Badge wechselt zu "Nicht registriert"
+  → Registrieren-Button erscheint wieder
+```
+
+### Datenmodell — Änderungen
+
+| Tabelle | Aktion | Wann |
+|---|---|---|
+| `app_settings` | Zeile mit `key = 'strava_subscription_id'` löschen | Nach erfolgreicher Deregistrierung |
+| `strava_connections` | Keine Änderung | Nutzer*innen-OAuth unberührt |
+
+### Neue Pakete
+
+Keine — alles bereits vorhanden.
