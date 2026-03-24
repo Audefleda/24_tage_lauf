@@ -185,9 +185,11 @@ export async function registerStravaWebhook(callbackUrl: string): Promise<number
 
 /**
  * Delete a Strava webhook subscription.
+ * client_id and client_secret are sent as query parameters (per Strava API docs).
  * Strava returns 204 on success, 404 if the subscription does not exist.
  * Both are treated as success (idempotent).
- * Throws on network errors or unexpected status codes.
+ * After deletion, verifies via GET that the subscription is gone.
+ * Throws on network errors, unexpected status codes, or failed verification.
  */
 export async function deleteStravaWebhook(subscriptionId: string): Promise<void> {
   if (!CLIENT_ID || !CLIENT_SECRET) {
@@ -198,27 +200,27 @@ export async function deleteStravaWebhook(subscriptionId: string): Promise<void>
     throw new Error(`Invalid subscription ID: ${subscriptionId}`)
   }
 
-  const body = new URLSearchParams({
+  const params = new URLSearchParams({
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
   })
 
   const resp = await fetch(
-    `https://www.strava.com/api/v3/push_subscriptions/${subscriptionId}`,
-    {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: body.toString(),
-    }
+    `https://www.strava.com/api/v3/push_subscriptions/${subscriptionId}?${params}`,
+    { method: 'DELETE' }
   )
 
   // 204 = success, 404 = already gone (treat as success)
-  if (resp.status === 204 || resp.status === 404) {
-    return
+  if (resp.status !== 204 && resp.status !== 404) {
+    const text = await resp.text().catch(() => '')
+    throw new Error(`Strava webhook deletion failed: HTTP ${resp.status} — ${text}`)
   }
 
-  const text = await resp.text().catch(() => '')
-  throw new Error(`Strava webhook deletion failed: HTTP ${resp.status} — ${text}`)
+  // Verify deletion: subscription must no longer exist at Strava
+  const remaining = await getStravaWebhookSubscription()
+  if (remaining !== null && String(remaining.id) === subscriptionId) {
+    throw new Error('Strava webhook deletion konnte nicht verifiziert werden: Subscription existiert noch bei Strava')
+  }
 }
 
 /** Check existing Strava webhook subscriptions for this app */
