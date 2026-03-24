@@ -17,7 +17,8 @@
 ## Acceptance Criteria
 - [ ] **AC-1:** Im Strava-Webhook-Bereich der Admin-Maske erscheint ein "Webhook deregistrieren"-Button, solange ein Webhook aktiv registriert ist
 - [ ] **AC-2:** Ein Klick auf "Webhook deregistrieren" öffnet einen Bestätigungsdialog mit Warnung ("Neue Strava-Events werden nicht mehr verarbeitet") und den Buttons "Abbrechen" / "Deregistrieren"
-- [ ] **AC-3:** Nach Bestätigung ruft `DELETE /api/admin/strava/register-webhook` die Strava API auf (`DELETE https://www.strava.com/api/v3/push_subscriptions/{subscription_id}`) mit `client_id` und `client_secret`
+- [ ] **AC-3:** Nach Bestätigung ruft `DELETE /api/admin/strava/register-webhook` die Strava API auf (`DELETE https://www.strava.com/api/v3/push_subscriptions/{subscription_id}?client_id=…&client_secret=…`) — `client_id` und `client_secret` als Query-Parameter (nicht im Request-Body)
+- [ ] **AC-3b:** Nach dem DELETE wird per `GET https://www.strava.com/api/v3/push_subscriptions` verifiziert, dass die Subscription tatsächlich gelöscht wurde. Ist sie noch vorhanden, wird ein Fehler gemeldet und `app_settings` bleibt erhalten.
 - [ ] **AC-4:** Nach erfolgreicher Strava-API-Antwort wird `strava_subscription_id` aus `app_settings` gelöscht
 - [ ] **AC-5:** Gibt die Strava API einen 404 zurück (Subscription bereits auf Strava-Seite gelöscht), wird `app_settings` trotzdem bereinigt und Erfolg gemeldet (idempotent)
 - [ ] **AC-6:** Nach Deregistrierung zeigt die Admin-Maske "Nicht registriert" und der Registrierungs-Button wird wieder angezeigt
@@ -27,15 +28,19 @@
 ## Edge Cases
 - Was passiert, wenn kein Webhook registriert ist und der Endpunkt aufgerufen wird? → HTTP 404 mit Fehlermeldung "Kein Webhook registriert"
 - Was passiert, wenn die Strava API nicht erreichbar ist? → HTTP 502, Fehlermeldung in der UI, `app_settings`-Eintrag bleibt erhalten
-- Was passiert, wenn die Strava API 404 zurückgibt (Subscription nicht mehr bei Strava vorhanden)? → Als Erfolg werten, `app_settings` trotzdem löschen
+- Was passiert, wenn die Strava API 404 zurückgibt (Subscription nicht mehr bei Strava vorhanden)? → Als Erfolg werten, Verifikations-GET durchführen, `app_settings` löschen
 - Was passiert, wenn `STRAVA_CLIENT_ID` oder `STRAVA_CLIENT_SECRET` fehlen? → HTTP 500, Fehlermeldung "Strava-Konfiguration unvollständig"
 - Was passiert, wenn der Admin unmittelbar nach Deregistrierung erneut registriert? → Normaler Registrierungsablauf, kein Sonderfall
+- Was passiert, wenn Strava beim Registrieren HTTP 400 "already exists" meldet (Subscription noch vorhanden, aber `app_settings` leer)? → Bestehende Subscription per GET abrufen, ID in `app_settings` übernehmen, Erfolg melden
+- Was passiert, wenn die Verifikation nach dem DELETE fehlschlägt (Subscription noch vorhanden bei Strava)? → HTTP 502, Fehlermeldung in der UI, `app_settings`-Eintrag bleibt erhalten
 
 ## Technical Requirements
 - Neue HTTP-Methode an bestehendem Endpunkt: `DELETE /api/admin/strava/register-webhook`
-- Strava API-Call: `DELETE https://www.strava.com/api/v3/push_subscriptions/{id}` mit Form-Body `client_id` + `client_secret`
+- Strava API-Call: `DELETE https://www.strava.com/api/v3/push_subscriptions/{id}?client_id=…&client_secret=…` — Credentials als Query-Parameter (nicht im Request-Body)
 - Strava gibt bei Erfolg HTTP 204 (No Content) zurück
 - Strava gibt bei unbekannter Subscription HTTP 404 zurück → als Erfolg werten
+- Nach dem DELETE: Verifikations-`GET https://www.strava.com/api/v3/push_subscriptions?client_id=…&client_secret=…` — Erfolg nur wenn Subscription nicht mehr vorhanden
+- Bei Registrierung: Strava HTTP 400 "already exists" → bestehende Subscription per GET abrufen und in `app_settings` übernehmen (Recovery-Pfad)
 - UI: `StravaWebhookSetup`-Komponente erhält "Deregistrieren"-Button und `AlertDialog` zur Bestätigung
 - Kein neues UI-Komponent nötig — Erweiterung der bestehenden `StravaWebhookSetup`-Komponente
 
