@@ -14,6 +14,7 @@ interface Typo3Runner {
   uid: number
   nr: number
   name: string
+  age?: number
   totaldistance: string
   crdate: string
   runs: Typo3Run[]
@@ -95,6 +96,7 @@ export async function GET() {
     return NextResponse.json({
       uid: runner.uid,
       name: runner.name,
+      age: runner.age || null,
       runs: runner.runs ?? [],
     })
   } catch (error) {

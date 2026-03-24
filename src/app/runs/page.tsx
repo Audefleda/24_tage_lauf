@@ -20,6 +20,7 @@ interface Run {
 interface RunnerData {
   uid: number
   name: string
+  age: number | null
   runs: Run[]
 }
 
@@ -150,7 +151,16 @@ export default function RunsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader runnerName={data.name} />
+      <PageHeader
+        runnerName={data.name}
+        runnerAge={data.age}
+        onProfileUpdated={(newName, newAge) => {
+          setState({
+            status: 'success',
+            data: { ...data, name: newName, age: newAge },
+          })
+        }}
+      />
       <StatsCard totalDistance={totalDistance} runDays={runDays} />
       <RunsTable
         days={eventDays}
