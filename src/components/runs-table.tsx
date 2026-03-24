@@ -301,7 +301,7 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         const last = week[week.length - 1]
         const weekLabel = `${first.formattedDate} – ${last.formattedDate}`
         return (
-          <div key={wi} className="rounded-md border">
+          <div key={wi} className="rounded-none border">
             <div className="px-3 py-2 border-b bg-muted/50">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Woche {wi + 1}

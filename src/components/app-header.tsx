@@ -4,9 +4,21 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
-import { LogOut, Loader2, Shield, Activity } from 'lucide-react'
+import { LogOut, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
+
+function UserAvatar({ email }: { email: string }) {
+  const initial = email.charAt(0).toUpperCase()
+  return (
+    <div
+      className="flex h-8 w-8 items-center justify-center bg-[#4a4a49] text-white text-sm font-semibold rounded-full"
+      aria-label={`Avatar fuer ${email}`}
+    >
+      {initial}
+    </div>
+  )
+}
 
 export function AppHeader() {
   const router = useRouter()
@@ -55,31 +67,58 @@ export function AppHeader() {
     router.refresh()
   }
 
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(href + '/')
+  }
+
   return (
-    <header className="border-b">
-      <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
-        <span className="font-semibold text-sm">24 Tage Lauf</span>
+    <header className="bg-black" role="banner">
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="flex items-center gap-6">
+          <Link
+            href="/"
+            className="text-white font-bold text-base tracking-tight hover:text-[#ea0029] transition-colors"
+          >
+            24 TAGE LAUF
+          </Link>
+
+          {!isLoginPage && user && (
+            <nav className="flex items-center gap-1" aria-label="Hauptnavigation">
+              <Link
+                href="/runs"
+                className={`px-3 py-1 text-sm font-semibold uppercase tracking-wide transition-colors ${
+                  isActive('/runs')
+                    ? 'text-[#ea0029]'
+                    : 'text-white hover:text-[#ea0029]'
+                }`}
+              >
+                LÄUFE
+              </Link>
+              {user.app_metadata?.role === 'admin' && (
+                <Link
+                  href="/admin"
+                  className={`px-3 py-1 text-sm font-semibold uppercase tracking-wide transition-colors ${
+                    isActive('/admin')
+                      ? 'text-[#ea0029]'
+                      : 'text-white hover:text-[#ea0029]'
+                  }`}
+                >
+                  Admin
+                </Link>
+              )}
+            </nav>
+          )}
+        </div>
 
         {!isLoginPage && user && (
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/runs">
-                <Activity className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">Läufe</span>
-              </Link>
-            </Button>
-            {user.app_metadata?.role === 'admin' && (
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/admin">
-                  <Shield className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Admin</span>
-                </Link>
-              </Button>
-            )}
             {displayName && (
-              <span className="text-sm text-muted-foreground hidden sm:inline">
-                {displayName}
-              </span>
+              <>
+                <span className="text-sm text-[#9d9d9c] hidden sm:inline">
+                  {displayName}
+                </span>
+                <UserAvatar email={displayName} />
+              </>
             )}
             <Button
               variant="ghost"
@@ -87,13 +126,14 @@ export function AppHeader() {
               onClick={handleLogout}
               disabled={isLoggingOut}
               aria-label="Abmelden"
+              className="text-white hover:text-[#ea0029] hover:bg-transparent"
             >
               {isLoggingOut ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
                   <LogOut className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Abmelden</span>
+                  <span className="hidden sm:inline">ABMELDEN</span>
                 </>
               )}
             </Button>

@@ -87,8 +87,7 @@ export function RunnerAssignmentTable() {
         throw new Error(data.error || `HTTP ${res.status}`)
       }
       const data: Runner[] = await res.json()
-      // Sort by nr for easier finding
-      data.sort((a, b) => a.nr - b.nr)
+      data.sort((a, b) => a.name.localeCompare(b.name, 'de'))
       setRunners(data)
     } catch (err) {
       setErrorRunners(

@@ -15,7 +15,7 @@ export function StatsCard({ totalDistance, runDays }: StatsCardProps) {
     <div className="grid grid-cols-2 gap-4">
       <Card>
         <CardContent className="flex items-center gap-3 pt-6">
-          <div className="rounded-md bg-primary/10 p-2">
+          <div className="rounded-none bg-primary/10 p-2">
             <Route className="h-5 w-5 text-primary" aria-hidden="true" />
           </div>
           <div>
@@ -26,7 +26,7 @@ export function StatsCard({ totalDistance, runDays }: StatsCardProps) {
       </Card>
       <Card>
         <CardContent className="flex items-center gap-3 pt-6">
-          <div className="rounded-md bg-primary/10 p-2">
+          <div className="rounded-none bg-primary/10 p-2">
             <Activity className="h-5 w-5 text-primary" aria-hidden="true" />
           </div>
           <div>

@@ -4,74 +4,111 @@
 
 @layer base {
   :root {
+    /* CI: Fire Red #ea0029 as primary */
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 0 0% 0%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 0%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
+    --popover-foreground: 0 0% 0%;
+    /* Fire Red #ea0029 → hsl(349, 100%, 46%) */
+    --primary: 349 100% 46%;
+    --primary-foreground: 0 0% 100%;
+    /* CI Secondary: #9d9d9c → hsl(60, 0.6%, 61.6%) */
+    --secondary: 60 1% 62%;
+    --secondary-foreground: 0 0% 100%;
+    /* Muted: #ededed */
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 53%;
+    /* Accent: #ededed */
+    --accent: 0 0% 93%;
+    --accent-foreground: 0 0% 0%;
+    /* Destructive: Fire Red */
+    --destructive: 349 100% 46%;
+    --destructive-foreground: 0 0% 100%;
+    /* Border: #d0d0d0 */
+    --border: 0 0% 82%;
+    /* Input border: #4a4a49 for focus, #d0d0d0 default */
+    --input: 0 0% 82%;
+    --input-focus: 60 1% 29%;
+    --ring: 60 1% 29%;
+    /* CI: No border-radius */
+    --radius: 0px;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 60 1% 29%;
+    --sidebar-primary: 349 100% 46%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 93%;
+    --sidebar-accent-foreground: 60 1% 29%;
+    --sidebar-border: 0 0% 82%;
+    --sidebar-ring: 60 1% 29%;
+
+    /* CI semantic colors as custom properties */
+    --ci-fire-red: #ea0029;
+    --ci-fire-red-hover: #CF0027;
+    --ci-fire-red-border: #8d001b;
+    --ci-deep-black: #000000;
+    --ci-gray-dark: #4a4a49;
+    --ci-gray-mid: #878787;
+    --ci-gray-light: #9d9d9c;
+    --ci-gray-border: #d0d0d0;
+    --ci-gray-bg: #ededed;
+    --ci-green: #77a746;
+    --ci-blue: #006ac3;
+    --ci-row-highlight: rgba(234, 0, 41, 0.3);
   }
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* CI Dark Mode — activates via OS/browser prefers-color-scheme: dark */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* CI Deep Black #000000 as page background */
+      --background: 0 0% 0%;
+      --foreground: 0 0% 100%;
+      /* Cards / surfaces: #1a1a1a */
+      --card: 0 0% 10%;
+      --card-foreground: 0 0% 100%;
+      --popover: 0 0% 10%;
+      --popover-foreground: 0 0% 100%;
+      /* Fire Red — leicht heller im Dark Mode für WCAG AA auf dunklen Flächen */
+      --primary: 349 100% 56%;
+      --primary-foreground: 0 0% 100%;
+      /* CI secondary: #4a4a49 dark gray */
+      --secondary: 60 1% 29%;
+      --secondary-foreground: 0 0% 100%;
+      /* Muted surfaces: #1a1a1a */
+      --muted: 0 0% 10%;
+      /* Muted text: CI #9d9d9c */
+      --muted-foreground: 60 1% 62%;
+      --accent: 0 0% 10%;
+      --accent-foreground: 0 0% 100%;
+      /* Destructive — leicht heller im Dark Mode */
+      --destructive: 349 100% 56%;
+      --destructive-foreground: 0 0% 100%;
+      /* Borders: CI #4a4a49 */
+      --border: 60 1% 29%;
+      --input: 60 1% 29%;
+      /* Focus border: CI #d0d0d0 */
+      --input-focus: 0 0% 82%;
+      --ring: 0 0% 82%;
+      --chart-1: 220 70% 50%;
+      --chart-2: 160 60% 45%;
+      --chart-3: 30 80% 55%;
+      --chart-4: 280 65% 60%;
+      --chart-5: 340 75% 55%;
+      --sidebar-background: 0 0% 0%;
+      --sidebar-foreground: 0 0% 93%;
+      --sidebar-primary: 349 100% 46%;
+      --sidebar-primary-foreground: 0 0% 100%;
+      --sidebar-accent: 0 0% 10%;
+      --sidebar-accent-foreground: 0 0% 93%;
+      --sidebar-border: 60 1% 29%;
+      --sidebar-ring: 0 0% 82%;
+    }
   }
 }
 
