@@ -107,7 +107,7 @@ export function StravaWebhookSetup() {
       {state.status === 'loaded' && (
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            {state.data.strava_confirmed ? (
+            {state.data.registered && state.data.strava_confirmed ? (
               <>
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                 <Badge variant="default" className="bg-green-600 hover:bg-green-600">
