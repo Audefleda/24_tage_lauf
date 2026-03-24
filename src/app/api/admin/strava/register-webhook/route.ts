@@ -56,7 +56,25 @@ export async function POST(request: NextRequest) {
   const origin = new URL(request.url).origin
   const callbackUrl = `${origin}/api/strava/webhook`
 
-  const subscriptionId = await registerStravaWebhook(callbackUrl)
+  let subscriptionId: number
+  try {
+    subscriptionId = await registerStravaWebhook(callbackUrl)
+  } catch (err) {
+    const message = err instanceof Error ? err.message : ''
+    // Strava says subscription already exists — fetch and adopt it
+    if (message.includes('already exists')) {
+      const existing = await getStravaWebhookSubscription()
+      if (!existing) {
+        return NextResponse.json(
+          { error: 'Strava meldet "already exists", aber Subscription konnte nicht abgerufen werden.' },
+          { status: 502 }
+        )
+      }
+      subscriptionId = existing.id
+    } else {
+      return NextResponse.json({ error: message || 'Registrierung fehlgeschlagen.' }, { status: 502 })
+    }
+  }
 
   await supabaseAdmin.from('app_settings').upsert({
     key: 'strava_subscription_id',
