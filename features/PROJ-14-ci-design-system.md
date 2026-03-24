@@ -1,8 +1,9 @@
 # PROJ-14: CI-Design-System (BettercallXPaul Corporate Identity)
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-23
-**Last Updated:** 2026-03-23
+**Last Updated:** 2026-03-24
+**Deployed:** 2026-03-24
 
 ## Dependencies
 - None (rein visuelle Anpassung, keine funktionalen Abhängigkeiten)

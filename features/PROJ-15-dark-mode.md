@@ -1,8 +1,9 @@
 # PROJ-15: Dark Mode (CI-konform, systemgesteuert)
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-23
 **Last Updated:** 2026-03-24
+**Deployed:** 2026-03-24
 
 ## Dependencies
 - Requires: PROJ-14 (CI-Design-System) — Dark Mode baut auf den CI-Farben und CSS-Variablen auf
