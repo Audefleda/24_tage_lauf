@@ -1,10 +1,11 @@
-// GET  /api/admin/strava/register-webhook — check current webhook registration status
-// POST /api/admin/strava/register-webhook — register global Strava webhook (one-time)
+// GET    /api/admin/strava/register-webhook — check current webhook registration status
+// POST   /api/admin/strava/register-webhook — register global Strava webhook (one-time)
+// DELETE /api/admin/strava/register-webhook — deregister global Strava webhook
 
 import { NextResponse, type NextRequest } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
 import { createAdminClient } from '@/lib/supabase-admin'
-import { registerStravaWebhook, getStravaWebhookSubscription } from '@/lib/strava'
+import { registerStravaWebhook, getStravaWebhookSubscription, deleteStravaWebhook } from '@/lib/strava'
 
 export async function GET() {
   const check = await requireAdmin()
@@ -68,4 +69,56 @@ export async function POST(request: NextRequest) {
     subscription_id: subscriptionId,
     callback_url: callbackUrl,
   })
+}
+
+export async function DELETE() {
+  const check = await requireAdmin()
+  if (!check.authorized) {
+    return NextResponse.json({ error: check.message }, { status: check.status })
+  }
+
+  const supabaseAdmin = createAdminClient()
+
+  // 1. Read subscription_id from app_settings
+  const { data: setting } = await supabaseAdmin
+    .from('app_settings')
+    .select('value')
+    .eq('key', 'strava_subscription_id')
+    .single()
+
+  if (!setting) {
+    return NextResponse.json(
+      { error: 'Kein Webhook registriert' },
+      { status: 404 }
+    )
+  }
+
+  // 2. Check env vars before calling Strava API
+  if (!process.env.STRAVA_CLIENT_ID || !process.env.STRAVA_CLIENT_SECRET) {
+    return NextResponse.json(
+      { error: 'Strava-Konfiguration unvollständig' },
+      { status: 500 }
+    )
+  }
+
+  // 3. Call Strava API to delete the subscription
+  //    deleteStravaWebhook treats both 204 and 404 as success (idempotent).
+  //    It throws on network errors or unexpected status codes.
+  try {
+    await deleteStravaWebhook(setting.value)
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Strava API nicht erreichbar'
+    return NextResponse.json(
+      { error: message },
+      { status: 502 }
+    )
+  }
+
+  // 3. Remove subscription_id from app_settings
+  await supabaseAdmin
+    .from('app_settings')
+    .delete()
+    .eq('key', 'strava_subscription_id')
+
+  return NextResponse.json({ ok: true })
 }

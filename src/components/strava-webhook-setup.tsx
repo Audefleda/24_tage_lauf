@@ -3,9 +3,20 @@
 import { useEffect, useState, useCallback } from 'react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react'
 
 interface WebhookStatus {
@@ -23,6 +34,7 @@ type SectionState =
 export function StravaWebhookSetup() {
   const [state, setState] = useState<SectionState>({ status: 'loading' })
   const [registering, setRegistering] = useState(false)
+  const [deregistering, setDeregistering] = useState(false)
 
   const fetchStatus = useCallback(async () => {
     setState({ status: 'loading' })
@@ -52,6 +64,21 @@ export function StravaWebhookSetup() {
       toast.error(err instanceof Error ? err.message : 'Registrierung fehlgeschlagen.')
     } finally {
       setRegistering(false)
+    }
+  }
+
+  async function handleDeregister() {
+    setDeregistering(true)
+    try {
+      const resp = await fetch('/api/admin/strava/register-webhook', { method: 'DELETE' })
+      const body = await resp.json().catch(() => ({}))
+      if (!resp.ok) throw new Error(body.error ?? `HTTP ${resp.status}`)
+      toast.success('Webhook erfolgreich deregistriert')
+      fetchStatus()
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Deregistrierung fehlgeschlagen.')
+    } finally {
+      setDeregistering(false)
     }
   }
 
@@ -113,6 +140,35 @@ export function StravaWebhookSetup() {
             <Button onClick={handleRegister} disabled={registering} size="sm">
               {registering ? 'Wird registriert…' : 'Webhook bei Strava registrieren'}
             </Button>
+          )}
+
+          {state.data.registered && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm" disabled={deregistering}>
+                  {deregistering ? 'Wird deregistriert…' : 'Webhook deregistrieren'}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Webhook deregistrieren?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Neue Strava-Events werden nicht mehr verarbeitet. Bestehende
+                    Strava-Verbindungen der Nutzer*innen bleiben erhalten.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeregister}
+                    disabled={deregistering}
+                    className={buttonVariants({ variant: 'destructive' })}
+                  >
+                    Deregistrieren
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
         </div>
       )}
