@@ -1,6 +1,6 @@
 # PROJ-11: Datenbank-Backup
 
-## Status: Planned
+## Status: In Review
 **Created:** 2026-03-23
 **Last Updated:** 2026-03-23
 
@@ -16,9 +16,10 @@
 ## Acceptance Criteria
 - [ ] Das Script `scripts/backup-db.js` ist per `node scripts/backup-db.js` ausführbar
 - [ ] Das Script liest `NEXT_PUBLIC_SUPABASE_URL` und `SUPABASE_SERVICE_ROLE_KEY` aus `.env.local`
-- [ ] Alle Tabellen des `public` Schemas werden automatisch ermittelt und exportiert
+- [ ] Alle Tabellen des `public` Schemas werden automatisch ermittelt und exportiert (interne Supabase-Hilfstabellen werden gefiltert)
 - [ ] Jede Tabelle wird als eigene `.csv` Datei exportiert (Dateiname: `<tabellenname>.csv`)
-- [ ] Alle CSV-Dateien werden als `.tar.gz` Archiv komprimiert (natives Node.js, keine extra Abhängigkeit)
+- [ ] Tabellen mit mehr als 1000 Zeilen werden automatisch paginiert (1000er-Batches via `.range()`)
+- [ ] Alle CSV-Dateien werden als `.tar.gz` Archiv komprimiert (`tar` + `dotenv` als devDependencies)
 - [ ] Das Archiv wird im aktuellen Verzeichnis abgelegt, aus dem das Script aufgerufen wird
 - [ ] Der Archiv-Dateiname enthält einen Zeitstempel (Format: `backup_YYYY-MM-DD_HH-MM-SS.tar.gz`)
 - [ ] Das Script gibt während der Ausführung Statusmeldungen aus (welche Tabelle gerade exportiert wird)
@@ -44,6 +45,15 @@
 
 ---
 <!-- Sections below are added by subsequent skills -->
+
+## Implementation Notes
+- `scripts/backup-db.js` — CommonJS Node.js script, callable via `node scripts/backup-db.js`
+- Tabellen-Discovery via OpenAPI-Spec am Supabase REST-Root-Endpoint (`/rest/v1/`)
+- Paginierung in 1000er-Batches via `.range(from, from+999)`
+- CSV-Generierung ohne externe Abhängigkeit (internes `toCSV()`-Helper)
+- Komprimierung via `tar` npm-Paket (`tar.create({ gzip: true, ... })`)
+- Temp-Verzeichnis via `os.tmpdir()` + automatisches Cleanup im `finally`-Block
+- `dotenv` und `tar` als devDependencies in package.json hinzugefügt (v16 / v7)
 
 ## Tech Design (Solution Architect)
 _To be added by /architecture_

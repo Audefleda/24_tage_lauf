@@ -51,6 +51,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
+    "dotenv": "^16.0.0",
+    "tar": "^7.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -26,6 +26,8 @@
 - Als Läufer möchte ich bei jedem Tag die eingetragene Distanz sehen (oder eine leere Zelle wenn kein Lauf eingetragen wurde).
 - Als Läufer möchte ich eine Gesamtstatistik sehen (Gesamtdistanz, Anzahl Lauftage), damit ich meinen Fortschritt erkenne.
 - Als Läufer möchte ich direkt aus der Übersicht heraus jeden Tag bearbeiten können.
+- Als Läufer*in möchte ich aus der Admin-Maske direkt zur Lauf-Übersicht navigieren können, damit ich nicht umständlich die URL eingeben muss.
+- Als Nutzer*in möchte ich im Header immer einen „Läufe"-Button sehen (auch ohne Admin-Rolle), damit ich jederzeit zur Übersicht gelangen kann.
 
 ## Acceptance Criteria
 - [ ] Die Übersicht zeigt **alle 25 Tage** des Events (20.04.2026–14.05.2026) als Liste, aufsteigend nach Datum
@@ -37,6 +39,9 @@
 - [ ] Ladezustand wird während des API-Calls angezeigt
 - [ ] Fehlerfall (API nicht erreichbar) zeigt Fehlermeldung mit Retry-Button
 - [ ] Der Name des eingeloggten Läufers ist sichtbar
+- [ ] Der App-Header zeigt für alle eingeloggten Nutzer*innen einen „Läufe"-Button (Icon + Label) der zu `/runs` navigiert
+- [ ] Admin-Nutzer*innen sehen im Header sowohl „Läufe" als auch „Admin"
+- [ ] Nicht-Admin-Nutzer*innen sehen im Header nur „Läufe" (kein Admin-Button)
 
 ## Edge Cases
 - Was passiert wenn der Läufer noch keine Läufe eingetragen hat? → Alle 25 Tage werden trotzdem gezeigt, Distanzspalte leer
