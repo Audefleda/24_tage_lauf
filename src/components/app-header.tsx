@@ -34,26 +34,11 @@ export function AppHeader() {
 
     const supabase = createClient()
 
-    async function getUser() {
-      const {
-        data: { user: currentUser },
-      } = await supabase.auth.getUser()
-      setUser(currentUser)
-
-      if (currentUser) {
-        setDisplayName(currentUser.email ?? null)
-      }
-    }
-
-    getUser()
-
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      if (!session?.user) {
-        setDisplayName(null)
-      }
+      setDisplayName(session?.user?.email ?? null)
     })
 
     return () => subscription.unsubscribe()
