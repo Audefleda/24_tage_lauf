@@ -3,8 +3,6 @@
 // Set LOG_LEVEL=debug in Vercel Environment Variables and redeploy to enable.
 import 'server-only'
 
-const IS_DEBUG = process.env.LOG_LEVEL === 'debug'
-
 /**
  * Mask a sensitive token for safe log output.
  * Shows the first 8 characters followed by "..." — never the full value.
@@ -33,7 +31,7 @@ export function maskEmail(email: string | undefined | null): string {
  * Format: [DEBUG][module] message: {data}
  */
 export function debug(module: string, message: string, data?: unknown): void {
-  if (!IS_DEBUG) return
+  if (process.env.LOG_LEVEL !== 'debug') return
   if (data !== undefined) {
     console.log(`[DEBUG][${module}] ${message}:`, typeof data === 'string' ? data : JSON.stringify(data))
   } else {
