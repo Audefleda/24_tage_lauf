@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { createClient } from '@/lib/supabase'
+import { findRunnerByEmail } from '@/lib/find-runner-by-email'
 
 interface Runner {
   uid: number
@@ -53,6 +55,18 @@ export function RunnerSelectDialog({ open, onAssigned }: RunnerSelectDialogProps
       }
       const runners: Runner[] = await resp.json()
       setFetchState({ status: 'success', runners })
+
+      // PROJ-18: Pre-select runner based on email address
+      try {
+        const supabase = createClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        const matchedUid = findRunnerByEmail(runners, session?.user?.email)
+        if (matchedUid !== null) {
+          setSelectedUid(String(matchedUid))
+        }
+      } catch {
+        // Silently ignore — pre-selection is a UI convenience, not critical
+      }
     } catch (error) {
       setFetchState({
         status: 'error',
