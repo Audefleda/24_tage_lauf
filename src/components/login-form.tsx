@@ -113,37 +113,6 @@ export function LoginForm() {
       return
     }
 
-    // Profil pruefen: Ist der User einem TYPO3-Laeufer zugeordnet?
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      setIsLoading(false)
-      setError('E-Mail oder Passwort falsch')
-      return
-    }
-
-    const { data: profile } = await supabase
-      .from('runner_profiles')
-      .select('typo3_uid')
-      .eq('user_id', user.id)
-      .single()
-
-    if (!profile) {
-      // User hat keinen Laeufer zugeordnet - Admin-User duerfen trotzdem weiter
-      const role = user.app_metadata?.role
-      if (role !== 'admin') {
-        setIsLoading(false)
-        setError(
-          'Dein Account ist noch nicht konfiguriert. Bitte Admin kontaktieren.'
-        )
-        // Session beenden, da der Nutzer sich nicht richtig einloggen kann
-        await supabase.auth.signOut()
-        return
-      }
-    }
-
     router.push(redirectTo)
     router.refresh()
   }
