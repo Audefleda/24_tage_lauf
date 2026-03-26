@@ -1,7 +1,7 @@
 // GET  /api/strava/webhook — Strava hub challenge verification (public)
 // POST /api/strava/webhook — receives activity events from Strava (public, validated via subscription_id)
 
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse, type NextRequest, after } from 'next/server'
 import { z } from 'zod'
 import { createAdminClient } from '@/lib/supabase-admin'
 import {
@@ -176,13 +176,14 @@ export async function POST(request: NextRequest) {
         runDistance: (activity.distance / 1000).toFixed(2),
       }
 
-      // PROJ-19: Teams notification vor TYPO3 — wird auch bei TYPO3-Fehler gesendet
-      await sendTeamsNotification({
+      // PROJ-19: Teams notification nach Response — non-blocking via after()
+      const notifyPayload = {
         typo3Uid: profile.typo3_uid,
         runDate: newRun.runDate,
         runDistanceKm: newRun.runDistance,
         teamsNotificationsEnabled: profile.teams_notifications_enabled,
-      })
+      }
+      after(() => sendTeamsNotification(notifyPayload))
 
       // Append and write back all runs
       const updatedRuns = [...existingRuns, newRun]

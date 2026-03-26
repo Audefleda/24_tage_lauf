@@ -2,7 +2,7 @@
 // Used by PROJ-3 (delete) and PROJ-4 (create/edit)
 // Sends the complete runs array to TYPO3 updateruns endpoint
 
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse, type NextRequest, after } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { type RunPayload, updateRunnerRuns } from '@/lib/typo3-runs'
 import { Typo3Error } from '@/lib/typo3-client'
@@ -79,14 +79,15 @@ export async function PUT(request: NextRequest) {
 
   // 5. Send to TYPO3 (shared logic also handles logging)
   try {
-    // PROJ-19: Teams notification vor TYPO3 — wird auch bei TYPO3-Fehler gesendet
+    // PROJ-19: Teams notification nach Response — non-blocking via after()
     if (notifyRun) {
-      await sendTeamsNotification({
+      const notifyPayload = {
         typo3Uid: profile.typo3_uid,
         runDate: notifyRun.runDate.split(' ')[0],
         runDistanceKm: notifyRun.runDistance,
         teamsNotificationsEnabled: profile.teams_notifications_enabled,
-      })
+      }
+      after(() => sendTeamsNotification(notifyPayload))
     }
 
     await updateRunnerRuns(profile.typo3_uid, runs)
