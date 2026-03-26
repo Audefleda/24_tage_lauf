@@ -1,6 +1,6 @@
 # PROJ-19: Teams-Benachrichtigung nach Lauf-Eintrag
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-26
 
 ## Dependencies

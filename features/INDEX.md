@@ -30,8 +30,8 @@
 | PROJ-16 | Strava Webhook De-registrierung (Admin) | Deployed | [PROJ-16](PROJ-16-strava-webhook-deregistrierung.md) | 2026-03-24 |
 | PROJ-17 | Läufer-Profil bearbeiten (Name + Alter) | Deployed | [PROJ-17](PROJ-17-laeufer-profil-bearbeiten.md) | 2026-03-24 |
 | PROJ-18 | Läufer-Vorauswahl anhand E-Mail-Adresse | Deployed | [PROJ-18](PROJ-18-laeufer-vorauswahl-email.md) | 2026-03-26 |
-| PROJ-19 | Teams-Benachrichtigung nach Lauf-Eintrag | In Review | [PROJ-19](PROJ-19-teams-benachrichtigung.md) | 2026-03-26 |
-| PROJ-20 | Teams-Benachrichtigung Opt-out | In Review | [PROJ-20](PROJ-20-teams-opt-out.md) | 2026-03-26 |
+| PROJ-19 | Teams-Benachrichtigung nach Lauf-Eintrag | Deployed | [PROJ-19](PROJ-19-teams-benachrichtigung.md) | 2026-03-26 |
+| PROJ-20 | Teams-Benachrichtigung Opt-out | Deployed | [PROJ-20](PROJ-20-teams-opt-out.md) | 2026-03-26 |
 
 <!-- Add features above this line -->
 

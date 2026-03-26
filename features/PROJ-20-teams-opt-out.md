@@ -1,6 +1,6 @@
 # PROJ-20: Teams-Benachrichtigung Opt-out
 
-## Status: In Review
+## Status: Deployed
 **Frontend completed:** 2026-03-26
 **Created:** 2026-03-26
 
