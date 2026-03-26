@@ -1,8 +1,8 @@
 # PROJ-17: Läufer-Profil bearbeiten (Name + Alter)
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-24
-**Deployed:** 2026-03-24
+**Deployed:** 2026-03-26
 
 ## Dependencies
 - Requires: PROJ-3 (Läufe-Übersicht) — Profil-Bearbeitung ist auf der Runs-Maske integriert
