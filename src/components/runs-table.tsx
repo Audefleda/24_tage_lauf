@@ -162,10 +162,16 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         // Optimistically update local copy so the next save builds on this result
         localRunsRef.current = updatedRuns
 
+        // PROJ-19: Signal new/updated run to trigger Teams notification
+        const requestBody: Record<string, unknown> = { runs: updatedRuns }
+        if (newDistance > 0) {
+          requestBody.notifyRun = { runDate: typo3Date, runDistance: newDistance.toString() }
+        }
+
         const resp = await fetch('/api/runner/runs', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ runs: updatedRuns }),
+          body: JSON.stringify(requestBody),
         })
 
         if (!resp.ok) {

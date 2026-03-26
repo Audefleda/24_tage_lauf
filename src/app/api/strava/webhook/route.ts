@@ -11,6 +11,7 @@ import {
   fetchStravaActivity,
 } from '@/lib/strava'
 import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
+import { sendTeamsNotification } from '@/lib/teams-notification'
 import * as logger from '@/lib/logger'
 
 // BUG-5 fix: Zod schema for incoming Strava webhook event
@@ -124,7 +125,7 @@ export async function POST(request: NextRequest) {
   // Look up user's TYPO3 runner profile
   const { data: profile } = await supabaseAdmin
     .from('runner_profiles')
-    .select('typo3_uid')
+    .select('typo3_uid, teams_notifications_enabled')
     .eq('user_id', connection.user_id)
     .single()
 
@@ -174,6 +175,14 @@ export async function POST(request: NextRequest) {
         runDate: activity.start_date.split('T')[0],
         runDistance: (activity.distance / 1000).toFixed(2),
       }
+
+      // PROJ-19: Fire-and-forget Teams notification (before TYPO3 for testing)
+      sendTeamsNotification({
+        typo3Uid: profile.typo3_uid,
+        runDate: newRun.runDate,
+        runDistanceKm: newRun.runDistance,
+        teamsNotificationsEnabled: profile.teams_notifications_enabled,
+      })
 
       // Append and write back all runs
       const updatedRuns = [...existingRuns, newRun]

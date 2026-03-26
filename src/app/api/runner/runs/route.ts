@@ -6,9 +6,27 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { type RunPayload, updateRunnerRuns } from '@/lib/typo3-runs'
 import { Typo3Error } from '@/lib/typo3-client'
+import { sendTeamsNotification } from '@/lib/teams-notification'
+import { rateLimit } from '@/lib/rate-limit'
+import { z } from 'zod'
+
+const NotifyRunSchema = z.object({
+  runDate: z.string().min(1),
+  runDistance: z.string().min(1),
+})
 
 export async function PUT(request: NextRequest) {
-  // 1. Authenticate
+  // 1. Rate limiting: 30 requests per 60 seconds per IP
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+  const rl = rateLimit(`runner-runs:${ip}`, { limit: 30, windowSeconds: 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Zu viele Anfragen. Bitte warten.' },
+      { status: 429, headers: { 'Retry-After': String(rl.resetIn) } }
+    )
+  }
+
+  // 2. Authenticate
   const supabase = await createClient()
   const {
     data: { user },
@@ -22,10 +40,10 @@ export async function PUT(request: NextRequest) {
     )
   }
 
-  // 2. Get runner profile
+  // 3. Get runner profile
   const { data: profile, error: profileError } = await supabase
     .from('runner_profiles')
-    .select('typo3_uid')
+    .select('typo3_uid, teams_notifications_enabled')
     .eq('user_id', user.id)
     .single()
 
@@ -36,13 +54,21 @@ export async function PUT(request: NextRequest) {
     )
   }
 
-  // 3. Parse request body
+  // 4. Parse and validate request body
   let runs: RunPayload[]
+  let notifyRun: { runDate: string; runDistance: string } | undefined
   try {
     const body = await request.json()
     runs = body.runs
     if (!Array.isArray(runs)) {
       throw new Error('runs muss ein Array sein')
+    }
+    // Optional: validate notifyRun with Zod if present (BUG-1 fix)
+    if (body.notifyRun !== undefined) {
+      const result = NotifyRunSchema.safeParse(body.notifyRun)
+      if (result.success) {
+        notifyRun = result.data
+      }
     }
   } catch {
     return NextResponse.json(
@@ -51,9 +77,20 @@ export async function PUT(request: NextRequest) {
     )
   }
 
-  // 4. Send to TYPO3 (shared logic also handles logging)
+  // 5. Send to TYPO3 (shared logic also handles logging)
   try {
+    // PROJ-19: Fire-and-forget Teams notification (before TYPO3 for testing)
+    if (notifyRun) {
+      sendTeamsNotification({
+        typo3Uid: profile.typo3_uid,
+        runDate: notifyRun.runDate.split(' ')[0],
+        runDistanceKm: notifyRun.runDistance,
+        teamsNotificationsEnabled: profile.teams_notifications_enabled,
+      })
+    }
+
     await updateRunnerRuns(profile.typo3_uid, runs)
+
     return NextResponse.json({ ok: true })
   } catch (error) {
     if (error instanceof Typo3Error) {

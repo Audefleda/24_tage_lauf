@@ -9,7 +9,10 @@ import { StravaConnectSection } from '@/components/strava-connect-section'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 import { RefreshCw, AlertCircle } from 'lucide-react'
+import { toast } from 'sonner'
 import { buildEventDays } from '@/lib/event-config'
 
 interface Run {
@@ -22,6 +25,7 @@ interface RunnerData {
   name: string
   age: number | null
   runs: Run[]
+  teamsNotificationsEnabled: boolean
 }
 
 type PageState =
@@ -32,6 +36,8 @@ type PageState =
 
 export default function RunsPage() {
   const [state, setState] = useState<PageState>({ status: 'loading' })
+  const [teamsNotificationsEnabled, setTeamsNotificationsEnabled] = useState(true)
+  const [togglingNotifications, setTogglingNotifications] = useState(false)
 
   const fetchRunner = useCallback(async () => {
     setState({ status: 'loading' })
@@ -50,6 +56,7 @@ export default function RunsPage() {
       }
       const data: RunnerData = await resp.json()
       setState({ status: 'success', data })
+      setTeamsNotificationsEnabled(data.teamsNotificationsEnabled ?? true)
     } catch (error) {
       setState({
         status: 'error',
@@ -68,10 +75,46 @@ export default function RunsPage() {
       if (!resp.ok) return
       const data: RunnerData = await resp.json()
       setState({ status: 'success', data })
+      setTeamsNotificationsEnabled(data.teamsNotificationsEnabled ?? true)
     } catch {
       // Silent fail on refresh -- the table already shows its own error
     }
   }, [])
+
+  const handleToggleNotifications = useCallback(async () => {
+    const previous = teamsNotificationsEnabled
+    const next = !previous
+    setTeamsNotificationsEnabled(next)
+    setTogglingNotifications(true)
+
+    try {
+      const resp = await fetch('/api/runner/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: next }),
+      })
+
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}))
+        throw new Error(body.error ?? `HTTP ${resp.status}`)
+      }
+
+      toast.success(
+        next
+          ? 'Teams-Benachrichtigungen aktiviert'
+          : 'Teams-Benachrichtigungen deaktiviert'
+      )
+    } catch (error) {
+      setTeamsNotificationsEnabled(previous)
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Fehler beim Speichern der Einstellung'
+      )
+    } finally {
+      setTogglingNotifications(false)
+    }
+  }, [teamsNotificationsEnabled])
 
   useEffect(() => {
     fetchRunner()
@@ -168,6 +211,28 @@ export default function RunsPage() {
         onRunsUpdated={refreshRunner}
       />
       <StravaConnectSection />
+
+      {/* Teams notification opt-out */}
+      <div className="rounded-lg border bg-card p-4 space-y-2">
+        <div className="flex items-center gap-3">
+          <Switch
+            id="teams-opt-out"
+            checked={teamsNotificationsEnabled}
+            onCheckedChange={handleToggleNotifications}
+            disabled={togglingNotifications}
+            aria-label="Teams-Benachrichtigungen"
+          />
+          <Label
+            htmlFor="teams-opt-out"
+            className="text-sm font-medium leading-none cursor-pointer"
+          >
+            Teams-Benachrichtigungen
+          </Label>
+        </div>
+        <p className="text-sm text-muted-foreground pl-14">
+          Wenn aktiv, werden für deine Läufe Nachrichten an Teams gesendet.
+        </p>
+      </div>
     </div>
   )
 }

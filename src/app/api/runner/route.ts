@@ -39,7 +39,7 @@ export async function GET() {
   // 2. Get runner profile (typo3_uid) for this user
   const { data: profile, error: profileError } = await supabase
     .from('runner_profiles')
-    .select('typo3_uid')
+    .select('typo3_uid, teams_notifications_enabled')
     .eq('user_id', user.id)
     .single()
 
@@ -98,6 +98,7 @@ export async function GET() {
       name: runner.name,
       age: (Number(runner.age) > 0 ? Number(runner.age) : null),
       runs: runner.runs ?? [],
+      teamsNotificationsEnabled: profile.teams_notifications_enabled,
     })
   } catch (error) {
     if (error instanceof Typo3Error) {
