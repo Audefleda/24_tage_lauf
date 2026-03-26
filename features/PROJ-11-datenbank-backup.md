@@ -1,6 +1,6 @@
 # PROJ-11: Datenbank-Backup
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-23
 **Last Updated:** 2026-03-23
 

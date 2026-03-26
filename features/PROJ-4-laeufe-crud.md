@@ -1,6 +1,6 @@
 # PROJ-4: Läufe-Verwaltung (CRUD)
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-17
 **Last Updated:** 2026-03-17
 

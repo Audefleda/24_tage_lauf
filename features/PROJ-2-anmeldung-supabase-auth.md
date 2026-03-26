@@ -1,6 +1,6 @@
 # PROJ-2: Anmeldung (Supabase Auth Login)
 
-## Status: In Progress
+## Status: Deployed
 **Created:** 2026-03-17
 **Last Updated:** 2026-03-17
 
