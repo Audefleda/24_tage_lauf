@@ -202,10 +202,9 @@ function buildAdaptiveCard(
 /**
  * Sends a motivational Teams notification after a run is saved.
  *
- * This function is designed to be called WITHOUT await (fire-and-forget).
- * It never throws — all errors are caught and logged internally.
+ * Must be awaited by the caller. Never throws — all errors are caught internally.
  */
-export function sendTeamsNotification(payload: TeamsNotificationPayload): void {
+export async function sendTeamsNotification(payload: TeamsNotificationPayload): Promise<void> {
   // PROJ-20: Skip notification if user has opted out
   if (payload.teamsNotificationsEnabled === false) {
     logger.debug('teams', 'Teams-Benachrichtigung deaktiviert (Opt-out)')
@@ -219,8 +218,7 @@ export function sendTeamsNotification(payload: TeamsNotificationPayload): void {
     return
   }
 
-  // Fire-and-forget: start the async work but don't await it
-  doSendNotification(webhookUrl, payload).catch((err) => {
+  await doSendNotification(webhookUrl, payload).catch((err) => {
     logger.error('teams', 'Unerwarteter Fehler in doSendNotification', err)
   })
 }

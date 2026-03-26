@@ -176,8 +176,8 @@ export async function POST(request: NextRequest) {
         runDistance: (activity.distance / 1000).toFixed(2),
       }
 
-      // PROJ-19: Fire-and-forget Teams notification (before TYPO3 for testing)
-      sendTeamsNotification({
+      // PROJ-19: Teams notification vor TYPO3 — wird auch bei TYPO3-Fehler gesendet
+      await sendTeamsNotification({
         typo3Uid: profile.typo3_uid,
         runDate: newRun.runDate,
         runDistanceKm: newRun.runDistance,

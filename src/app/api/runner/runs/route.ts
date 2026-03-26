@@ -79,9 +79,9 @@ export async function PUT(request: NextRequest) {
 
   // 5. Send to TYPO3 (shared logic also handles logging)
   try {
-    // PROJ-19: Fire-and-forget Teams notification (before TYPO3 for testing)
+    // PROJ-19: Teams notification vor TYPO3 — wird auch bei TYPO3-Fehler gesendet
     if (notifyRun) {
-      sendTeamsNotification({
+      await sendTeamsNotification({
         typo3Uid: profile.typo3_uid,
         runDate: notifyRun.runDate.split(' ')[0],
         runDistanceKm: notifyRun.runDistance,
