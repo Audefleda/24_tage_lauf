@@ -29,7 +29,8 @@
 | PROJ-15 | Dark Mode (CI-konform, systemgesteuert) | Deployed | [PROJ-15](PROJ-15-dark-mode.md) | 2026-03-23 |
 | PROJ-16 | Strava Webhook De-registrierung (Admin) | Deployed | [PROJ-16](PROJ-16-strava-webhook-deregistrierung.md) | 2026-03-24 |
 | PROJ-17 | Läufer-Profil bearbeiten (Name + Alter) | Deployed | [PROJ-17](PROJ-17-laeufer-profil-bearbeiten.md) | 2026-03-24 |
+| PROJ-18 | Läufer-Vorauswahl anhand E-Mail-Adresse | Planned | [PROJ-18](PROJ-18-laeufer-vorauswahl-email.md) | 2026-03-26 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-18
+## Next Available ID: PROJ-19
