@@ -58,8 +58,8 @@ export async function GET(request: NextRequest) {
   }
 
   if (errorsOnly) {
-    // Show entries where http_status is null (timeout) or not 2xx
-    query = query.or('http_status.is.null,http_status.lt.200,http_status.gte.300')
+    // Show entries where http_status is null (timeout), not 2xx, or response_success is false
+    query = query.or('http_status.is.null,http_status.lt.200,http_status.gte.300,response_success.eq.false')
   }
 
   const { data, error, count } = await query
