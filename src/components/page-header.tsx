@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Pencil, Check, X, Loader2 } from 'lucide-react'
+import { Pencil, Check, X, Loader2, Info } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface PageHeaderProps {
@@ -254,6 +254,12 @@ export function PageHeader({
           <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
         </Button>
       </div>
+      {(!runnerAge || runnerAge === 0) && (
+        <p className="flex items-center gap-1 mt-1 text-xs text-muted-foreground/70">
+          <Info className="h-3 w-3 shrink-0" aria-hidden="true" />
+          Alter noch nicht gesetzt – optional über das Stift-Icon ergänzen
+        </p>
+      )}
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { typo3Fetch, Typo3Error } from '@/lib/typo3-client'
 import { parseTypo3Response } from '@/lib/typo3-runs'
-import { debug } from '@/lib/logger'
+import { debug, maskToken } from '@/lib/logger'
 import { rateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
 
@@ -93,7 +93,7 @@ export async function PUT(request: NextRequest) {
 
   debug('runner-profile', 'PUT-Anfrage an TYPO3 gestartet', {
     runnerUid: profile.typo3_uid,
-    name: parsed.name,
+    name: maskToken(parsed.name),
     age,
   })
 
@@ -107,15 +107,15 @@ export async function PUT(request: NextRequest) {
     httpStatus = resp.status
     responseText = await resp.text()
 
-    debug('runner-profile', 'TYPO3-Antwort erhalten', { httpStatus, responseText })
+    debug('runner-profile', 'TYPO3-Antwort erhalten', { httpStatus, responseText: maskToken(responseText) })
 
     if (!resp.ok) {
       throw new Typo3Error(`TYPO3 API antwortet mit HTTP ${resp.status}`, resp.status)
     }
 
     const { responseSuccess, responseMessage } = parseTypo3Response(responseText)
-    if (responseSuccess === false) {
-      // TYPO3 accepted the request but rejected the data — 422 Unprocessable Entity
+    if (responseSuccess !== true) {
+      // TYPO3 rejected the data (false) or returned unparseable response (null)
       return NextResponse.json(
         { error: responseMessage ?? 'TYPO3 hat die Aktualisierung abgelehnt' },
         { status: 422 }

@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={workSans.variable}>
+    <html lang="de" className={workSans.variable} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen bg-background">
         <AppHeader />
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>

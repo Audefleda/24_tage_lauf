@@ -1,6 +1,6 @@
 # PROJ-17: Läufer-Profil bearbeiten (Name + Alter)
 
-## Status: Deployed
+## Status: In Review
 **Created:** 2026-03-24
 **Deployed:** 2026-03-24
 
@@ -16,6 +16,7 @@
 - Als Läufer*in möchte ich Name und Alter direkt auf der Runs-Maske inline bearbeiten können, ohne dass ein separater Dialog geöffnet wird.
 - Als Läufer*in möchte ich nach dem Speichern eine Bestätigung erhalten, dass die Daten erfolgreich aktualisiert wurden.
 - Als Läufer*in möchte ich, dass die Änderungen sofort auf der Runs-Maske sichtbar sind, ohne die Seite neu laden zu müssen.
+- Als Läufer*in, die noch kein Alter angegeben hat, möchte ich einen freundlichen, unaufdringlichen Hinweis sehen, damit ich daran erinnert werde, das Alter optional zu ergänzen.
 
 ## Acceptance Criteria
 - [ ] **AC-1:** Auf der Runs-Maske gibt es einen "Bearbeiten"-Button (z. B. Stift-Icon) in der Nähe des Läufernamens
@@ -29,6 +30,10 @@
 - [ ] **AC-9:** Bei `success: false` oder HTTP-Fehler zeigt die UI eine verständliche Fehlermeldung
 - [ ] **AC-10:** Der Endpunkt ist nur für eingeloggte Nutzer*innen zugänglich (Supabase-Session erforderlich)
 - [ ] **AC-11:** Nur die eigene `typo3_uid` aus dem Supabase-Profil wird verwendet — kein fremder Runner kann bearbeitet werden
+- [ ] **AC-12:** Wenn `runnerAge` null oder 0 ist, wird neben oder unterhalb des Altersfelds ein dezenter, freundlicher Hinweis angezeigt (z. B. kleines Info-Icon + Text "Alter noch nicht gesetzt – optional ergänzen" oder ein Badge "Alter fehlt")
+- [ ] **AC-13:** Der Nudge ist rein visuell und nicht blockierend — kein Modal, kein Toast, kein Pflichtfeld; die Anwendung bleibt voll benutzbar ohne Altersangabe
+- [ ] **AC-14:** Der Nudge verschwindet, sobald das Alter erfolgreich gesetzt wurde (kein Reload nötig)
+- [ ] **AC-15:** Im Bearbeitungsmodus wird der Nudge ausgeblendet (der Fokus liegt dann auf den Eingabefeldern)
 
 ## Edge Cases
 - Name-Feld leer abgesendet → Client-seitige Validierung, Inline-Edit bleibt aktiv mit Fehlermeldung
@@ -37,6 +42,8 @@
 - TYPO3-API nicht erreichbar (Netzwerkfehler / HTTP 5xx) → HTTP 502, Fehlermeldung in der UI
 - Nutzer*in hat noch kein TYPO3-Profil zugeordnet (`typo3_uid` fehlt) → HTTP 404, "Kein Läuferprofil zugeordnet"
 - TYPO3 gibt `age` nicht im `runnerget.json` zurück → Altersfeld ist leer (nicht vorausgefüllt); Nutzer*in muss Alter manuell eingeben
+- Läufer*in ignoriert den Nudge dauerhaft → kein Problem, Hinweis bleibt sichtbar aber blockiert nichts; keine persistente „gelesen"-Markierung nötig
+- Läufer*in setzt Alter auf 0 oder löscht den Wert nach einem vorherigen Eintrag → Nudge erscheint erneut (age = 0 gilt als nicht gesetzt)
 
 ## Technical Requirements
 - Neuer API-Endpunkt: `PUT /api/runner/profile`
@@ -78,10 +85,10 @@ _To be added by /architecture_
 
 ## QA Test Results
 
-**Tested:** 2026-03-24
+**Tested:** 2026-03-26 (re-test, replacing incomplete 2026-03-24 review)
 **App URL:** http://localhost:3000
 **Tester:** QA Engineer (AI)
-**Method:** Independent code audit of all source files + production build verification
+**Method:** Full code audit of all source files + production build verification + lint check
 
 ### Acceptance Criteria Status
 
@@ -118,6 +125,18 @@ _To be added by /architecture_
 #### AC-11: Nur eigene typo3_uid wird verwendet
 - [x] PASS: The API reads `typo3_uid` from `runner_profiles` table filtered by `user_id = user.id` (the authenticated user's ID). The `typo3_uid` is NOT accepted from the request body. No IDOR vulnerability.
 
+#### AC-12: Nudge wenn runnerAge null oder 0
+- [x] PASS: In view mode, `PageHeader` renders a nudge when `!runnerAge || runnerAge === 0` (line 257). The nudge shows an `Info` icon (h-3 w-3) and the text "Alter noch nicht gesetzt -- optional ueber das Stift-Icon ergaenzen". It appears below the runner name line.
+
+#### AC-13: Nudge ist rein visuell und nicht blockierend
+- [x] PASS: The nudge is a simple `<p>` element with `text-xs text-muted-foreground/70`. No Modal, no Toast, no required field. The application remains fully usable without setting an age.
+
+#### AC-14: Nudge verschwindet nach erfolgreichem Setzen des Alters
+- [x] PASS: When `onProfileUpdated(trimmedName, parsedAge)` is called with a non-null parsedAge, the `RunsPage` updates `data.age` in local state. Since `PageHeader` receives the new `runnerAge` prop, the condition `!runnerAge || runnerAge === 0` becomes false and the nudge is no longer rendered. No reload needed.
+
+#### AC-15: Nudge im Bearbeitungsmodus ausgeblendet
+- [x] PASS: When `editing` is true, the component returns the edit-mode JSX block (lines 132-230) which does NOT contain the nudge. The nudge only exists in the view-mode JSX block (lines 233-264). Switching to edit mode hides the nudge automatically.
+
 ### Edge Cases Status
 
 #### EC-1: Name-Feld leer abgesendet
@@ -137,6 +156,12 @@ _To be added by /architecture_
 
 #### EC-6: TYPO3 gibt age nicht zurueck
 - [x] PASS: `GET /api/runner` returns `runner.age || null`. `PageHeader` shows empty age field when `runnerAge` is null or 0. `startEditing()` sets age to empty string in these cases.
+
+#### EC-7: Laeufer*in setzt Alter auf 0 oder loescht den Wert
+- [x] PASS: When age is cleared and saved, `parsedAge` becomes `null`. `onProfileUpdated` sets `data.age = null`. The nudge condition `!runnerAge || runnerAge === 0` becomes true again, so the nudge reappears without reload.
+
+#### EC-8 (new): TYPO3 returns non-JSON response (e.g. HTML error page) with HTTP 200
+- [ ] BUG: See BUG-2 below. `parseTypo3Response` returns `responseSuccess: null` when the body is not valid JSON. The check `if (responseSuccess === false)` does NOT catch `null`, so the API returns `{ ok: true }` even though the operation outcome is unknown.
 
 ### Security Audit Results
 
@@ -162,6 +187,26 @@ _To be added by /architecture_
 - **Impact:** Low -- only visible when `LOG_LEVEL=debug` is explicitly enabled, and Vercel logs have restricted access. However, it is inconsistent with the project's own masking conventions in `src/lib/logger.ts`.
 - **Priority:** Nice to have
 
+#### BUG-2: False positive Erfolgsmeldung wenn TYPO3 non-JSON mit HTTP 200 antwortet
+- **Severity:** Medium
+- **Steps to Reproduce:**
+  1. Trigger a profile update via `PUT /api/runner/profile`
+  2. Simulate TYPO3 returning HTTP 200 with an HTML error page (non-JSON body) -- e.g. a login page or PHP error output
+  3. Expected: The API should treat an unparseable response as an error and return an error status to the client
+  4. Actual: `parseTypo3Response()` returns `{ responseSuccess: null, responseMessage: ... }`. The check on line 117 (`if (responseSuccess === false)`) does NOT match `null`, so the code falls through to line 125 and returns `{ ok: true }`. The user sees a success toast, but the profile may not have been updated in TYPO3.
+- **Impact:** Medium -- the user is misled into thinking the update succeeded. However, this scenario is rare in practice (TYPO3 normally returns JSON).
+- **Priority:** Fix in next sprint
+- **Location:** `src/app/api/runner/profile/route.ts`, line 117
+
+#### BUG-3: Feature-Spec Status inkonsistent mit INDEX.md
+- **Severity:** Low
+- **Steps to Reproduce:**
+  1. Read `features/PROJ-17-laeufer-profil-bearbeiten.md` header -- shows "In Progress"
+  2. Read `features/INDEX.md` -- shows "Deployed" for PROJ-17
+  3. These should match
+- **Impact:** Low -- documentation inconsistency only, no runtime effect.
+- **Priority:** Nice to have (corrected to "In Review" in this QA pass)
+
 ### Cross-Browser Testing
 - **Note:** Code review only (no browser available in this environment). The implementation uses standard React patterns, shadcn/ui Input and Button components, and Tailwind CSS. No browser-specific APIs are used.
 - [x] Chrome: Expected to work (standard React + Tailwind)
@@ -179,14 +224,15 @@ _To be added by /architecture_
 - [x] **PROJ-1 (API-Konfiguration):** `typo3Fetch` usage in the new endpoint follows the same pattern as existing endpoints (POST with URLSearchParams).
 - [x] **PROJ-8 (TYPO3 Request Log):** Profile updates do NOT write to `typo3_request_log` (correct per spec: "nicht in den Lauf-Log"). Uses `debug()` instead.
 - [x] **Build:** `npm run build` succeeds with no errors. Route `/api/runner/profile` appears as a dynamic function route.
+- [x] **Lint:** `npm run lint` passes with 0 errors (2 pre-existing warnings unrelated to PROJ-17).
 
 ### Summary
-- **Acceptance Criteria:** 11/11 passed
-- **Edge Cases:** 6/6 passed
-- **Bugs Found:** 1 total (0 critical, 0 high, 0 medium, 1 low)
+- **Acceptance Criteria:** 15/15 passed (previous review only tested 11/15, missing AC-12 through AC-15)
+- **Edge Cases:** 7/8 passed, 1 failed (BUG-2)
+- **Bugs Found:** 3 total (0 critical, 0 high, 1 medium, 2 low)
 - **Security:** Pass -- no critical or high vulnerabilities. All major security controls (auth, IDOR prevention, input validation, rate limiting, XSS, SQLI) are in place.
-- **Production Ready:** YES
-- **Recommendation:** Deploy. The single low-severity bug (PII in debug logs) can be addressed in a future sprint. The feature is functionally complete and secure.
+- **Production Ready:** YES (with caveat: BUG-2 should be fixed in next sprint)
+- **Recommendation:** Deploy. BUG-2 (false positive on non-JSON TYPO3 response) is medium severity but low probability in practice. BUG-1 and BUG-3 are low-priority cosmetic/documentation issues.
 
 ## Deployment
 _To be added by /deploy_

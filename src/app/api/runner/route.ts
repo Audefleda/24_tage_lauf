@@ -96,7 +96,7 @@ export async function GET() {
     return NextResponse.json({
       uid: runner.uid,
       name: runner.name,
-      age: runner.age || null,
+      age: (Number(runner.age) > 0 ? Number(runner.age) : null),
       runs: runner.runs ?? [],
     })
   } catch (error) {
