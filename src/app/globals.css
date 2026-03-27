@@ -84,7 +84,7 @@
       --muted: 0 0% 10%;
       /* Muted text: CI #9d9d9c */
       --muted-foreground: 60 1% 62%;
-      --accent: 0 0% 10%;
+      --accent: 60 1% 29%;
       --accent-foreground: 0 0% 100%;
       /* Destructive — leicht heller im Dark Mode */
       --destructive: 349 100% 56%;

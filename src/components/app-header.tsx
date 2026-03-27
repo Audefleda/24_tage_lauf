@@ -71,7 +71,7 @@ export function AppHeader() {
             <nav className="flex items-center gap-1" aria-label="Hauptnavigation">
               <Link
                 href="/runs"
-                className={`px-3 py-1 text-sm font-semibold uppercase tracking-wide transition-colors ${
+                className={`px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors ${
                   isActive('/runs')
                     ? 'text-[#ea0029]'
                     : 'text-white hover:text-[#ea0029]'
@@ -82,7 +82,7 @@ export function AppHeader() {
               {user.app_metadata?.role === 'admin' && (
                 <Link
                   href="/admin"
-                  className={`px-3 py-1 text-sm font-semibold uppercase tracking-wide transition-colors ${
+                  className={`px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors ${
                     isActive('/admin')
                       ? 'text-[#ea0029]'
                       : 'text-white hover:text-[#ea0029]'
