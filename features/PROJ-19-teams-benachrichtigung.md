@@ -235,16 +235,16 @@ Alle benötigten Werkzeuge (HTTP-Requests, Supabase-Client, Logger) sind bereits
 ### Acceptance Criteria Status
 
 #### AC-1: Fire-and-forget Teams notification after PUT /api/runner/runs
-- [x] `sendTeamsNotification()` is called via `after()` (next/server) in `route.ts` line 90 -- runs after response is sent
+- [x] `sendTeamsNotification()` is called via `after()` (next/server) in `route.ts` -- runs after response is sent
 - [x] Only triggered when `notifyRun` is present in request body (i.e., distance > 0)
 - [x] Client (`runs-table.tsx`) sends `notifyRun` only when `newDistance > 0` (not on delete)
-- [ ] BUG-4: `after()` is registered BEFORE `await updateRunnerRuns()` (line 90 vs 93). If the TYPO3 update fails, the notification is still scheduled and will fire for a run that was never saved.
-- **PARTIAL PASS** (functional but has race condition with TYPO3 failure)
+- [x] BUG-4 FIXED (commit `e23051e`): `after()` is now registered AFTER `await updateRunnerRuns()` succeeds
+- **PASS**
 
 #### AC-2: Fire-and-forget Teams notification after POST /api/strava/webhook
-- [x] `sendTeamsNotification()` is called via `after()` in `webhook/route.ts` line 186
-- [ ] BUG-5: Same issue as AC-1 -- `after()` is registered on line 186 BEFORE `updateRunnerRuns` on line 190. If TYPO3 update fails, a notification is sent for a non-existent run.
-- **PARTIAL PASS**
+- [x] `sendTeamsNotification()` is called via `after()` in `webhook/route.ts` -- runs after response is sent
+- [x] BUG-5 FIXED (commit `e23051e`): `after()` is now registered AFTER `await updateRunnerRuns()` succeeds
+- **PASS**
 
 #### AC-3: Notification error does not cause HTTP error for caller
 - [x] `sendTeamsNotification()` is async, called inside `after()` which runs after response
@@ -359,26 +359,13 @@ Alle benötigten Werkzeuge (HTTP-Requests, Supabase-Client, Logger) sind bereits
 
 #### BUG-4: Teams notification fires even when TYPO3 update fails (PUT /api/runner/runs)
 - **Severity:** Medium
-- **Steps to Reproduce:**
-  1. Save a run via the UI (PUT /api/runner/runs)
-  2. TYPO3 is temporarily down or returns an error
-  3. Expected: No Teams notification since the run was not actually saved
-  4. Actual: `after()` is registered on line 90, BEFORE `await updateRunnerRuns()` on line 93. The `after()` callback fires after the response regardless of whether TYPO3 succeeded or not.
-- **Impact:** Users see a "run saved" notification in Teams for a run that actually failed to save. This could cause confusion in the team chat.
-- **Fix:** Move the `after()` registration to after the `await updateRunnerRuns()` call (between lines 93 and 95).
-- **Priority:** Fix before next sprint
+- **Status:** ✅ FIXED (commit `e23051e`, 2026-03-27)
+- `after()` wird jetzt erst nach `await updateRunnerRuns()` registriert. Bei TYPO3-Fehler wird keine Notification gesendet.
 
 #### BUG-5: Same issue in Strava webhook handler
 - **Severity:** Medium
-- **Steps to Reproduce:**
-  1. Strava sends a webhook event for a new activity
-  2. `after()` registered on line 186, `updateRunnerRuns` called on line 190
-  3. If TYPO3 update fails (line 190 throws), the notification is still scheduled
-  4. Expected: No notification for failed imports
-  5. Actual: Notification fires regardless
-- **Impact:** Same as BUG-4. Additionally, the `processWithLock` catch block on line 199 catches the error, so it won't propagate, but the `after()` is already registered.
-- **Fix:** Move `after()` to after `await updateRunnerRuns()` on line 190.
-- **Priority:** Fix before next sprint
+- **Status:** ✅ FIXED (commit `e23051e`, 2026-03-27)
+- Gleiche Lösung wie BUG-4 im Strava-Webhook-Handler.
 
 #### BUG-6: Adaptive Card uses ColumnSet instead of FactSet (spec deviation)
 - **Severity:** Low
@@ -407,15 +394,14 @@ Alle benötigten Werkzeuge (HTTP-Requests, Supabase-Client, Logger) sind bereits
 - **Acceptance Criteria:** 8/10 passed, 2 partial (AC-1, AC-4 have non-blocking issues)
 - **Edge Cases:** 7/7 passed
 - **Bugs Found:** 4 total (0 critical, 2 medium, 2 low)
-  - BUG-4 (Medium): Notification fires before TYPO3 confirmation (PUT route)
-  - BUG-5 (Medium): Same issue in Strava webhook route
-  - BUG-6 (Low): ColumnSet vs FactSet spec deviation
-  - BUG-3 (Low): Notification on edits vs only new entries
+  - BUG-4 (Medium): ~~Notification fires before TYPO3 confirmation (PUT route)~~ ✅ FIXED (e23051e)
+  - BUG-5 (Medium): ~~Same issue in Strava webhook route~~ ✅ FIXED (e23051e)
+  - BUG-6 (Low): ColumnSet vs FactSet spec deviation (open)
+  - BUG-3 (Low): Notification on edits vs only new entries (open, spec ambiguous)
 - **Security:** No critical vulnerabilities. Previous Zod validation bug is fixed.
 - **Cross-browser/Responsive:** N/A (server-only feature)
 - **Build:** Production build passes without errors. Lint passes (0 errors, 2 pre-existing warnings).
-- **Production Ready:** YES (medium bugs are non-critical -- worst case is a spurious Teams message on rare TYPO3 failures)
-- **Recommendation:** Deploy. BUG-4 and BUG-5 should be fixed in the next sprint by moving the `after()` calls after the TYPO3 update.
+- **Production Ready:** YES
 
 ## Integration Test Results (PROJ-19 + PROJ-20 + PROJ-4 + PROJ-5)
 
@@ -442,7 +428,7 @@ Cross-feature integration between:
 - [x] Server passes both `teamsNotificationsEnabled` and run data to `sendTeamsNotification` (route.ts lines 84-89)
 - [x] `sendTeamsNotification` checks opt-out BEFORE checking webhook URL (teams-notification.ts lines 208-212)
 - [x] Notification runs asynchronously via `after()` -- does not block response
-- [ ] **INT-BUG-1 (Medium):** Notification `after()` is registered BEFORE TYPO3 update succeeds (see PROJ-19 BUG-4)
+- [x] **INT-BUG-1 FIXED (commit `e23051e`):** `after()` is now registered AFTER TYPO3 update succeeds
 
 ### Integration Flow 2: Strava Webhook -> Teams Notification
 
@@ -452,7 +438,7 @@ Cross-feature integration between:
 - [x] Fetches `teams_notifications_enabled` from `runner_profiles` (webhook/route.ts line 128)
 - [x] Passes `teamsNotificationsEnabled` to notification payload (line 184)
 - [x] Uses `processWithLock` to serialize concurrent events for same user
-- [ ] **INT-BUG-2 (Medium):** Same as INT-BUG-1 -- `after()` registered before TYPO3 update (see PROJ-19 BUG-5)
+- [x] **INT-BUG-2 FIXED (commit `e23051e`):** `after()` is now registered AFTER TYPO3 update succeeds
 
 ### Integration Flow 3: Page Load -> Opt-out Status Display
 
@@ -490,7 +476,7 @@ Cross-feature integration between:
 
 - [x] Runner name comes from TYPO3 (not from client) -- prevents name spoofing
 - [x] Run statistics (`totaldistance`, `runs.length`) are fetched from TYPO3 at notification time
-- [ ] **INT-BUG-3 (Low):** Statistics may be stale -- TYPO3 data might not reflect the just-saved run yet, because the `after()` callback (which fetches TYPO3 data) may execute before TYPO3 has processed the update. In the PUT route, the `after()` is registered before `updateRunnerRuns()` completes (see BUG-4), so the stats fetch races with the update.
+- [x] **INT-BUG-3 (Low) MITIGATED:** Root cause (after() before updateRunnerRuns) fixed by BUG-4/5 fix. Residual staleness (inherent TYPO3 async behaviour) is acceptable.
 - [x] Team total km correctly sums all runners' `totaldistance`
 - [x] Fallback values work: `Laufer*in #{uid}` for missing name, `--` for zero stats
 
@@ -519,18 +505,17 @@ Cross-feature integration between:
 
 | Bug | Severity | Feature | Description |
 |-----|----------|---------|-------------|
-| INT-BUG-1 | Medium | PROJ-19 x PROJ-4 | `after()` in PUT route fires before TYPO3 confirmation |
-| INT-BUG-2 | Medium | PROJ-19 x PROJ-5 | `after()` in Strava webhook fires before TYPO3 confirmation |
-| INT-BUG-3 | Low | PROJ-19 | Statistics in notification may be stale (race with TYPO3 update) |
+| INT-BUG-1 | Medium | PROJ-19 x PROJ-4 | ~~`after()` in PUT route fires before TYPO3 confirmation~~ ✅ FIXED (e23051e) |
+| INT-BUG-2 | Medium | PROJ-19 x PROJ-5 | ~~`after()` in Strava webhook fires before TYPO3 confirmation~~ ✅ FIXED (e23051e) |
+| INT-BUG-3 | Low | PROJ-19 | Statistics may be marginally stale (inherent TYPO3 async, mitigated) |
 
 ### Integration Test Verdict
 
 - **Integration Flows Tested:** 7
-- **Flows Passing:** 5/7 fully, 2/7 with medium bugs (INT-BUG-1, INT-BUG-2)
-- **Total Integration Bugs:** 3 (0 critical, 2 medium, 1 low)
+- **Flows Passing:** 7/7
+- **Total Integration Bugs:** 3 (0 critical, 0 medium open, 1 low)
 - **Cross-Feature Regression:** No regressions detected
-- **Overall Verdict:** PASS with caveats
-- **Recommendation:** The medium bugs (notification before TYPO3 confirmation) are non-critical -- worst case is a spurious Teams message when TYPO3 is down. Both can be fixed by moving the `after()` call after `await updateRunnerRuns()`. No blockers for production.
+- **Overall Verdict:** PASS
 
 ## Deployment
 _To be added by /deploy_
