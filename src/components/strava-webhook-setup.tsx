@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -35,6 +35,7 @@ export function StravaWebhookSetup() {
   const [state, setState] = useState<SectionState>({ status: 'loading' })
   const [registering, setRegistering] = useState(false)
   const [deregistering, setDeregistering] = useState(false)
+  const deregisteringRef = useRef(false)
 
   const fetchStatus = useCallback(async () => {
     setState({ status: 'loading' })
@@ -68,6 +69,8 @@ export function StravaWebhookSetup() {
   }
 
   async function handleDeregister() {
+    if (deregisteringRef.current) return
+    deregisteringRef.current = true
     setDeregistering(true)
     try {
       const resp = await fetch('/api/admin/strava/register-webhook', { method: 'DELETE' })
@@ -78,6 +81,7 @@ export function StravaWebhookSetup() {
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Deregistrierung fehlgeschlagen.')
     } finally {
+      deregisteringRef.current = false
       setDeregistering(false)
     }
   }

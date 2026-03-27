@@ -153,7 +153,7 @@ Previous audit found 6 bugs (2 high, 1 medium, 3 low). BUG-1, BUG-2, BUG-3 were 
 - [x] `#d0d0d0` on black: contrast ratio ~13.3:1 -- exceeds WCAG AAA
 - [x] `#9d9d9c` on black: contrast ratio ~7.1:1 -- exceeds WCAG AA (4.5:1)
 - [x] `#878787` on black: contrast ratio ~4.6:1 -- passes WCAG AA (4.5:1). No longer used as component text color; replaced by `text-muted-foreground` which resolves to `#9d9d9c` in dark mode.
-- [x] Fire Red in dark mode: `--primary` adjusted to HSL(349, 100%, 56%) which is approximately `#FF1F4B`, contrast ~5.6:1 on black -- passes WCAG AA for normal text. Note: hardcoded `#ea0029` in header nav still has ~4.3:1 ratio, see BUG-6 below (Low severity).
+- [x] Fire Red in dark mode: `--primary` adjusted to HSL(349, 100%, 56%) which is approximately `#FF1F4B`, contrast ~5.6:1 on black -- passes WCAG AA for normal text. Hardcoded `#ea0029` in header nav: korrekte WCAG-Berechnung ergibt 4.53:1 -- passes WCAG AA (BUG-6 geschlossen).
 
 ---
 
@@ -166,7 +166,7 @@ Previous audit found 6 bugs (2 high, 1 medium, 3 low). BUG-1, BUG-2, BUG-3 were 
 - [x] Handled via CSS media query -- no JS event required, browser applies instantly
 
 #### EC-3: Fire Red on dark background contrast
-- [x] Partially addressed -- `--primary` CSS variable uses lighter value in dark mode (56% lightness vs 46%). Semantic usages (`text-primary`, `bg-primary`) benefit from this. Hardcoded `text-[#ea0029]` in header nav does not benefit (see BUG-6, Low severity).
+- [x] `--primary` CSS variable uses lighter value in dark mode (56% lightness vs 46%). Semantic usages (`text-primary`, `bg-primary`) benefit from this. Hardcoded `text-[#ea0029]` in header nav: korrekte WCAG-Berechnung 4.53:1 -- passes AA (BUG-6 geschlossen).
 
 #### EC-4: External content (Strava links/images)
 - [x] Not controllable -- acknowledged as non-bug in spec. `strava-connect-section.tsx` uses Strava brand color `#FC4C02` which is acceptable.
@@ -202,9 +202,9 @@ Previous audit found 6 bugs (2 high, 1 medium, 3 low). BUG-1, BUG-2, BUG-3 were 
 
 ### Remaining Bugs
 
-#### BUG-6 (carried over): Fire Red `#ea0029` hardcoded in header nav fails WCAG AA for normal-sized text
-- **Severity:** Low
-- **Steps to Reproduce:**
+#### BUG-6: Fire Red `#ea0029` in header nav
+- **Status:** ✅ GESCHLOSSEN — Korrekte WCAG-Berechnung ergibt 4.53:1 (≥ 4.5:1 AA). Der QA-Report hatte 4.3:1 falsch berechnet.
+- **Ursprüngliche Steps to Reproduce:**
   1. Set OS to dark mode
   2. View active navigation items in header (`text-[#ea0029]` on `bg-black`)
   3. Contrast ratio: ~4.3:1 (needs 4.5:1 for WCAG AA on normal text)
@@ -216,25 +216,19 @@ Previous audit found 6 bugs (2 high, 1 medium, 3 low). BUG-1, BUG-2, BUG-3 were 
 - **Mitigating factors:** (1) Header is `bg-black` in both light and dark mode, so this is not a dark-mode regression -- it exists in light mode too. (2) Nav text is `font-bold uppercase` which improves perceived readability. (3) Spec acknowledges this edge case and suggests `#ef787e` as optional fallback.
 - **Priority:** Nice to have (not a blocker)
 
-#### BUG-7 (new): Hardcoded CI hex colors in button variants are not theme-adaptive
+#### BUG-7: Hardcoded CI hex colors in button variants are not theme-adaptive
 - **Severity:** Low
-- **Steps to Reproduce:**
-  1. Observe button.tsx default variant: `bg-[#ea0029]`, `border-[#8d001b]`, `hover:bg-[#CF0027]`
-  2. Observe button.tsx secondary variant: `bg-[#9d9d9c]`, `border-[#4a4a49]`, `hover:bg-[#878787]`
-  3. These are hardcoded CI colors that do NOT adapt between light/dark mode
-- **Assessment:** These colors are intentionally hardcoded per CI spec. Fire Red and gray buttons look correct on both light and dark backgrounds because the button text is always white and the background colors provide sufficient contrast. This is by design, not a functional bug.
-- **Priority:** Nice to have -- could use CSS custom properties for consistency, but no visual defect
+- **Status:** ✅ GESCHLOSSEN — By design. CI-Farben (Fire Red, Grau) sind bewusst hardcodiert. Buttons sehen auf dunklem und hellem Hintergrund korrekt aus (weiße Schrift, ausreichender Kontrast). Kein visueller Defekt.
 
 ---
 
 ### Summary
 - **Acceptance Criteria:** 18/18 passed (all previously failing criteria now fixed)
-- **Previously found bugs:** 5/6 fixed, 1 remaining (Low severity)
-- **New bugs found:** 1 (Low severity, by-design, informational only)
+- **Previously found bugs:** 6/6 geschlossen (BUG-6 Kontrast korrekt, BUG-7 by design)
+- **New bugs found:** 0
 - **Security:** N/A (pure CSS feature)
 - **Cross-browser:** Supported in all modern browsers (Chrome 76+, Firefox 67+, Safari 12.1+)
-- **Production Ready:** YES
-- **Recommendation:** PROJ-15 is production-ready. All High and Medium severity bugs from the previous audit have been fixed. The two remaining Low-severity items (BUG-6 header nav contrast, BUG-7 hardcoded button colors) are by-design CI choices with mitigating factors and do not block deployment.
+- **Production Ready:** YES — keine offenen Bugs
 
 ## Deployment
 _To be added by /deploy_
