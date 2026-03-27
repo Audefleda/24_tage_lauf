@@ -176,7 +176,11 @@ export async function POST(request: NextRequest) {
         runDistance: (activity.distance / 1000).toFixed(2),
       }
 
-      // PROJ-19: Teams notification nach Response — non-blocking via after()
+      // Append and write back all runs
+      const updatedRuns = [...existingRuns, newRun]
+      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+
+      // PROJ-19: Teams notification nur nach erfolgreichem TYPO3-Update — non-blocking via after()
       const notifyPayload = {
         typo3Uid: profile.typo3_uid,
         runDate: newRun.runDate,
@@ -184,10 +188,6 @@ export async function POST(request: NextRequest) {
         teamsNotificationsEnabled: profile.teams_notifications_enabled,
       }
       after(() => sendTeamsNotification(notifyPayload))
-
-      // Append and write back all runs
-      const updatedRuns = [...existingRuns, newRun]
-      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
 
       // Update last_synced_at
       await supabaseAdmin

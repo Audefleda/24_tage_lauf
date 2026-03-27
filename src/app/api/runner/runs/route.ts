@@ -79,7 +79,9 @@ export async function PUT(request: NextRequest) {
 
   // 5. Send to TYPO3 (shared logic also handles logging)
   try {
-    // PROJ-19: Teams notification nach Response — non-blocking via after()
+    await updateRunnerRuns(profile.typo3_uid, runs)
+
+    // PROJ-19: Teams notification nur nach erfolgreichem TYPO3-Update — non-blocking via after()
     if (notifyRun) {
       const notifyPayload = {
         typo3Uid: profile.typo3_uid,
@@ -89,8 +91,6 @@ export async function PUT(request: NextRequest) {
       }
       after(() => sendTeamsNotification(notifyPayload))
     }
-
-    await updateRunnerRuns(profile.typo3_uid, runs)
 
     return NextResponse.json({ ok: true })
   } catch (error) {
