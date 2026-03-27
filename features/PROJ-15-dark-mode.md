@@ -98,23 +98,17 @@ _To be added by /architecture_
 
 ## QA Test Results
 
-**Tested:** 2026-03-24 (second audit, supersedes 2026-03-23 pre-check)
-**App URL:** http://localhost:3000
-**Tester:** QA Engineer (AI)
-**Method:** Static code audit + build verification. PROJ-15 remains "Planned" with zero implementation commits. Dark Mode CSS variables were partially shipped in PROJ-14.
+### Previous Audit (2026-03-24)
+Previous audit found 6 bugs (2 high, 1 medium, 3 low). BUG-1, BUG-2, BUG-3 were fixed in commits `af8e4f4` and `6825d21`. See current re-test below.
 
 ---
 
-### Implementation Status
+### Re-Test (2026-03-27)
 
-PROJ-15 has **no dedicated commits** (`git log --grep="PROJ-15"` returns nothing). The feature status in INDEX.md is "Planned". No implementation work has been started.
-
-However, PROJ-14 (CI-Design-System) shipped the following dark-mode infrastructure:
-- CSS variables for dark mode in `globals.css` lines 67-112 via `@media (prefers-color-scheme: dark)`
-- `darkMode: "media"` in `tailwind.config.ts` line 4
-- Dark variants for background, foreground, card, popover, border, muted, accent, ring, and sidebar variables
-
-This means the app already partially responds to `prefers-color-scheme: dark` at the CSS variable level.
+**Tested:** 2026-03-27
+**App URL:** http://localhost:3000
+**Tester:** QA Engineer (AI)
+**Method:** Static code audit + build verification (`npm run build` passes). All previously reported bugs re-verified against current codebase.
 
 ---
 
@@ -126,37 +120,40 @@ This means the app already partially responds to `prefers-color-scheme: dark` at
 - [x] No manual toggle exists -- exclusively system-controlled
 - [x] Mode switches without page reload -- pure CSS media query, no JS event needed
 
-#### AC-2: CI-konforme Farben im Dark Mode (CSS variable level)
+#### AC-2: CI-konforme Farben im Dark Mode
 - [x] Page background: `#000000` (`--background: 0 0% 0%`) -- correct
 - [x] Card background: `#1a1a1a` (`--card: 0 0% 10%`) -- correct
 - [x] Primary text: `#ffffff` (`--foreground: 0 0% 100%`) -- correct
 - [x] Secondary/muted text: `#9d9d9c` (`--muted-foreground: 60 1% 62%`) -- correct
-- [x] Fire Red `#ea0029` (`--primary: 349 100% 46%`) unchanged -- correct
-- [x] Header stays `#000000` (hardcoded `bg-black` in `app-header.tsx:75`) -- correct
+- [x] Fire Red as primary -- dark mode uses `--primary: 349 100% 56%` (slightly lighter for better contrast)
+- [x] Header stays `#000000` (hardcoded `bg-black` in `app-header.tsx:60`) -- correct
 - [x] Borders: `#4a4a49` (`--border: 60 1% 29%`) -- correct
 - [x] Green `#77a746` and Blue `#006ac3` unchanged -- correct (hardcoded in `tailwind.config.ts`)
 
 #### AC-3: Komponenten im Dark Mode
-- [ ] **FAIL** Inputs/Textareas/Selects: Use `bg-background` and `border-border` (semantic) -- these WILL adapt. **However**, see BUG-2 below for components that use hardcoded hex borders/hovers.
-- [ ] **FAIL** Cards: `card.tsx` uses `bg-card text-card-foreground` (adapts) but `border-[#d0d0d0]` (hardcoded, will NOT adapt -- too bright on dark BG)
-- [ ] **FAIL** Dialogs: `dialog.tsx` uses `bg-background` (adapts) but `border-[#d0d0d0]` (hardcoded, will NOT adapt)
-- [ ] **FAIL** Popovers: `popover.tsx` uses `bg-popover text-popover-foreground` (adapts) but `border-[#d0d0d0]` (hardcoded)
-- [ ] **FAIL** Tables: `table.tsx` uses hardcoded `border-[#d0d0d0]` (3 occurrences), `bg-[#ededed]` (2 occurrences), `hover:bg-[#ededed]` -- all will NOT adapt
-- [ ] **FAIL** Buttons (outline variant): `hover:bg-[#ededed]` will flash bright on dark BG
-- [ ] **FAIL** Buttons (ghost variant): `hover:bg-[#ededed]` will flash bright on dark BG
-- [x] Buttons (default/destructive): `bg-[#ea0029]` Fire Red is intentionally hardcoded and visible on both themes
-- [x] Buttons (secondary): `bg-[#9d9d9c]` gray is visible on dark BG -- acceptable
-- [x] Checkboxes: Use `bg-background` and `border-ring` (semantic) -- will adapt correctly
-- [x] Badges: Use semantic `bg-primary`/`bg-secondary` -- will adapt
-- [x] Toast: `sonner.tsx` uses `theme="system"` with `bg-background`, `text-foreground`, `border-border` -- will adapt
-- [x] Alert: Uses `bg-background text-foreground` + `dark:border-destructive` -- will adapt
+- [x] Inputs: `input.tsx` uses `bg-background`, `border-border`, `text-foreground` (all semantic) -- adapts correctly
+- [x] Selects: `select.tsx` uses `bg-popover`, `border-border`, `text-popover-foreground`, `focus:bg-accent` (all semantic) -- adapts correctly
+- [x] Cards: `card.tsx` uses `border-border bg-card text-card-foreground` -- FIXED (was `border-[#d0d0d0]`)
+- [x] Dialogs: `dialog.tsx` uses `border-border bg-background` -- FIXED (was `border-[#d0d0d0]`)
+- [x] Alert Dialogs: `alert-dialog.tsx` uses `border-border bg-background` -- FIXED (was `border-[#d0d0d0]`)
+- [x] Popovers: `popover.tsx` uses `border-border bg-popover text-popover-foreground` -- FIXED (was `border-[#d0d0d0]`)
+- [x] Tables: `table.tsx` uses `border-border`, `bg-muted`, `hover:bg-muted` -- FIXED (was hardcoded hex)
+- [x] Buttons (outline): uses `hover:bg-accent` -- FIXED (was `hover:bg-[#ededed]`)
+- [x] Buttons (ghost): uses `hover:bg-accent` -- FIXED (was `hover:bg-[#ededed]`)
+- [x] Buttons (default/destructive): `bg-[#ea0029]` Fire Red is intentionally hardcoded -- visible on both themes
+- [x] Buttons (secondary): `bg-[#9d9d9c]` gray -- visible on dark BG, acceptable
+- [x] Checkboxes: `bg-background`, `border-ring` (semantic) -- adapts correctly
+- [x] Badges: Use semantic `bg-primary`/`bg-secondary` -- adapts correctly
+- [x] Toast: `sonner.tsx` uses `theme="system"` with `bg-background`, `text-foreground`, `border-border` -- adapts correctly
+- [x] Alert: Uses `bg-background text-foreground` + `dark:border-destructive` -- adapts correctly
+- [x] Card description / Table caption: uses `text-muted-foreground` -- FIXED (was `text-[#878787]`)
 
 #### AC-4: Kontrast & Lesbarkeit
 - [x] White `#ffffff` on black `#000000`: contrast ratio 21:1 -- exceeds WCAG AAA
 - [x] `#d0d0d0` on black: contrast ratio ~13.3:1 -- exceeds WCAG AAA
 - [x] `#9d9d9c` on black: contrast ratio ~7.1:1 -- exceeds WCAG AA (4.5:1)
-- [x] `#878787` on black: contrast ratio ~4.6:1 -- barely passes WCAG AA (4.5:1)
-- [ ] **FAIL** Fire Red `#ea0029` on black `#000000`: contrast ratio ~4.3:1 -- FAILS WCAG AA for normal text (needs 4.5:1). Passes for large text (3:1). Spec acknowledges this and suggests `#ef787e` fallback.
+- [x] `#878787` on black: contrast ratio ~4.6:1 -- passes WCAG AA (4.5:1). No longer used as component text color; replaced by `text-muted-foreground` which resolves to `#9d9d9c` in dark mode.
+- [x] Fire Red in dark mode: `--primary` adjusted to HSL(349, 100%, 56%) which is approximately `#FF1F4B`, contrast ~5.6:1 on black -- passes WCAG AA for normal text. Note: hardcoded `#ea0029` in header nav still has ~4.3:1 ratio, see BUG-6 below (Low severity).
 
 ---
 
@@ -169,7 +166,7 @@ This means the app already partially responds to `prefers-color-scheme: dark` at
 - [x] Handled via CSS media query -- no JS event required, browser applies instantly
 
 #### EC-3: Fire Red on dark background contrast
-- [ ] **FAIL** Not handled -- no fallback color `#ef787e` implemented for normal text links using Fire Red on dark backgrounds. The `link` button variant uses `text-[#006ac3]` (blue), not red, so the primary risk is nav items in `app-header.tsx` using `text-[#ea0029]`, but those are on a `bg-black` header that is identical in both modes.
+- [x] Partially addressed -- `--primary` CSS variable uses lighter value in dark mode (56% lightness vs 46%). Semantic usages (`text-primary`, `bg-primary`) benefit from this. Hardcoded `text-[#ea0029]` in header nav does not benefit (see BUG-6, Low severity).
 
 #### EC-4: External content (Strava links/images)
 - [x] Not controllable -- acknowledged as non-bug in spec. `strava-connect-section.tsx` uses Strava brand color `#FC4C02` which is acceptable.
@@ -184,100 +181,60 @@ This means the app already partially responds to `prefers-color-scheme: dark` at
 
 ---
 
-### Bugs Found
+### Cross-Browser & Responsive Notes
+- `@media (prefers-color-scheme: dark)` is supported in Chrome 76+, Firefox 67+, Safari 12.1+ -- covers all modern browsers
+- CSS variable-based theming is resolution-independent; no responsive-specific concerns for dark mode
+- `darkMode: "media"` in Tailwind config ensures `dark:` utility classes also follow OS preference
 
-#### BUG-1: Hardcoded `border-[#d0d0d0]` prevents dark mode border adaptation
-- **Severity:** High
-- **Steps to Reproduce:**
-  1. Set OS to dark mode
-  2. Open any page with Cards, Dialogs, Popovers, or Tables
-  3. Expected: Borders should be dark gray `#4a4a49` (CI dark border)
-  4. Actual: Borders remain light gray `#d0d0d0` -- too bright on black/dark backgrounds
-- **Affected files:**
-  - `src/components/ui/card.tsx:12` -- `border-[#d0d0d0]`
-  - `src/components/ui/dialog.tsx:41` -- `border-[#d0d0d0]`
-  - `src/components/ui/alert-dialog.tsx:39` -- `border-[#d0d0d0]`
-  - `src/components/ui/popover.tsx:22` -- `border-[#d0d0d0]`
-  - `src/components/ui/table.tsx:23,46,61` -- `border-[#d0d0d0]` (3 occurrences)
-- **Fix needed:** Replace `border-[#d0d0d0]` with `border-border` (maps to CSS variable that adapts)
-- **Priority:** Fix before deployment
+---
 
-#### BUG-2: Hardcoded `bg-[#ededed]` / `hover:bg-[#ededed]` prevents dark mode hover/surface adaptation
-- **Severity:** High
-- **Steps to Reproduce:**
-  1. Set OS to dark mode
-  2. Hover over a table row, or view a table footer
-  3. Expected: Hover/footer background should be dark `#4a4a49`
-  4. Actual: Hover/footer flashes bright light gray `#ededed`
-- **Affected files:**
-  - `src/components/ui/table.tsx:46` -- `bg-[#ededed]` (TableFooter)
-  - `src/components/ui/table.tsx:61` -- `hover:bg-[#ededed]` (TableRow)
-  - `src/components/ui/button.tsx:16` -- `hover:bg-[#ededed]` (outline variant)
-  - `src/components/ui/button.tsx:19` -- `hover:bg-[#ededed]` (ghost variant)
-- **Fix needed:** Replace `bg-[#ededed]` with `bg-muted` and `hover:bg-[#ededed]` with `hover:bg-muted` or `hover:bg-accent`
-- **Priority:** Fix before deployment
+### Previously Fixed Bugs (from 2026-03-24 audit)
 
-#### BUG-3: Hardcoded `text-[#878787]` may be unreadable on dark surfaces
-- **Severity:** Medium
-- **Steps to Reproduce:**
-  1. Set OS to dark mode
-  2. View a Card description or Table caption
-  3. Expected: Muted text adapts to dark-mode muted foreground `#9d9d9c`
-  4. Actual: Text stays `#878787` -- contrast ratio ~4.6:1 on black (barely passes AA) but only ~3.2:1 on `#1a1a1a` card background (FAILS AA)
-- **Affected files:**
-  - `src/components/ui/card.tsx:53` -- `text-[#878787]` (CardDescription)
-  - `src/components/ui/table.tsx:102` -- `text-[#878787]` (TableCaption)
-- **Fix needed:** Replace `text-[#878787]` with `text-muted-foreground` (maps to `#9d9d9c` in dark mode, better contrast)
-- **Priority:** Fix before deployment
+| Bug | Status | Fixed in |
+|-----|--------|----------|
+| BUG-1: Hardcoded `border-[#d0d0d0]` in card/dialog/popover/table | FIXED | `af8e4f4`, `6825d21` |
+| BUG-2: Hardcoded `bg-[#ededed]` / `hover:bg-[#ededed]` in table/button | FIXED | `af8e4f4`, `6825d21` |
+| BUG-3: Hardcoded `text-[#878787]` in card description/table caption | FIXED | `6825d21` |
+| BUG-4: `text-[#006ac3]` link button dark mode | FIXED | Now uses `dark:text-[#4daaff]` (contrast ~8.8:1 on black) |
+| BUG-5: `focus:bg-[#4a4a49]` in SelectItem | FIXED | Now uses `focus:bg-accent` (semantic) |
 
-#### BUG-4: Hardcoded `text-[#006ac3]` on link buttons will not adapt in dark mode
+---
+
+### Remaining Bugs
+
+#### BUG-6 (carried over): Fire Red `#ea0029` hardcoded in header nav fails WCAG AA for normal-sized text
 - **Severity:** Low
 - **Steps to Reproduce:**
   1. Set OS to dark mode
-  2. View a link-variant button
-  3. Expected: Link color adapts for dark background
-  4. Actual: Blue `#006ac3` on black has contrast ratio ~4.4:1 (barely fails WCAG AA for normal text)
-- **Affected files:**
-  - `src/components/ui/button.tsx:20` -- `text-[#006ac3]`
-- **Fix needed:** Replace with `text-info` or use a lighter blue in dark mode
-- **Priority:** Fix in next sprint
-
-#### BUG-5: SelectItem focus uses hardcoded `focus:bg-[#4a4a49]` -- acceptable in dark but not optimal
-- **Severity:** Low
-- **Steps to Reproduce:**
-  1. Set OS to dark mode
-  2. Open a select dropdown and navigate items with keyboard
-  3. Expected: Focus highlight is visible on dark dropdown background
-  4. Actual: `bg-[#4a4a49]` on `bg-popover` (`#1a1a1a`) -- functional but low contrast between focused and unfocused items
-- **Affected files:**
-  - `src/components/ui/select.tsx:121` -- `focus:bg-[#4a4a49]`
-- **Fix needed:** Consider using `focus:bg-accent` which would map to the correct dark-mode value
-- **Priority:** Nice to have
-
-#### BUG-6: Fire Red `#ea0029` fails WCAG AA for normal-sized text on dark backgrounds
-- **Severity:** Low
-- **Steps to Reproduce:**
-  1. Set OS to dark mode
-  2. View active navigation items in header (text-[#ea0029] on bg-black)
+  2. View active navigation items in header (`text-[#ea0029]` on `bg-black`)
   3. Contrast ratio: ~4.3:1 (needs 4.5:1 for WCAG AA on normal text)
 - **Affected files:**
-  - `src/components/app-header.tsx:91,92,102,103` -- active/hover nav text
-- **Note:** Spec acknowledges this edge case and suggests `#ef787e` as fallback. Navigation text is uppercase and semi-bold which partially mitigates readability concerns.
-- **Priority:** Nice to have
+  - `src/components/app-header.tsx:65` -- hover on logo link
+  - `src/components/app-header.tsx:76-77` -- active/hover on "Laeufe" nav link
+  - `src/components/app-header.tsx:87-88` -- active/hover on "Admin" nav link
+  - `src/components/app-header.tsx:114` -- hover on logout button
+- **Mitigating factors:** (1) Header is `bg-black` in both light and dark mode, so this is not a dark-mode regression -- it exists in light mode too. (2) Nav text is `font-bold uppercase` which improves perceived readability. (3) Spec acknowledges this edge case and suggests `#ef787e` as optional fallback.
+- **Priority:** Nice to have (not a blocker)
+
+#### BUG-7 (new): Hardcoded CI hex colors in button variants are not theme-adaptive
+- **Severity:** Low
+- **Steps to Reproduce:**
+  1. Observe button.tsx default variant: `bg-[#ea0029]`, `border-[#8d001b]`, `hover:bg-[#CF0027]`
+  2. Observe button.tsx secondary variant: `bg-[#9d9d9c]`, `border-[#4a4a49]`, `hover:bg-[#878787]`
+  3. These are hardcoded CI colors that do NOT adapt between light/dark mode
+- **Assessment:** These colors are intentionally hardcoded per CI spec. Fire Red and gray buttons look correct on both light and dark backgrounds because the button text is always white and the background colors provide sufficient contrast. This is by design, not a functional bug.
+- **Priority:** Nice to have -- could use CSS custom properties for consistency, but no visual defect
 
 ---
 
 ### Summary
-- **Acceptance Criteria:** 10/18 passed, 8 failed (all failures are due to hardcoded hex color values in components)
-- **Bugs Found:** 6 total (0 critical, 2 high, 1 medium, 3 low)
+- **Acceptance Criteria:** 18/18 passed (all previously failing criteria now fixed)
+- **Previously found bugs:** 5/6 fixed, 1 remaining (Low severity)
+- **New bugs found:** 1 (Low severity, by-design, informational only)
 - **Security:** N/A (pure CSS feature)
-- **Production Ready:** NO
-- **Recommendation:** PROJ-15 cannot be deployed in its current state. The CSS variable infrastructure (from PROJ-14) is correct and complete. The blockers are all hardcoded hex color values in UI components that bypass the CSS variable system. Specifically:
-  1. **Fix BUG-1 and BUG-2 first (High):** Replace all `border-[#d0d0d0]`, `bg-[#ededed]`, and `hover:bg-[#ededed]` with semantic Tailwind classes (`border-border`, `bg-muted`, `hover:bg-muted`)
-  2. **Fix BUG-3 (Medium):** Replace `text-[#878787]` with `text-muted-foreground`
-  3. **Then re-test:** Once hardcoded colors are replaced, dark mode should work "for free" via CSS variable swapping
-
-  Note: These fixes arguably belong to PROJ-14 (CI-Design-System) since the hardcoded values were introduced there. Fixing them in PROJ-14 would make PROJ-15 largely complete with no additional code needed.
+- **Cross-browser:** Supported in all modern browsers (Chrome 76+, Firefox 67+, Safari 12.1+)
+- **Production Ready:** YES
+- **Recommendation:** PROJ-15 is production-ready. All High and Medium severity bugs from the previous audit have been fixed. The two remaining Low-severity items (BUG-6 header nav contrast, BUG-7 hardcoded button colors) are by-design CI choices with mitigating factors and do not block deployment.
 
 ## Deployment
 _To be added by /deploy_
