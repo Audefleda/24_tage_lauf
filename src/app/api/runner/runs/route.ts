@@ -10,6 +10,11 @@ import { sendTeamsNotification } from '@/lib/teams-notification'
 import { rateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
 
+const RunItemSchema = z.object({
+  runDate: z.string().min(1),
+  runDistance: z.string().regex(/^\d+(\.\d+)?$/, 'Ungültige Distanz'),
+})
+
 const NotifyRunSchema = z.object({
   runDate: z.string().min(1),
   runDistance: z.string().min(1),
@@ -59,10 +64,14 @@ export async function PUT(request: NextRequest) {
   let notifyRun: { runDate: string; runDistance: string } | undefined
   try {
     const body = await request.json()
-    runs = body.runs
-    if (!Array.isArray(runs)) {
+    if (!Array.isArray(body.runs)) {
       throw new Error('runs muss ein Array sein')
     }
+    const runsResult = z.array(RunItemSchema).safeParse(body.runs)
+    if (!runsResult.success) {
+      return NextResponse.json({ error: 'Ungültige Laufdaten' }, { status: 400 })
+    }
+    runs = runsResult.data
     // Optional: validate notifyRun with Zod if present (BUG-1 fix)
     if (body.notifyRun !== undefined) {
       const result = NotifyRunSchema.safeParse(body.notifyRun)

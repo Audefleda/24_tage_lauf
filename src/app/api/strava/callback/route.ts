@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
   // BUG-2 fix: validate CSRF state token
   const expectedState = request.cookies.get(STATE_COOKIE)?.value
   if (!expectedState || expectedState !== state) {
-    console.error('[PROJ-5] OAuth state mismatch — possible CSRF attack')
+    logger.error('strava', 'OAuth state mismatch — possible CSRF attack')
     return NextResponse.redirect(`${origin}/runs?strava=error`)
   }
 
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       if (upsertError.code === '23505' && upsertError.message.includes('athlete_id')) {
         return NextResponse.redirect(`${origin}/runs?strava=already_connected`)
       }
-      console.error('[PROJ-5] Failed to save strava tokens:', upsertError.message)
+      logger.error('strava', 'Fehler beim Speichern der Strava-Tokens', upsertError.message)
       return NextResponse.redirect(`${origin}/runs?strava=error`)
     }
 
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
     response.cookies.delete(STATE_COOKIE)
     return response
   } catch (err) {
-    console.error('[PROJ-5] Strava OAuth callback error:', err)
+    logger.error('strava', 'OAuth-Callback-Fehler', err instanceof Error ? err.message : String(err))
     return NextResponse.redirect(`${origin}/runs?strava=error`)
   }
 }
