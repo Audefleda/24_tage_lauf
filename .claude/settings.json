@@ -22,7 +22,8 @@
       "Edit(/.claude/skills/qa/**)",
       "Bash(npm test:*)",
       "Skill(deploy)",
-      "Skill(deploy:*)"
+      "Skill(deploy:*)",
+      "Bash(npx playwright:*)"
     ]
   }
 }
