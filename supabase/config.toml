@@ -1,7 +1,6 @@
 # Supabase CLI configuration
 # https://supabase.com/docs/reference/cli/config
 
-[project]
 # Production project ID (used by default for `supabase db push` without --db-url)
 # Find this in: Supabase Dashboard → Project Settings → General → Reference ID
 project_id = "aceaotlrychrxcafjoxk"
