@@ -1,0 +1,43 @@
+name: Migrate Production Database
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'supabase/migrations/**'
+
+jobs:
+  migrate:
+    name: Apply migrations to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate required secrets
+        env:
+          DB_URL: ${{ secrets.SUPABASE_PROD_DB_URL }}
+          ACCESS_TOKEN: ${{ secrets.SUPABASE_PROD_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "::error::Secret SUPABASE_PROD_DB_URL ist nicht konfiguriert. Siehe PROJ-21 Setup-Anleitung."
+            exit 1
+          fi
+          if [ -z "$ACCESS_TOKEN" ]; then
+            echo "::error::Secret SUPABASE_PROD_ACCESS_TOKEN ist nicht konfiguriert. Siehe PROJ-21 Setup-Anleitung."
+            exit 1
+          fi
+
+      - name: Setup Supabase CLI
+        # Security: Fuer erhoehte Sicherheit SHA-Pinning verwenden statt @v1
+        # SHA ermitteln mit: gh api repos/supabase/setup-cli/git/refs/tags/v1
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Apply migrations to Production
+        run: supabase db push --db-url "${{ secrets.SUPABASE_PROD_DB_URL }}"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_PROD_ACCESS_TOKEN }}

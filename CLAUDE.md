@@ -57,6 +57,23 @@ npm run lint       # ESLint
 npm run start      # Production server
 ```
 
+## Datenbank-Migrationen (PROJ-21)
+
+Zwei Supabase-Instanzen: `24_tage_lauf_dev` (lokal/Preview) und `24_tage_lauf` (Production).
+
+```bash
+# Supabase CLI installieren (einmalig)
+brew install supabase/tap/supabase
+
+# Neue Migration erstellen
+supabase migration new <name>
+
+# Migration auf Dev-Instanz testen
+supabase db push --db-url "postgresql://postgres:<password>@db.jyzjyaucwgcxsetppjbv.supabase.co:5432/postgres"
+
+# Production-Migration: automatisch via GitHub Action bei Push auf main
+```
+
 ## Product Context
 
 @docs/PRD.md
