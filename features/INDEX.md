@@ -33,7 +33,8 @@
 | PROJ-19 | Teams-Benachrichtigung nach Lauf-Eintrag | Deployed | [PROJ-19](PROJ-19-teams-benachrichtigung.md) | 2026-03-26 |
 | PROJ-20 | Teams-Benachrichtigung Opt-out | Deployed | [PROJ-20](PROJ-20-teams-opt-out.md) | 2026-03-26 |
 | PROJ-21 | Dev/Prod Datenbank-Trennung (Supabase + CI/CD) | Deployed | [PROJ-21](PROJ-21-dev-prod-datenbank-trennung.md) | 2026-03-27 |
+| PROJ-22 | Umgebungsanzeige im Header | In Review | [PROJ-22](PROJ-22-umgebungsanzeige.md) | 2026-03-31 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-22
+## Next Available ID: PROJ-23
