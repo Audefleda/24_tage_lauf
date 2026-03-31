@@ -32,7 +32,7 @@
 | PROJ-18 | Läufer-Vorauswahl anhand E-Mail-Adresse | Deployed | [PROJ-18](PROJ-18-laeufer-vorauswahl-email.md) | 2026-03-26 |
 | PROJ-19 | Teams-Benachrichtigung nach Lauf-Eintrag | Deployed | [PROJ-19](PROJ-19-teams-benachrichtigung.md) | 2026-03-26 |
 | PROJ-20 | Teams-Benachrichtigung Opt-out | Deployed | [PROJ-20](PROJ-20-teams-opt-out.md) | 2026-03-26 |
-| PROJ-21 | Dev/Prod Datenbank-Trennung (Supabase + CI/CD) | In Review | [PROJ-21](PROJ-21-dev-prod-datenbank-trennung.md) | 2026-03-27 |
+| PROJ-21 | Dev/Prod Datenbank-Trennung (Supabase + CI/CD) | Deployed | [PROJ-21](PROJ-21-dev-prod-datenbank-trennung.md) | 2026-03-27 |
 
 <!-- Add features above this line -->
 

@@ -1,6 +1,6 @@
 # PROJ-21: Dev/Prod Datenbank-Trennung (Supabase + CI/CD)
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-27
 **Last Updated:** 2026-03-31
 
@@ -331,4 +331,8 @@ Die folgenden Punkte koennen nur manuell durch den Entwickler/Admin verifiziert 
 - **Recommendation:** Medium-Bugs (BUG-3, BUG-4) beheben, dann deployen. Low-Bugs koennen im naechsten Sprint adressiert werden.
 
 ## Deployment
-_To be added by /deploy_
+
+- **Deployed:** 2026-03-31
+- **Commit:** `76182de`
+- **Branch:** `main`
+- **GitHub Action:** `.github/workflows/migrate-production.yml` — wird beim nächsten Push einer Migration automatisch ausgelöst
