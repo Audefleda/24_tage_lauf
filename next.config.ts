@@ -28,6 +28,9 @@ const securityHeaders = [
 ]
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_DEPLOY_TIME: new Date().toISOString(),
+  },
   async headers() {
     return [
       {
