@@ -1,6 +1,6 @@
 # PROJ-22: Umgebungsanzeige im Header
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-03-31
 **Last Updated:** 2026-03-31
 
@@ -171,4 +171,7 @@ _To be added by /architecture_
 - **Recommendation:** Deploy. Beide Low-Severity Bugs (BUG-1, BUG-2) betreffen rein theoretische Szenarien und koennen optional in einem spaeteren Sprint behoben werden.
 
 ## Deployment
-_To be added by /deploy_
+
+**Deployed:** 2026-03-31
+**Trigger:** Push auf `main` → Vercel Auto-Deploy
+**Commits:** `61bc0a9` (Test-Infrastruktur), `8872a4e` (Bug-Fixes)
