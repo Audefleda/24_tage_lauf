@@ -40,3 +40,6 @@ next-env.d.ts
 
 # Supabase MCP Access
 .mcp.json
+
+# Supabase CLI temp files
+supabase/.temp/
