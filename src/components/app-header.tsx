@@ -13,6 +13,7 @@ function formatDeployTime(isoString: string | undefined): string | null {
   if (!isoString) return null
   try {
     const date = new Date(isoString)
+    if (isNaN(date.getTime())) return null
     const day = date.getDate().toString().padStart(2, '0')
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const hours = date.getHours().toString().padStart(2, '0')
@@ -38,14 +39,13 @@ function EnvironmentBadge() {
 
   // Production
   if (vercelEnv === 'production') {
-    if (!formattedTime) return null
     return (
       <Badge
         variant="outline"
         className="border-[#9d9d9c]/40 text-[#9d9d9c] text-[10px] font-normal whitespace-nowrap hidden sm:inline-flex"
         aria-label="Deployment-Zeitpunkt"
       >
-        Deploy: {formattedTime}
+        {formattedTime ? `Deploy: ${formattedTime}` : 'Deploy'}
       </Badge>
     )
   }

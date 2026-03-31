@@ -20,7 +20,9 @@
       "Bash(node -e \"require\\(''date-fns''\\); console.log\\(''date-fns ok''\\)\")",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Edit(/.claude/skills/qa/**)",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Skill(deploy)",
+      "Skill(deploy:*)"
     ]
   }
 }

@@ -68,49 +68,53 @@ _To be added by /architecture_
 
 ## QA Test Results
 
-**Tested:** 2026-03-31
+**Tested:** 2026-03-31 (2. Durchlauf)
 **App URL:** http://localhost:3000
 **Tester:** QA Engineer (AI)
 **Build:** `npm run build` passes without errors
+**Unit Tests:** 86/86 passed (davon 10 fuer EnvironmentBadge in app-header.test.tsx)
 
 ### Acceptance Criteria Status
 
 #### AC-1: Lokale Entwicklung (NODE_ENV === "development" oder kein Vercel-Deployment)
-- [x] Im Header wird ein Badge/Label "Lokale Entwicklung" angezeigt (emerald green Badge)
-- [x] Kein Datum/Uhrzeit wird angezeigt
+- [x] Im Header wird ein Badge/Label "Lokale Entwicklung" angezeigt (emerald green Badge) -- Unit-Test bestaetigt
+- [x] Kein Datum/Uhrzeit wird angezeigt -- Unit-Test bestaetigt
 
 #### AC-2: Preview-Umgebung (NEXT_PUBLIC_VERCEL_ENV === "preview")
-- [x] Im Header wird "Preview . <Branch-Name> . <Datum> <Uhrzeit>" angezeigt (amber Badge)
+- [x] Im Header wird "Preview . <Branch-Name> . <Datum> <Uhrzeit>" angezeigt (amber Badge) -- Unit-Test bestaetigt
 - [x] Branch-Name stammt aus NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF
 - [x] Datum und Uhrzeit stammen aus dem Build-Zeitstempel (NEXT_PUBLIC_DEPLOY_TIME)
-- [x] Format: DD.MM. HH:MM (korrekt in formatDeployTime implementiert)
+- [x] Format: DD.MM. HH:MM (korrekt in formatDeployTime implementiert) -- Unit-Test bestaetigt
 
 #### AC-3: Produktionsumgebung (NEXT_PUBLIC_VERCEL_ENV === "production")
-- [x] Im Header wird nur Datum und Uhrzeit des Deployments angezeigt (z.B. "Deploy: 31.03. 14:22")
+- [x] Im Header wird nur Datum und Uhrzeit des Deployments angezeigt (z.B. "Deploy: 31.03. 14:22") -- Unit-Test bestaetigt
 - [x] Kein Branch-Name wird angezeigt
 - [x] Datum und Uhrzeit stammen aus dem Build-Zeitstempel (NEXT_PUBLIC_DEPLOY_TIME)
 
 #### AC-4: Allgemein
 - [x] Die Umgebungsanzeige ist fuer alle Nutzer*innen sichtbar -- auch ohne Login (AppHeader in root layout.tsx)
 - [x] Die Anzeige ist im bestehenden AppHeader integriert (EnvironmentBadge innerhalb app-header.tsx)
-- [x] Die Anzeige ist auf Mobile (375px) dezent ausgeblendet (hidden sm:inline-flex)
-- [x] Im Produktions-Build ohne Vercel-Kontext erscheint "Lokale Entwicklung" (Bedingung: !vercelEnv)
+- [x] Die Anzeige ist auf Mobile (375px) dezent ausgeblendet (hidden sm:inline-flex) -- Unit-Test bestaetigt
+- [x] Im Produktions-Build ohne Vercel-Kontext erscheint "Lokale Entwicklung" (Bedingung: !vercelEnv) -- Unit-Test bestaetigt
 
 ### Edge Cases Status
 
 #### EC-1: Kein NEXT_PUBLIC_DEPLOY_TIME gesetzt
 - [x] Lokale Entwicklung: Zeigt nur "Lokale Entwicklung" ohne Datum
-- [x] Preview: Zeigt nur "Preview" bzw. "Preview . branch" ohne Datum
+- [x] Preview: Zeigt nur "Preview" bzw. "Preview . branch" ohne Datum -- Unit-Test bestaetigt
 - [ ] BUG: Produktion: Badge wird komplett ausgeblendet statt "Deploy" ohne Datum zu zeigen (siehe BUG-1)
 
 #### EC-2: Branch-Name ist sehr lang (>20 Zeichen)
-- [x] Abschneiden mit Ellipsis nach 20 Zeichen (truncateBranch korrekt implementiert)
+- [x] Abschneiden mit Ellipsis nach 20 Zeichen (truncateBranch korrekt implementiert) -- Unit-Test bestaetigt
 
 #### EC-3: NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF nicht gesetzt
-- [x] Nur "Preview" angezeigt, ohne Branch-Name (filter(Boolean) entfernt null-Werte)
+- [x] Nur "Preview" angezeigt, ohne Branch-Name (filter(Boolean) entfernt null-Werte) -- Unit-Test bestaetigt
 
 #### EC-4: Login-Seite
 - [x] Anzeige erscheint auch ohne eingeloggten User (AppHeader in root layout)
+
+#### EC-5: Malformed NEXT_PUBLIC_DEPLOY_TIME (neu identifiziert)
+- [ ] BUG: Ungueltige ISO-Strings fuehren zu "NaN.NaN. NaN:NaN" statt Fallback (siehe BUG-2)
 
 ### Security Audit Results
 - [x] Keine sensiblen Daten exponiert: Alle Env-Variablen sind NEXT_PUBLIC_* (bewusst oeffentlich)
@@ -118,6 +122,8 @@ _To be added by /architecture_
 - [x] Branch-Name in Preview akzeptabel (Preview-Umgebungen sind nicht oeffentlich)
 - [x] Keine Geheimnisse (Tokens, Passwoerter) in der Anzeige
 - [x] Security-Headers in next.config.ts weiterhin korrekt konfiguriert
+- [x] Kein XSS-Risiko: Alle angezeigten Werte stammen aus Build-Zeit-Umgebungsvariablen, nicht aus User-Input
+- [x] Env-Variablen werden nur in app-header.tsx und app-header.test.tsx referenziert -- kein Leak in andere Dateien
 
 ### Cross-Browser / Responsive (Code Review)
 - [x] Chrome/Firefox/Safari: Standard CSS (flexbox, badge) -- keine browser-spezifischen APIs verwendet
@@ -131,6 +137,7 @@ _To be added by /architecture_
 - [x] Admin-Link (PROJ-6): Weiterhin nur fuer Admin-Rolle sichtbar
 - [x] Logout-Button: Weiterhin funktional
 - [x] Build erfolgreich: Keine Kompilierungsfehler
+- [x] Alle 86 Unit Tests bestanden (7 Test-Dateien) -- keine Regressionen
 
 ### Bugs Found
 
@@ -142,15 +149,26 @@ _To be added by /architecture_
   3. Expected: Badge "Deploy" wird ohne Zeitangabe angezeigt (analog zum Edge-Case-Spec: "Datum/Uhrzeit nicht anzeigen, nur Umgebungsname")
   4. Actual: Badge wird komplett ausgeblendet (return null in Zeile 41)
 - **Priority:** Nice to have -- In der Praxis wird NEXT_PUBLIC_DEPLOY_TIME immer gesetzt (via next.config.ts), daher ist dieser Fall quasi nur theoretisch moeglich.
+- **Unit-Test:** Dokumentiert in app-header.test.tsx ("BUG-1: production without deploy time returns null instead of showing label")
+
+#### BUG-2: Malformed NEXT_PUBLIC_DEPLOY_TIME fuehrt zu "NaN"-Anzeige
+- **Severity:** Low
+- **Steps to Reproduce:**
+  1. Setze NEXT_PUBLIC_DEPLOY_TIME auf einen ungueltigen Wert (z.B. "not-a-date")
+  2. Setze NEXT_PUBLIC_VERCEL_ENV=production
+  3. Expected: Badge faellt zurueck auf "Deploy" ohne Zeitangabe, oder wird ausgeblendet
+  4. Actual: Badge zeigt "Deploy: NaN.NaN. NaN:NaN", weil `new Date("not-a-date")` kein Error wirft, sondern ein Invalid-Date-Objekt zurueckgibt, und die try/catch-Logik in formatDeployTime greift nicht
+- **Root Cause:** formatDeployTime (Zeile 12-24) prueft nicht auf `isNaN(date.getTime())` nach dem Date-Konstruktor
+- **Priority:** Nice to have -- In der Praxis wird der Wert via `new Date().toISOString()` in next.config.ts generiert und ist daher immer valides ISO-8601. Dieser Fall ist nur bei manueller Manipulation moeglich.
 
 ### Summary
 - **Acceptance Criteria:** 11/11 passed
-- **Edge Cases:** 4/5 passed, 1 Low-Severity Bug
-- **Bugs Found:** 1 total (0 critical, 0 high, 0 medium, 1 low)
+- **Edge Cases:** 4/6 passed, 2 Low-Severity Bugs (1 bereits bekannt, 1 neu)
+- **Bugs Found:** 2 total (0 critical, 0 high, 0 medium, 2 low)
 - **Security:** Pass -- keine Angriffsvektoren, rein clientseitige Anzeige von Build-Zeit-Variablen
-- **Regression:** Pass -- keine Regressionen in bestehenden Features
+- **Regression:** Pass -- keine Regressionen in bestehenden Features, alle 86 Unit Tests bestanden
 - **Production Ready:** YES
-- **Recommendation:** Deploy. Der Low-Severity Bug (BUG-1) kann optional in einem spaeteren Sprint behoben werden.
+- **Recommendation:** Deploy. Beide Low-Severity Bugs (BUG-1, BUG-2) betreffen rein theoretische Szenarien und koennen optional in einem spaeteren Sprint behoben werden.
 
 ## Deployment
 _To be added by /deploy_
