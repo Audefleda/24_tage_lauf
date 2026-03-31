@@ -37,6 +37,22 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_PROD_ACCESS_TOKEN }}
 
+      - name: Repair migration history (einmalig)
+        # Hintergrund: Die 11 Migrationen vor PROJ-21 wurden direkt im Dashboard
+        # angewendet und haben Supabase-generierte Timestamps (z.B. 20260317103234).
+        # Die lokalen Dateien verwenden nur Datums-Praefixe (20260317).
+        # Schritt 1: Alte Remote-Eintraege entfernen
+        # Schritt 2: Lokale Baseline-Migrationen als angewendet markieren
+        run: |
+          supabase migration repair --status reverted \
+            20260317103234 20260317130114 20260321130330 20260321133034 \
+            20260323104117 20260323110313 20260326114655 20260326144346 \
+            20260326150052 20260326203713 20260326213206
+          supabase migration repair --status applied \
+            20260317 20260321 20260322 20260323 20260326
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_PROD_ACCESS_TOKEN }}
+
       - name: Apply migrations to Production
         run: supabase db push
         env:
