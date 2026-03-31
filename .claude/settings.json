@@ -17,7 +17,10 @@
       "Bash(npx shadcn@latest add:*)",
       "Bash(ls:*)",
       "Bash(cat:*)",
-      "Bash(node -e \"require\\(''date-fns''\\); console.log\\(''date-fns ok''\\)\")"
+      "Bash(node -e \"require\\(''date-fns''\\); console.log\\(''date-fns ok''\\)\")",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Edit(/.claude/skills/qa/**)",
+      "Bash(npm test:*)"
     ]
   }
 }
