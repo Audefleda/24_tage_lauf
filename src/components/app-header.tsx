@@ -64,7 +64,7 @@ export function AppHeader() {
             href="/"
             className="text-white font-bold text-base tracking-tight hover:text-[#ea0029] transition-colors"
           >
-            24-TAGE-Lauf für Kinderrechte
+            BCxP läuft 24 Tage für Kinderrechte
           </Link>
 
           {!isLoginPage && user && (
