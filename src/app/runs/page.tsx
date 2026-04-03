@@ -6,6 +6,7 @@ import { StatsCard } from '@/components/stats-card'
 import { RunsTable } from '@/components/runs-table'
 import { RunnerSelectDialog } from '@/components/runner-select-dialog'
 import { StravaConnectSection } from '@/components/strava-connect-section'
+import { ExternalWebhookSection } from '@/components/external-webhook-section'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -211,6 +212,7 @@ export default function RunsPage() {
         onRunsUpdated={refreshRunner}
       />
       <StravaConnectSection />
+      <ExternalWebhookSection />
 
       {/* Teams notification opt-out */}
       <div className="rounded-lg border bg-card p-4 space-y-2">

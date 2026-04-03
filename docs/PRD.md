@@ -32,6 +32,7 @@
 | P2 | Debug-Logging (LOG_LEVEL=debug via Vercel Env, maskierte Tokens) | Planned |
 | P2 | Sprache — Umlaute & gendergerechte Formulierungen (Genderstern) | Planned |
 | P2 | Dev/Prod Datenbank-Trennung (Supabase CLI + GitHub Actions) | Planned |
+| P2 | Externer Webhook-Token (Make.com / Zapier Alternative zu Strava-App) | Planned |
 
 ## Success Metrics
 - Alle Läufer können sich anmelden und ihre eigenen Läufe eintragen
