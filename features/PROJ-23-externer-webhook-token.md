@@ -1,6 +1,6 @@
 # PROJ-23: Externer Webhook-Token (Make.com / Zapier Alternative)
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-04-03
 **Last Updated:** 2026-04-03
 
@@ -463,4 +463,9 @@ Admin-Deaktivierungs-Feature (AC-13/14/15) geprüft:
 - **Production Ready:** JA — bereit für Deployment auf `main`
 
 ## Deployment
-_To be added by /deploy_
+
+**Deployed:** 2026-04-03
+**Tag:** v1.23.0-PROJ-23
+**PR:** Audefleda/24_tage_lauf#1
+**Plattform:** Vercel (auto-deploy via GitHub Action bei Push auf main)
+**Datenbank-Migration:** `20260403001_create_external_webhook_tokens.sql` — auf Dev manuell angewendet, auf Prod automatisch via GitHub Action
