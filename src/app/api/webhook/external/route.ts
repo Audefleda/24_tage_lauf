@@ -3,7 +3,7 @@
 
 import { NextResponse, type NextRequest, after } from 'next/server'
 import { z } from 'zod'
-import { createHash } from 'crypto'
+import { createHash, timingSafeEqual } from 'crypto'
 import { createAdminClient } from '@/lib/supabase-admin'
 import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
 import { Typo3Error } from '@/lib/typo3-client'
@@ -19,7 +19,11 @@ const ExternalRunSchema = z.object({
       const parsed = new Date(d + 'T00:00:00Z')
       return !isNaN(parsed.getTime()) && d === parsed.toISOString().split('T')[0]
     }, 'Ungueltiges Datum'),
-  distance_km: z.number({ error: 'distance_km muss eine Zahl sein' }),
+  distance_km: z
+    .number({ error: 'distance_km muss eine Zahl sein' })
+    .finite()
+    .nonnegative()
+    .max(1000, 'distance_km darf maximal 1000 km betragen'),
 })
 
 function hashToken(token: string): string {
@@ -60,11 +64,14 @@ export async function POST(request: NextRequest) {
 
   const { data: tokenRow } = await supabaseAdmin
     .from('external_webhook_tokens')
-    .select('user_id')
+    .select('user_id, token_hash')
     .eq('token_hash', tokenHash)
     .single()
 
-  if (!tokenRow) {
+  if (
+    !tokenRow ||
+    !timingSafeEqual(Buffer.from(tokenHash, 'hex'), Buffer.from(tokenRow.token_hash, 'hex'))
+  ) {
     return NextResponse.json(
       { error: 'Ungueltiger Token' },
       { status: 401 }
@@ -116,7 +123,11 @@ export async function POST(request: NextRequest) {
       runDistance: distance_km.toFixed(2),
     }
 
-    const updatedRuns = [...existingRuns, newRun]
+    // Idempotenz: Lauf mit gleichem Datum ersetzen statt doppelt eintragen (BUG-2)
+    const updatedRuns = [
+      ...existingRuns.filter((r) => r.runDate !== date),
+      newRun,
+    ]
     await updateRunnerRuns(profile.typo3_uid, updatedRuns)
 
     logger.debug('webhook-external', 'Lauf eingetragen', {
