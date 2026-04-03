@@ -5,12 +5,14 @@ const path = require('node:path');
 const fs = require('node:fs');
 const os = require('node:os');
 
-// Load .env.local from the project directory (where the script is called from)
-const envPath = path.resolve(process.cwd(), '.env.local');
+// Load env file: use BACKUP_DOTENV_PATH if set, otherwise fall back to .env.local
+const envPath = process.env.BACKUP_DOTENV_PATH
+  ? path.resolve(process.env.BACKUP_DOTENV_PATH)
+  : path.resolve(process.cwd(), '.env.local');
 const dotenvResult = require('dotenv').config({ path: envPath });
 
 if (dotenvResult.error) {
-  console.error(`Fehler: .env.local nicht gefunden unter ${envPath}`);
+  console.error(`Fehler: Env-Datei nicht gefunden unter ${envPath}`);
   console.error('Bitte stelle sicher, dass du das Script aus dem Projektverzeichnis aufrufst.');
   process.exit(1);
 }
@@ -191,12 +193,54 @@ async function main() {
 
     const sizeKB = Math.round(fs.statSync(archivePath).size / 1024);
     console.log(`Backup abgeschlossen: ${archivePath} (${sizeKB} KB)`);
+
+    // Cleanup old backups
+    cleanupBackups(outputDir, now);
   } catch (err) {
     console.error(`\nFehler: ${err.message}`);
     process.exit(1);
   } finally {
     // Remove temp CSV files
     fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+}
+
+function cleanupBackups(outputDir, now) {
+  const KEEP_HOURLY_DAYS = 5;
+  const backupPattern = /^backup_(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})\.tar\.gz$/;
+
+  const files = fs.readdirSync(outputDir)
+    .map((name) => {
+      const match = name.match(backupPattern);
+      if (!match) return null;
+      const [, datePart, timePart] = match;
+      const isoStr = `${datePart}T${timePart.replace(/-/g, ':')}`;
+      return { name, date: new Date(isoStr) };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.date - a.date); // newest first
+
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - KEEP_HOURLY_DAYS);
+
+  // Group files older than cutoff by day, keep only the latest per day
+  const keptPerDay = new Set();
+  let deleted = 0;
+
+  for (const file of files) {
+    if (file.date >= cutoff) continue; // within retention window, keep all
+
+    const dayKey = file.name.slice(7, 17); // "YYYY-MM-DD"
+    if (!keptPerDay.has(dayKey)) {
+      keptPerDay.add(dayKey); // keep the newest of this day
+    } else {
+      fs.unlinkSync(path.join(outputDir, file.name));
+      deleted++;
+    }
+  }
+
+  if (deleted > 0) {
+    console.log(`Bereinigung: ${deleted} alte Backup(s) gelöscht (älter als ${KEEP_HOURLY_DAYS} Tage, nur Tages-Backup behalten).`);
   }
 }
 

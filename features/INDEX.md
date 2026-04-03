@@ -34,7 +34,8 @@
 | PROJ-20 | Teams-Benachrichtigung Opt-out | Deployed | [PROJ-20](PROJ-20-teams-opt-out.md) | 2026-03-26 |
 | PROJ-21 | Dev/Prod Datenbank-Trennung (Supabase + CI/CD) | Deployed | [PROJ-21](PROJ-21-dev-prod-datenbank-trennung.md) | 2026-03-27 |
 | PROJ-22 | Umgebungsanzeige im Header | Deployed | [PROJ-22](PROJ-22-umgebungsanzeige.md) | 2026-03-31 |
+| PROJ-23 | Externer Webhook-Token (Make.com / Zapier Alternative) | In Review | [PROJ-23](PROJ-23-externer-webhook-token.md) | 2026-04-03 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-23
+## Next Available ID: PROJ-24

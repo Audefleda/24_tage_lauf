@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button'
 import { RunnerAssignmentTable } from '@/components/runner-assignment-table'
 import { StravaWebhookSetup } from '@/components/strava-webhook-setup'
+import { ExternalWebhookControl } from '@/components/external-webhook-control'
 import { FileText } from 'lucide-react'
 
 export default function AdminPage() {
@@ -29,6 +30,18 @@ export default function AdminPage() {
         </CardHeader>
         <CardContent>
           <StravaWebhookSetup />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Externer Webhook</CardTitle>
+          <CardDescription>
+            Alle externen Webhook-Aufrufe (Make.com, Zapier, curl) zentral aktivieren oder deaktivieren
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ExternalWebhookControl />
         </CardContent>
       </Card>
 
