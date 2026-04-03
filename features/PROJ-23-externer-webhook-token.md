@@ -49,6 +49,9 @@ PROJ-5 setzt eine bei Strava genehmigte App voraus. Falls Strava die App nicht f
 - [ ] **AC-10:** Fehlerhafte Requests werden mit sprechenden HTTP-Status-Codes beantwortet: `401` (kein / ungültiger Token), `422` (Validierungsfehler), `500` (TYPO3-Fehler)
 - [ ] **AC-11:** Das Eintragen in TYPO3 durch den externen Webhook wird im TYPO3 Request Log (PROJ-8) erfasst
 - [ ] **AC-12:** Ein Läufer ohne zugeordnetes TYPO3-Profil erhält `422` mit einer klaren Fehlermeldung ("Kein TYPO3-Läuferprofil zugeordnet")
+- [ ] **AC-13:** Der Admin kann auf der Admin-Seite alle externen Webhooks zentral deaktivieren. Deaktivierte Webhooks geben `503 Service Unavailable` zurück mit der Meldung "Der externe Webhook ist derzeit deaktiviert."
+- [ ] **AC-14:** Beim Deaktivieren bleiben alle bestehenden Tokens erhalten. Nach Reaktivierung funktionieren sie ohne erneutes Generieren.
+- [ ] **AC-15:** Der Admin-Bereich zeigt den aktuellen Status (Aktiv / Deaktiviert) als Badge sowie einen Button "Webhook deaktivieren" / "Webhook aktivieren". Vor dem Deaktivieren erscheint ein Bestätigungs-Dialog.
 
 ## Edge Cases
 
@@ -57,6 +60,8 @@ PROJ-5 setzt eine bei Strava genehmigte App voraus. Falls Strava die App nicht f
 - Was passiert, wenn `distance_km` als String statt Number geschickt wird? → Zod-Validierung schlägt fehl → `422`. In der Anleitung steht das korrekte Format.
 - Was passiert, wenn `date` kein gültiges Datum ist (z.B. `"2026-13-45"`)? → Zod-Validierung schlägt fehl → `422`.
 - Was passiert, wenn der Läufer gleichzeitig PROJ-5 (Strava OAuth) und PROJ-23 (externen Webhook) aktiv hat? → Beide funktionieren unabhängig. Es kann zu doppelten Einträgen kommen, wenn Make.com UND Strava dieselbe Aktivität melden. Das ist akzeptabel (idempotent, TYPO3 enthält nach beiden Calls denselben Stand).
+- Was passiert, wenn der Webhook deaktiviert ist und ein Aufruf eingeht? → `503 Service Unavailable` mit klarer Fehlermeldung. Token wird nicht geprüft, kein TYPO3-Request.
+- Was passiert, wenn kein Eintrag für `external_webhook_enabled` in `app_settings` existiert? → Standardmäßig aktiviert (kein Breaking Change bei Erstinstallation).
 - Was passiert, wenn kein Token in der DB gespeichert ist und der Endpunkt aufgerufen wird? → `401 Unauthorized`.
 - Was passiert, wenn TYPO3 den Lauf ablehnt? → `500`, Fehler wird in PROJ-8 Request Log erfasst.
 - Was passiert mit `distance_km: 0`? → Wird akzeptiert und eingetragen (kein Minimum-Wert-Filter, das liegt in der Verantwortung des Läufers).
@@ -197,6 +202,17 @@ Token-Neu-generieren-Dialog (AlertDialog — vor Generierung):
 | Rate Limiting auf `/api/webhook/external` | Bestehende `rate-limit.ts` schützt vor Token-Brute-Force |
 | Endpunkt unter `/api/webhook/` (nicht `/api/strava/`) | Bewusst technologie-neutral benannt — gilt für Make, Zapier, curl, Shortcuts etc. |
 | `NEXT_PUBLIC_APP_URL` für Anleitung | Webhook-URL in der App muss zur tatsächlichen Deployment-URL zeigen |
+
+### Zentrale Deaktivierung (Admin, nachträglich ergänzt)
+
+| Was | Detail |
+|-----|--------|
+| Speicherort | `app_settings` Tabelle, Key `external_webhook_enabled`, Value `'true'`/`'false'` |
+| Default | Kein Eintrag = aktiv (kein Breaking Change) |
+| Neue API-Route | `GET/POST /api/admin/external-webhook/status` (Admin only) |
+| Neue Admin-Komponente | `external-webhook-control.tsx` — Badge + Toggle-Button + Bestätigungs-Dialog |
+| Webhook-Endpunkt | Prüft Setting als erstes nach Rate-Limiting, vor Token-Validierung |
+| HTTP-Status bei deaktiviert | `503 Service Unavailable` |
 
 ### Keine neuen npm-Pakete erforderlich
 

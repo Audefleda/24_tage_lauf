@@ -58,9 +58,25 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // 3. Hash incoming token and look up in DB
-  const tokenHash = hashToken(plainToken)
   const supabaseAdmin = createAdminClient()
+
+  // 3. Globalen Aktivierungsstatus prüfen
+  const { data: enabledSetting } = await supabaseAdmin
+    .from('app_settings')
+    .select('value')
+    .eq('key', 'external_webhook_enabled')
+    .single()
+
+  const webhookEnabled = enabledSetting ? enabledSetting.value !== 'false' : true
+  if (!webhookEnabled) {
+    return NextResponse.json(
+      { error: 'Der externe Webhook ist derzeit deaktiviert. Bitte wende dich an den Administrator.' },
+      { status: 503 }
+    )
+  }
+
+  // 4. Hash incoming token and look up in DB
+  const tokenHash = hashToken(plainToken)
 
   const { data: tokenRow } = await supabaseAdmin
     .from('external_webhook_tokens')
