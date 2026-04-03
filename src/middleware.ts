@@ -12,6 +12,7 @@ const PUBLIC_ROUTES = [
   '/reset-password',
   '/api/strava/webhook',
   '/api/strava/callback', // Strava OAuth redirect — user session cookie handles auth
+  '/api/webhook/external', // PROJ-23: Bearer Token Auth, kein Session-Cookie
 ]
 
 function isPublicRoute(pathname: string): boolean {
