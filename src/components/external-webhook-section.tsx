@@ -17,7 +17,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertCircle, RefreshCw, Copy, Check, Webhook, Eye, EyeOff } from 'lucide-react'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import { AlertCircle, RefreshCw, Copy, Check, Webhook, Eye, EyeOff, ChevronDown } from 'lucide-react'
 
 interface TokenStatus {
   active: boolean
@@ -213,63 +218,77 @@ export function ExternalWebhookSection() {
                 )}
               </div>
 
-              {/* Instructions (visible when token is active) */}
+              {/* Instructions (collapsible, visible when token is active) */}
               {isActive && (
-                <div className="mt-4 space-y-3 rounded-md border bg-muted/50 p-4">
-                  <h4 className="text-sm font-medium">Anleitung</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Konfiguriere dein Make.com-Szenario oder Zapier-Zap mit folgenden Daten:
-                  </p>
+                <Collapsible>
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex w-full items-center justify-between rounded-md border bg-muted/50 px-4 py-2 text-sm font-medium hover:bg-muted"
+                    >
+                      Anleitung: Make.com / Zapier / curl einrichten
+                      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 [[data-state=open]_&]:rotate-180" />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="mt-1 space-y-3 rounded-md border bg-muted/50 p-4">
+                      <p className="text-sm text-muted-foreground">
+                        Konfiguriere dein Make.com-Szenario oder Zapier-Zap mit folgenden Daten:
+                      </p>
 
-                  {/* Webhook URL */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground">
-                      Webhook-URL (POST)
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <code className="flex-1 rounded bg-background px-3 py-2 text-xs font-mono break-all border">
-                        {webhookUrl}
-                      </code>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(webhookUrl, 'url')}
-                        aria-label="Webhook-URL kopieren"
-                      >
-                        {copiedUrl ? (
-                          <Check className="h-4 w-4 text-green-600" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
+                      {/* Webhook URL */}
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-muted-foreground">
+                          Webhook-URL (POST)
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <code className="flex-1 rounded bg-background px-3 py-2 text-xs font-mono break-all border">
+                            {webhookUrl}
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(webhookUrl, 'url')}
+                            aria-label="Webhook-URL kopieren"
+                          >
+                            {copiedUrl ? (
+                              <Check className="h-4 w-4 text-green-600" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Header */}
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-muted-foreground">
+                          Header
+                        </label>
+                        <code className="block rounded bg-background px-3 py-2 text-xs font-mono break-all border">
+                          Authorization: Bearer &lt;dein-token&gt;
+                        </code>
+                      </div>
+
+                      {/* Example Body */}
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium text-muted-foreground">
+                          Body (JSON)
+                        </label>
+                        <pre className="rounded bg-background px-3 py-2 text-xs font-mono whitespace-pre-wrap border">
+                          {exampleBody}
+                        </pre>
+                      </div>
+
+                      <p className="text-xs text-muted-foreground">
+                        Beide Felder (<code className="text-xs">date</code> und{' '}
+                        <code className="text-xs">distance_km</code>) sind Pflichtfelder.
+                        Die Distanz wird als Zahl erwartet (kein String).
+                      </p>
                     </div>
-                  </div>
-
-                  {/* Header */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground">
-                      Header
-                    </label>
-                    <code className="block rounded bg-background px-3 py-2 text-xs font-mono break-all border">
-                      Authorization: Bearer &lt;dein-token&gt;
-                    </code>
-                  </div>
-
-                  {/* Example Body */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground">
-                      Body (JSON)
-                    </label>
-                    <pre className="rounded bg-background px-3 py-2 text-xs font-mono whitespace-pre-wrap border">
-                      {exampleBody}
-                    </pre>
-                  </div>
-
-                  <p className="text-xs text-muted-foreground">
-                    Beide Felder (<code className="text-xs">date</code> und <code className="text-xs">distance_km</code>) sind Pflichtfelder.
-                    Die Distanz wird als Zahl erwartet (kein String).
-                  </p>
-                </div>
+                  </CollapsibleContent>
+                </Collapsible>
               )}
             </>
           )}
