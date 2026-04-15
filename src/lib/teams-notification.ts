@@ -237,9 +237,11 @@ async function doSendNotification(
   const runnerTotalRuns = runner?.runs?.length ?? 0
   const runnerTotalKm = runner ? (parseFloat(runner.totaldistance) || 0) : 0
 
-  // Team total km: sum totaldistance from all runners (AC-10)
+  // PROJ-24: Team total km with 100km cap per runner (company reimbursement limit)
+  // Individual runner stats remain uncapped for motivation
   const teamTotalKm = runners.reduce((sum, r) => {
-    return sum + (parseFloat(r.totaldistance) || 0)
+    const runnerKm = parseFloat(r.totaldistance) || 0
+    return sum + Math.min(runnerKm, 100)
   }, 0)
 
   const formattedDate = formatDate(runDate)
