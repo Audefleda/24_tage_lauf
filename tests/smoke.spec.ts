@@ -4,7 +4,12 @@
  * Diese Tests laufen OHNE Mocks gegen die echte Production-Umgebung.
  * Ziel: Schnelle Verifikation nach Deployment, dass kritische Funktionen erreichbar sind.
  *
- * WICHTIG: Diese Tests senden KEINE Daten an TYPO3, sondern prüfen nur Lesezugriffe.
+ * KRITISCHE REGEL:
+ * ❌ NIEMALS Tests hinzufügen die Daten SCHREIBEN (POST/PUT/DELETE)
+ * ✅ NUR Tests die Daten LESEN (GET-Requests)
+ *
+ * Grund: Smoke Tests laufen gegen echte Production-Daten.
+ * Schreibende Tests würden TYPO3-Daten verändern!
  */
 
 import { test, expect } from '@playwright/test'
@@ -39,8 +44,7 @@ test.describe('Smoke Tests - Production', () => {
     expect(body).toHaveProperty('status', 'ok')
   })
 
-  // TODO: Nach TYPO3-Liveschaltung aktivieren
-  test.skip('@smoke Login funktioniert mit Test-Account', async ({ page }) => {
+  test('@smoke Login funktioniert mit Test-Account', async ({ page }) => {
     // Nutzt E2E_TEST_EMAIL + E2E_TEST_PASSWORD aus GitHub Secrets
     const email = process.env.E2E_TEST_EMAIL
     const password = process.env.E2E_TEST_PASSWORD
@@ -59,18 +63,32 @@ test.describe('Smoke Tests - Production', () => {
     await expect(page.getByText(/läufer/i)).toBeVisible({ timeout: 10_000 })
   })
 
-  // TODO: Nach TYPO3-Liveschaltung aktivieren
-  test.skip('@smoke Läufe-Seite lädt Daten von TYPO3', async ({ page }) => {
-    // Setzt voraus dass der Test-Account bereits eingeloggt ist
-    // (würde in CI mit gespeichertem Auth-State laufen)
-    await page.goto('/runs')
+  test('@smoke Läufe-Seite lädt Daten von TYPO3', async ({ page }) => {
+    // Nutzt gespeicherten Auth-State vom Login-Test (muss vorher laufen)
+    const email = process.env.E2E_TEST_EMAIL
+    const password = process.env.E2E_TEST_PASSWORD
+
+    if (!email || !password) {
+      test.skip(true, 'E2E_TEST_EMAIL oder E2E_TEST_PASSWORD nicht gesetzt')
+    }
+
+    // Login für diesen Test (unabhängig vom vorherigen Test)
+    await page.goto('/login')
+    await page.getByLabel(/e-mail/i).fill(email!)
+    await page.getByLabel(/passwort/i).fill(password!)
+    await page.getByRole('button', { name: /anmelden/i }).click()
+    await page.waitForURL(/\/runs/)
 
     // Prüfe dass TYPO3-Daten geladen werden (keine 500-Fehler)
-    // Wir prüfen NICHT die Inhalte, nur dass die API antwortet
+    // Dieser Test macht nur GET-Requests, schreibt KEINE Läufe!
     await expect(page.getByText(/läufer/i)).toBeVisible({ timeout: 10_000 })
 
     // Stats-Karten sollten sichtbar sein (werden von TYPO3-Daten befüllt)
     await expect(page.getByText(/gesamtdistanz/i)).toBeVisible()
     await expect(page.getByText(/lauftage/i)).toBeVisible()
   })
+
+  // ❌ KEIN Test für "Lauf eintragen" - würde Production-Daten in TYPO3 verändern!
+  // Schreibende Tests gehören NICHT in Smoke Tests.
+  // Verwende stattdessen die E2E Tests mit Mocks (runs.spec.ts, external-webhook.spec.ts)
 })

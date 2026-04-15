@@ -1,21 +1,21 @@
 name: Smoke Tests - Production
 
-# DEAKTIVIERT bis TYPO3 live ist
-# Um zu aktivieren: Entferne das 'workflow_dispatch' und reaktiviere 'workflow_run'
 on:
-  workflow_dispatch:  # Nur manuell auslösbar
-  # workflow_run:      # Automatisch nach Migration (DEAKTIVIERT)
-  #   workflows: ["Migrate Production Database"]
-  #   types:
-  #     - completed
-  #   branches:
-  #     - main
+  workflow_dispatch:  # Manuell auslösbar
+  workflow_run:       # Automatisch nach Migration
+    workflows: ["Migrate Production Database"]
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
   smoke-tests:
     name: Smoke Tests (Production)
     runs-on: ubuntu-latest
-    # if-Bedingung entfernt, da Workflow nur noch manuell läuft
+    # Läuft nur wenn Migration erfolgreich war (bei workflow_run)
+    # Bei workflow_dispatch (manuell) läuft es immer
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code

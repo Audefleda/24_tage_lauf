@@ -102,9 +102,16 @@ Vercel Production Deploy (Prod-DB)
 ```bash
 # Repository Settings → Secrets and variables → Actions → New repository secret
 
-GITHUB_TOKEN              # Automatisch vorhanden (kein Setup nötig)
-SUPABASE_PROD_ACCESS_TOKEN  # Bereits konfiguriert (PROJ-21)
+GITHUB_TOKEN                 # Automatisch vorhanden (kein Setup nötig)
+SUPABASE_PROD_ACCESS_TOKEN   # Bereits konfiguriert (PROJ-21)
+E2E_TEST_EMAIL               # ERFORDERLICH für Smoke Tests: Test-Account E-Mail
+E2E_TEST_PASSWORD            # ERFORDERLICH für Smoke Tests: Test-Account Passwort
 ```
+
+**Wichtig für Smoke Tests:**
+- `E2E_TEST_EMAIL` und `E2E_TEST_PASSWORD` müssen auf einen existierenden Test-Account in Production zeigen
+- Der Test-Account sollte mit einem TYPO3-Läufer verknüpft sein
+- **Smoke Tests dürfen NIEMALS Daten schreiben!** Nur GET-Requests erlaubt.
 
 Optional (für erweiterte Features):
 - `SLACK_WEBHOOK_URL` - Für Notifications bei Smoke Test Failures
