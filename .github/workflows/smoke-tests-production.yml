@@ -1,19 +1,21 @@
 name: Smoke Tests - Production
 
+# DEAKTIVIERT bis TYPO3 live ist
+# Um zu aktivieren: Entferne das 'workflow_dispatch' und reaktiviere 'workflow_run'
 on:
-  # Läuft nach Merge zu main, nachdem Vercel deployed hat
-  workflow_run:
-    workflows: ["Migrate Production Database"]
-    types:
-      - completed
-    branches:
-      - main
+  workflow_dispatch:  # Nur manuell auslösbar
+  # workflow_run:      # Automatisch nach Migration (DEAKTIVIERT)
+  #   workflows: ["Migrate Production Database"]
+  #   types:
+  #     - completed
+  #   branches:
+  #     - main
 
 jobs:
   smoke-tests:
     name: Smoke Tests (Production)
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if-Bedingung entfernt, da Workflow nur noch manuell läuft
 
     steps:
       - name: Checkout code
