@@ -41,7 +41,24 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // 2. Extract Bearer token from Authorization header
+  const supabaseAdmin = createAdminClient()
+
+  // 2. Globalen Aktivierungsstatus prüfen (fail-fast)
+  const { data: enabledSetting } = await supabaseAdmin
+    .from('app_settings')
+    .select('value')
+    .eq('key', 'external_webhook_enabled')
+    .single()
+
+  const webhookEnabled = enabledSetting ? enabledSetting.value !== 'false' : true
+  if (!webhookEnabled) {
+    return NextResponse.json(
+      { error: 'Der externe Webhook ist derzeit deaktiviert. Bitte wende dich an den Administrator.' },
+      { status: 503 }
+    )
+  }
+
+  // 3. Extract Bearer token from Authorization header
   const authHeader = request.headers.get('authorization')
   if (!authHeader?.startsWith('Bearer ')) {
     return NextResponse.json(
@@ -55,23 +72,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: 'Token ist leer' },
       { status: 401 }
-    )
-  }
-
-  const supabaseAdmin = createAdminClient()
-
-  // 3. Globalen Aktivierungsstatus prüfen
-  const { data: enabledSetting } = await supabaseAdmin
-    .from('app_settings')
-    .select('value')
-    .eq('key', 'external_webhook_enabled')
-    .single()
-
-  const webhookEnabled = enabledSetting ? enabledSetting.value !== 'false' : true
-  if (!webhookEnabled) {
-    return NextResponse.json(
-      { error: 'Der externe Webhook ist derzeit deaktiviert. Bitte wende dich an den Administrator.' },
-      { status: 503 }
     )
   }
 
