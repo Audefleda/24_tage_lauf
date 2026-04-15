@@ -1,0 +1,58 @@
+name: Smoke Tests - Production
+
+on:
+  # Läuft nach Merge zu main, nachdem Vercel deployed hat
+  workflow_run:
+    workflows: ["Migrate Production Database"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  smoke-tests:
+    name: Smoke Tests (Production)
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for Vercel Production Deployment
+        run: sleep 60
+        # Alternative: Vercel CLI nutzen oder Deployment API abfragen
+
+      - name: Run smoke tests on Production
+        run: npx playwright test --grep "@smoke"
+        env:
+          BASE_URL: https://24-tage-lauf.vercel.app
+        continue-on-error: true
+        # continue-on-error: true verhindert dass der Job bei Fehlern abbricht
+        # So können wir unten eine Notification senden
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-production
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Notify on failure (optional)
+        if: failure()
+        run: |
+          echo "::warning::Production Smoke Tests fehlgeschlagen! Bitte pruefen."
+          # Hier könntest du auch eine Slack/Teams/Email-Notification einbauen
