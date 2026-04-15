@@ -27,6 +27,7 @@
 | P1 | TYPO3 Request Log (Admin) | Planned |
 | P1 | Läufer-Selbstzuordnung beim ersten Login | Planned |
 | P1 | Erstanmeldung — Initiales Passwort setzen | Planned |
+| P1 | Firmen-Erstattungs-Cap (100km pro Läufer) | Planned |
 | P2 | Strava-Webhook-Integration (OAuth + automatischer Lauf-Eintrag via Webhook) | Planned |
 | P2 | Datenbank-Backup (Shell-Script, CSV-Export, komprimiert) | Planned |
 | P2 | Debug-Logging (LOG_LEVEL=debug via Vercel Env, maskierte Tokens) | Planned |

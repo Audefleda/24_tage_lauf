@@ -1,0 +1,114 @@
+name: CI - Test on Preview Environment
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  # Stage 1: Build & Unit Tests
+  build-and-unit-tests:
+    name: Build & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+  # Stage 2: E2E Tests auf Vercel Preview
+  e2e-tests-preview:
+    name: E2E Tests (Preview Environment)
+    runs-on: ubuntu-latest
+    needs: build-and-unit-tests
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Wait for Vercel Preview Deployment
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
+        id: waitForDeployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 300
+          check_interval: 10
+
+      - name: Run E2E tests against Preview
+        run: npm run test:e2e
+        env:
+          BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
+          # E2E Tests nutzen die Dev-Datenbank (automatisch via Vercel Preview Env Vars)
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  # Stage 3: Comment PR with status
+  comment-pr:
+    name: Comment PR Status
+    runs-on: ubuntu-latest
+    needs: [build-and-unit-tests, e2e-tests-preview]
+    if: github.event_name == 'pull_request' && always()
+
+    steps:
+      - name: PR Comment - Success
+        if: needs.e2e-tests-preview.result == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ **CI Pipeline erfolgreich**\n\n- Unit Tests: Bestanden\n- E2E Tests (Preview): Bestanden\n\nBereit für Merge zu `main`.'
+            })
+
+      - name: PR Comment - Failure
+        if: needs.e2e-tests-preview.result == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **CI Pipeline fehlgeschlagen**\n\nBitte Logs prüfen und Fehler beheben bevor Merge.'
+            })

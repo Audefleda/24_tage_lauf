@@ -12,7 +12,9 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    // Verwendet BASE_URL aus Env-Variable (für CI gegen Vercel Preview/Production)
+    // Fallback zu localhost für lokale Entwicklung
+    baseURL: process.env.BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
   },
   projects: [
@@ -33,9 +35,13 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-  },
+  // Startet lokalen Dev-Server nur wenn gegen localhost getestet wird
+  // Bei BASE_URL (CI gegen Vercel) wird dieser Schritt übersprungen
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: 'npm run dev',
+        url: 'http://localhost:3000',
+        reuseExistingServer: !process.env.CI,
+      },
 })

@@ -35,7 +35,8 @@
 | PROJ-21 | Dev/Prod Datenbank-Trennung (Supabase + CI/CD) | Deployed | [PROJ-21](PROJ-21-dev-prod-datenbank-trennung.md) | 2026-03-27 |
 | PROJ-22 | Umgebungsanzeige im Header | Deployed | [PROJ-22](PROJ-22-umgebungsanzeige.md) | 2026-03-31 |
 | PROJ-23 | Externer Webhook-Token (Make.com / Zapier Alternative) | Deployed | [PROJ-23](PROJ-23-externer-webhook-token.md) | 2026-04-03 |
+| PROJ-24 | Firmen-Erstattungs-Cap (100km pro Läufer) | In Progress | [PROJ-24](PROJ-24-firmen-erstattungs-cap.md) | 2026-04-15 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-24
+## Next Available ID: PROJ-25
