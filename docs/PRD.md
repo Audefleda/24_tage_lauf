@@ -29,6 +29,7 @@
 | P1 | Erstanmeldung — Initiales Passwort setzen | Planned |
 | P1 | Firmen-Erstattungs-Cap (100km pro Läufer) | Planned |
 | P2 | Strava-Webhook-Integration (OAuth + automatischer Lauf-Eintrag via Webhook) | Planned |
+| P2 | Strava UI-Sichtbarkeit Toggle (Admin) | Planned |
 | P2 | Datenbank-Backup (Shell-Script, CSV-Export, komprimiert) | Planned |
 | P2 | Debug-Logging (LOG_LEVEL=debug via Vercel Env, maskierte Tokens) | Planned |
 | P2 | Sprache — Umlaute & gendergerechte Formulierungen (Genderstern) | Planned |
