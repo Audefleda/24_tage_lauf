@@ -39,6 +39,7 @@ export default function RunsPage() {
   const [state, setState] = useState<PageState>({ status: 'loading' })
   const [teamsNotificationsEnabled, setTeamsNotificationsEnabled] = useState(true)
   const [togglingNotifications, setTogglingNotifications] = useState(false)
+  const [stravaUiVisible, setStravaUiVisible] = useState(true)
 
   const fetchRunner = useCallback(async () => {
     setState({ status: 'loading' })
@@ -120,6 +121,20 @@ export default function RunsPage() {
   useEffect(() => {
     fetchRunner()
   }, [fetchRunner])
+
+  // Strava UI-Sichtbarkeit laden (PROJ-25)
+  useEffect(() => {
+    fetch('/api/strava/ui-visibility')
+      .then((resp) => (resp.ok ? resp.json() : null))
+      .then((data) => {
+        if (data && typeof data.visible === 'boolean') {
+          setStravaUiVisible(data.visible)
+        }
+      })
+      .catch(() => {
+        // Bei Fehler bleibt Default (true) -- Strava-Bereich sichtbar
+      })
+  }, [])
 
   // No profile state — show assignment dialog
   if (state.status === 'no-profile') {
@@ -211,7 +226,7 @@ export default function RunsPage() {
         allRuns={data.runs}
         onRunsUpdated={refreshRunner}
       />
-      <StravaConnectSection />
+      {stravaUiVisible && <StravaConnectSection />}
       <ExternalWebhookSection />
 
       {/* Teams notification opt-out */}
