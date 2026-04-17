@@ -50,6 +50,12 @@ After completing work on any feature, you MUST update tracking files. Follow thi
 - Feature status column must match the feature spec header
 - Valid statuses: Planned, In Progress, In Review, Deployed
 
+**What to update in `docs/SYSTEMDOKUMENTATION.md`:**
+- When using `/requirements` to create NEW features, update the system documentation to reflect new capabilities
+- Add new features to the appropriate section (e.g., "Kernfunktionen")
+- Update the "Änderungshistorie" table at the end with the current date and a brief description
+- Keep the documentation high-level — focus on WHAT the system does, not HOW it's implemented
+
 **NEVER do this:**
 - Do NOT say "I've updated the feature spec" without actually calling the Edit tool
 - Do NOT summarize changes in chat as a substitute for writing them to the file

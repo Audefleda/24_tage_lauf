@@ -81,3 +81,9 @@ supabase db push --db-url "postgresql://postgres:<password>@db.jyzjyaucwgcxsetpp
 ## Feature Overview
 
 @features/INDEX.md
+
+## System Documentation
+
+@docs/SYSTEMDOKUMENTATION.md
+
+> Fachliche Gesamtübersicht des Systems. Wird automatisch aktualisiert, wenn neue Features via `/requirements` erstellt werden.
