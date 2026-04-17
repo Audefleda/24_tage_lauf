@@ -15,7 +15,7 @@
 
 ## Acceptance Criteria
 - [ ] **AC-1:** Auf der Admin-Seite (`/admin`) gibt es einen neuen Bereich "Strava UI-Sichtbarkeit" mit einem Toggle-Schalter
-- [ ] **AC-2:** Der Toggle zeigt den aktuellen Status an: "Strava-Bereich für Läufer sichtbar" (aktiviert) oder "Strava-Bereich für Läufer ausgeblendet" (deaktiviert)
+- [ ] **AC-2:** Der Toggle zeigt den aktuellen Status an: "Sichtbar" (grünes Badge) oder "Ausgeblendet" (graues Badge). Beim Deaktivieren erscheint ein Bestätigungs-Dialog, beim Aktivieren nicht.
 - [ ] **AC-3:** Der Status wird in der `app_settings` Tabelle als `strava_ui_visible` (boolean) gespeichert
 - [ ] **AC-4:** Wenn `strava_ui_visible = false`, wird die `StravaConnectSection` Komponente auf der `/runs` Seite nicht gerendert
 - [ ] **AC-5:** Wenn `strava_ui_visible = false`, funktionieren die Strava-API-Endpoints (`/api/strava/connect`, `/api/strava/callback`, `/api/strava/status`) weiterhin normal — nur die UI ist ausgeblendet
@@ -38,7 +38,8 @@
 
 ### Neue API-Routes
 - `GET /api/admin/strava/ui-visibility` — Gibt aktuellen Status zurück (`{ visible: boolean }`)
-- `PUT /api/admin/strava/ui-visibility` — Aktualisiert Status in `app_settings` (Body: `{ visible: boolean }`)
+- `POST /api/admin/strava/ui-visibility` — Aktualisiert Status in `app_settings` (Body: `{ visible: boolean }`)
+- `GET /api/strava/ui-visibility` — Öffentlicher Endpoint, gibt Status zurück (`{ visible: boolean }`)
 
 ### Neue `app_settings` Einträge
 - `strava_ui_visible` (boolean, default: `true`)
@@ -109,7 +110,7 @@ Läufer-Seite (/runs)
 
 **Neue Admin-Endpoints:**
 - `GET /api/admin/strava/ui-visibility` — Gibt aktuellen Status zurück: `{ visible: boolean }`
-- `PUT /api/admin/strava/ui-visibility` — Aktualisiert Status (Body: `{ visible: boolean }`)
+- `POST /api/admin/strava/ui-visibility` — Aktualisiert Status (Body: `{ visible: boolean }`). Verwendet POST statt PUT für Konsistenz mit bestehenden Admin-Endpoints wie `/api/admin/external-webhook/status`.
 
 **Neuer öffentlicher Endpoint:**
 - `GET /api/strava/ui-visibility` — Öffentlich, keine Authentifizierung. Läufer-Seite fragt diesen ab, um zu entscheiden, ob `StravaConnectSection` gerendert wird.
@@ -121,8 +122,8 @@ Läufer-Seite (/runs)
   - Ähnlich wie `external-webhook-control.tsx` (PROJ-23)
   - Verwendet shadcn/ui: Switch, Badge, Alert, AlertDialog, Skeleton
   - Lädt Status via `GET /api/admin/strava/ui-visibility`
-  - Speichert via `PUT /api/admin/strava/ui-visibility`
-  - Bestätigungs-Dialog beim Deaktivieren: "Bestehende Strava-Verbindungen bleiben aktiv. Nur die UI wird ausgeblendet."
+  - Speichert via `POST /api/admin/strava/ui-visibility`
+  - Bestätigungs-Dialog NUR beim Deaktivieren: "Bestehende Strava-Verbindungen bleiben aktiv. Nur die UI wird ausgeblendet." Beim Aktivieren kein Dialog erforderlich.
 
 **Anzupassen:**
 - `src/app/admin/page.tsx` — Neue Card mit `StravaUiVisibilityToggle` hinzufügen (zwischen Strava-Webhook und Externem Webhook)
