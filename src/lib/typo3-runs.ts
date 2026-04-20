@@ -10,9 +10,25 @@ export interface RunPayload {
   runDistance: string
 }
 
+interface Typo3RawRun {
+  uid?: number
+  rundate: string
+  rundateObj: string
+  distance: string
+}
+
 interface Typo3Runner {
   uid: number
-  runs: RunPayload[]
+  runs: Typo3RawRun[]
+}
+
+function mapTypo3Run(raw: Typo3RawRun): RunPayload | null {
+  const dateStr = raw.rundateObj
+  if (!dateStr) return null
+  return {
+    runDate: dateStr + ' 06:00:00',
+    runDistance: (raw.distance ?? '0').replace(',', '.'),
+  }
 }
 
 export function parseTypo3Response(responseText: string): {
@@ -42,7 +58,7 @@ export async function logTypo3Request(params: {
     const supabaseAdmin = createAdminClient()
     const { responseSuccess, responseMessage } = parseTypo3Response(params.responseText)
 
-    const entries = params.runs.map((run) => ({
+    const entries = params.runs.filter((run) => run.runDate).map((run) => ({
       typo3_runner_uid: params.typo3RunnerUid,
       run_date: run.runDate.split(' ')[0],
       run_distance_km: parseFloat(run.runDistance) || 0,
@@ -94,7 +110,10 @@ export async function fetchRunnerRuns(typo3Uid: number): Promise<RunPayload[]> {
 
   const data: { runners: Typo3Runner[] } = await resp.json()
   const runner = data.runners.find((r) => r.uid === typo3Uid)
-  return runner?.runs ?? []
+  if (!runner) return []
+  return runner.runs
+    .map(mapTypo3Run)
+    .filter((r): r is RunPayload => r !== null)
 }
 
 /** Replace all runs for a runner in TYPO3 (calls updateruns + logs). Throws on failure. */
