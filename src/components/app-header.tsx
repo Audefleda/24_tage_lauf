@@ -153,16 +153,28 @@ export function AppHeader() {
                 LÄUFE
               </Link>
               {user.app_metadata?.role === 'admin' && (
-                <Link
-                  href="/admin"
-                  className={`px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors ${
-                    isActive('/admin')
-                      ? 'text-[#ea0029]'
-                      : 'text-white hover:text-[#ea0029]'
-                  }`}
-                >
-                  Admin
-                </Link>
+                <>
+                  <Link
+                    href="/rangliste"
+                    className={`px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors ${
+                      isActive('/rangliste')
+                        ? 'text-[#ea0029]'
+                        : 'text-white hover:text-[#ea0029]'
+                    }`}
+                  >
+                    RANGLISTE
+                  </Link>
+                  <Link
+                    href="/admin"
+                    className={`px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors ${
+                      isActive('/admin')
+                        ? 'text-[#ea0029]'
+                        : 'text-white hover:text-[#ea0029]'
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                </>
               )}
             </nav>
           )}

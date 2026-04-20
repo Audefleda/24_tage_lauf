@@ -22,7 +22,7 @@ function isPublicRoute(pathname: string): boolean {
 }
 
 function isAdminRoute(pathname: string): boolean {
-  return pathname.startsWith('/admin') || pathname.startsWith('/api/admin')
+  return pathname.startsWith('/admin') || pathname.startsWith('/api/admin') || pathname.startsWith('/rangliste')
 }
 
 export async function middleware(request: NextRequest) {
