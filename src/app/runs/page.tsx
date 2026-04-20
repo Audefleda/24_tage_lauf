@@ -41,6 +41,29 @@ export default function RunsPage() {
   const [togglingNotifications, setTogglingNotifications] = useState(false)
   const [stravaUiVisible, setStravaUiVisible] = useState(true)
 
+  // PROJ-26: Team total km stats
+  const [teamTotalKm, setTeamTotalKm] = useState<number | null>(null)
+  const [teamStatsLoading, setTeamStatsLoading] = useState(true)
+  const [teamStatsError, setTeamStatsError] = useState(false)
+
+  const fetchTeamStats = useCallback(async () => {
+    setTeamStatsLoading(true)
+    setTeamStatsError(false)
+    try {
+      const resp = await fetch('/api/team/stats')
+      if (!resp.ok) {
+        setTeamStatsError(true)
+        return
+      }
+      const data = await resp.json()
+      setTeamTotalKm(data.totalKm ?? null)
+    } catch {
+      setTeamStatsError(true)
+    } finally {
+      setTeamStatsLoading(false)
+    }
+  }, [])
+
   const fetchRunner = useCallback(async () => {
     setState({ status: 'loading' })
     try {
@@ -73,15 +96,19 @@ export default function RunsPage() {
   // Silent refresh: update data without showing loading skeleton
   const refreshRunner = useCallback(async () => {
     try {
-      const resp = await fetch('/api/runner')
-      if (!resp.ok) return
-      const data: RunnerData = await resp.json()
+      const [runnerResp] = await Promise.all([
+        fetch('/api/runner'),
+        // PROJ-26: Also refresh team stats after run update
+        fetchTeamStats(),
+      ])
+      if (!runnerResp.ok) return
+      const data: RunnerData = await runnerResp.json()
       setState({ status: 'success', data })
       setTeamsNotificationsEnabled(data.teamsNotificationsEnabled ?? true)
     } catch {
       // Silent fail on refresh -- the table already shows its own error
     }
-  }, [])
+  }, [fetchTeamStats])
 
   const handleToggleNotifications = useCallback(async () => {
     const previous = teamsNotificationsEnabled
@@ -120,7 +147,8 @@ export default function RunsPage() {
 
   useEffect(() => {
     fetchRunner()
-  }, [fetchRunner])
+    fetchTeamStats()
+  }, [fetchRunner, fetchTeamStats])
 
   // Strava UI-Sichtbarkeit laden (PROJ-25)
   useEffect(() => {
@@ -144,7 +172,8 @@ export default function RunsPage() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-4 w-32" />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <Skeleton className="h-24" />
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
         </div>
@@ -168,7 +197,8 @@ export default function RunsPage() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-4 w-32" />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <Skeleton className="h-24" />
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
         </div>
@@ -188,7 +218,7 @@ export default function RunsPage() {
         <Alert variant="destructive" className="max-w-md">
           <AlertDescription>{state.message}</AlertDescription>
         </Alert>
-        <Button onClick={fetchRunner} variant="outline">
+        <Button onClick={() => { fetchRunner(); fetchTeamStats() }} variant="outline">
           <RefreshCw className="h-4 w-4 mr-2" aria-hidden="true" />
           Erneut versuchen
         </Button>
@@ -220,7 +250,13 @@ export default function RunsPage() {
           })
         }}
       />
-      <StatsCard totalDistance={totalDistance} runDays={runDays} />
+      <StatsCard
+        totalDistance={totalDistance}
+        runDays={runDays}
+        teamTotalKm={teamTotalKm}
+        teamStatsLoading={teamStatsLoading}
+        teamStatsError={teamStatsError}
+      />
       <RunsTable
         days={eventDays}
         allRuns={data.runs}

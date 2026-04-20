@@ -277,7 +277,131 @@ Alle Tools bereits vorhanden:
 - **TYPO3-Last:** Ein zusätzlicher `runnerget.json`-Aufruf pro Seitenaufruf (kein Problem für TYPO3-Backend)
 
 ## QA Test Results
-_To be added by /qa_
+
+**Tested:** 2026-04-20
+**Tester:** QA Engineer (AI)
+**Method:** Statische Code-Analyse + Build/Lint/Test-Verifizierung + Dev-Server-Check
+
+### Acceptance Criteria Status
+
+#### AC-1: Neue StatsCard "Team-Gesamt BettercallPaul" auf `/runs`-Seite
+- [x] `stats-card.tsx` Zeile 64: Label "Team-Gesamt BettercallPaul" vorhanden
+- [x] Karte nutzt `Users`-Icon (lucide-react), konsistent mit anderen Icons
+- [x] Karte ist drittes Element im Grid
+- **PASS**
+
+#### AC-2: Drei Karten nebeneinander platziert
+- [x] `stats-card.tsx` Zeile 34: Grid geändert zu `grid-cols-1 md:grid-cols-2 xl:grid-cols-3`
+- [x] Loading-State (`page.tsx` Zeilen 175+200): 3 Skeleton-Karten im gleichen Grid
+- [x] No-Profile-State (`page.tsx` Zeile 175): Ebenfalls 3 Skeleton-Karten
+- **PASS**
+
+#### AC-3: 100km-Kappung pro Läufer*in
+- [x] `route.ts` Zeile 95: `Math.min(runnerKm, REIMBURSEMENT_CAP_KM)` — Cap bei 100
+- [x] Konstante `REIMBURSEMENT_CAP_KM = 100` klar definiert (Zeile 12)
+- [x] Berechnung nutzt `sumRunsKm()` statt `totaldistance` — konsistent mit PROJ-19-Fix (`dbf5a94`)
+- **PASS**
+
+#### AC-4: Serverseitige Berechnung
+- [x] Neuer API-Endpoint `GET /api/team/stats` in `route.ts`
+- [x] Import von `server-only` via `typo3-client.ts` — TYPO3-Credentials bleiben server-only
+- [x] Keine Berechnungslogik im Client
+- **PASS**
+
+#### AC-5: Alle Läufer*innen sehen gleiche Team-Summe
+- [x] Endpoint prüft nur Auth-Session — kein Runner-Profil erforderlich
+- [x] Keine Filterung nach User oder UID
+- [x] Kein Admin-Check — alle eingeloggten Nutzer*innen haben Zugriff
+- **PASS**
+
+#### AC-6: Nur Summe, keine Details
+- [x] API gibt nur `{ totalKm: number }` zurück — keine Läufer*innen-Liste
+- [x] UI zeigt nur formatierten Wert — kein Tooltip, keine Detail-Ansicht
+- **PASS**
+
+#### AC-7: Paralleles Laden
+- [x] `page.tsx` Zeile 148-151: `fetchRunner()` und `fetchTeamStats()` beide im `useEffect`
+- [x] `refreshRunner()` (Zeile 97-111): Nutzt `Promise.all` für parallelen Refresh nach Lauf-Update
+- **PASS**
+
+#### AC-8: Skeleton-Placeholder während Laden
+- [x] `stats-card.tsx` Zeile 67: `<Skeleton className="h-8 w-24 mt-1" />` bei `teamStatsLoading === true`
+- [x] Ganzseitige Loading-States (Zeilen 175, 200): 3 Skeleton-Karten
+- **PASS**
+
+#### AC-9: "--" bei Fehler
+- [x] `stats-card.tsx` Zeile 68-69: `teamStatsError || formattedTeamKm == null` → zeigt "--"
+- [x] `page.tsx` Zeile 55: `setTeamStatsError(true)` bei HTTP-Fehler
+- [x] `page.tsx` Zeile 58-60: `catch` setzt ebenfalls `setTeamStatsError(true)`
+- **PASS**
+
+#### AC-10: Formatierung "XXX,XX km"
+- [x] `stats-card.tsx` Zeile 30: `.toFixed(2).replace('.', ',')` — deutsches Dezimalformat
+- [x] Konsistent mit `formattedDistance` für persönliche Gesamtdistanz (Zeile 25)
+- **PASS**
+
+### Edge Cases Status
+
+#### EC-1: TYPO3-API nicht erreichbar
+- [x] `route.ts` Zeile 82-86: HTTP 503 bei TYPO3-Fehler
+- [x] `route.ts` Zeile 107-121: Typo3Error und andere Exceptions gefangen
+- [x] Client zeigt "--" bei Fehler
+- **PASS**
+
+#### EC-2: Alle Läufer bei 0km
+- [x] Test `route.test.ts` Zeile 111-117: `calculateCappedTeamTotal` mit leeren Runs → 0
+- [x] `sumRunsKm([])` gibt 0 zurück (Test Zeile 57-59)
+- **PASS**
+
+#### EC-3: Alle unter 100km
+- [x] Test Zeile 78-85: Summe = 100.0 (50+30+20), keine Kappung
+- **PASS**
+
+#### EC-4: Exakt 100km
+- [x] Test Zeile 95-100: Genau 100km → wird als 100.0 gezählt
+- **PASS**
+
+#### EC-5: Mobile-Darstellung
+- [x] Grid: `grid-cols-1 md:grid-cols-2 xl:grid-cols-3` — stapelt sich auf Mobile
+- **PASS**
+
+### Security Audit
+
+- [x] **Authentifizierung:** `supabase.auth.getUser()` prüft Session (Zeile 48-57)
+- [x] **Middleware:** `/api/team/stats` ist nicht in PUBLIC_ROUTES → wird von Middleware geschützt
+- [x] **Rate Limiting:** 30 req/60s pro IP (Zeile 37-44)
+- [x] **Keine Datenlecks:** API gibt nur `{ totalKm }` zurück — keine Läufer*innen-Daten, keine UIDs, keine Namen
+- [x] **TYPO3-Credentials:** Bleiben server-only (via `typo3-client.ts` mit `import 'server-only'`)
+- [x] **Input-Validierung:** GET-Endpoint ohne User-Input — keine Zod-Validierung nötig
+- [x] **Error-Messages:** Geben keine sensitiven Infos preis (keine Stack-Traces, keine Credentials)
+
+### Build & Test Ergebnisse
+
+- [x] **Build:** Erfolgreich (0 Fehler)
+- [x] **Lint:** 0 neue Errors, 0 neue Warnings (bestehende Warnings in strava.ts sind pre-existing)
+- [x] **Tests:** 157/157 bestanden (15 neue Tests für PROJ-26)
+- [x] **Dev-Server:** Middleware leitet korrekt auf `/login` bei fehlender Auth weiter (HTTP 307)
+
+### Bugs Found
+
+#### BUG-1: Retry-Button aktualisiert Team-Stats nicht (Niedrig)
+- **Severity:** Niedrig
+- **Beschreibung:** Wenn sowohl `/api/runner` als auch `/api/team/stats` fehlschlagen (z.B. Netzwerkausfall), zeigt die Seite einen Fehler-Screen mit "Erneut versuchen"-Button. Dieser Button ruft nur `fetchRunner()` auf (`page.tsx` Zeile 221), **nicht** `fetchTeamStats()`. Nach dem Klick würden die persönlichen Stats geladen, aber die Team-Stats zeigen weiterhin "--".
+- **Workaround:** Seite komplett neu laden (F5)
+- **Empfohlener Fix:** Im Error-State-Retry beide Fetches aufrufen, z.B. `onClick={() => { fetchRunner(); fetchTeamStats(); }}`
+
+#### BUG-2: Duplizierte Berechnungslogik in Tests (Info)
+- **Severity:** Info (kein Bug, Design-Entscheidung)
+- **Beschreibung:** `route.test.ts` dupliziert `sumRunsKm()` und die Cap-Logik statt sie aus `route.ts` zu importieren. Dies liegt daran, dass der Route-Handler von Next.js Server-Kontext abhängt und nicht direkt importierbar ist. Die Tests validieren den Algorithmus korrekt, aber Änderungen an der Route-Logik müssen manuell in den Tests nachgezogen werden.
+- **Empfehlung:** Akzeptabel für die aktuelle Größe. Bei zukünftiger Wiederverwendung (z.B. in 3+ Dateien) sollte die Logik in ein separates `src/lib/team-utils.ts` extrahiert werden.
+
+### Summary
+- **Acceptance Criteria:** 10/10 bestanden
+- **Edge Cases:** 5/5 bestanden
+- **Security:** Keine Probleme gefunden
+- **Bugs:** 1 Minor (Retry aktualisiert Team-Stats nicht), 1 Info (Test-Duplizierung)
+- **Production Ready:** JA (BUG-1 ist ein seltener Edge Case mit einfachem Workaround)
+- **Empfehlung:** BUG-1 im selben Release fixen (1 Zeile Änderung)
 
 ## Deployment
 _To be added by /deploy_
