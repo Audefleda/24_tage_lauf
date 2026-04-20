@@ -1,6 +1,6 @@
 # PROJ-26: Team-Gesamtkilometer in UI anzeigen
 
-## Status: Planned
+## Status: In Progress
 **Created:** 2026-04-20
 **Last Updated:** 2026-04-20
 
