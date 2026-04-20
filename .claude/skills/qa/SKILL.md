@@ -40,11 +40,18 @@ npx playwright test tests/PROJ-X*    # E2E tests if they exist already
 ```
 Note any failures — these must be fixed before proceeding.
 
-### 3. Code Review (Quick)
+### 3. Code Review & Security Audit
 Read the implementation files listed in the feature spec:
 - Check that all acceptance criteria are addressed in code
-- Check for obvious security issues (missing auth checks, exposed secrets, missing input validation)
 - Check for missing error/loading/empty states
+
+**Security Audit (for this feature only):**
+- Authentication: Are all endpoints/pages properly protected?
+- Authorization: Can user X access user Y's data?
+- Input validation: Are all inputs validated with Zod on the server?
+- Exposed secrets: Are credentials/tokens kept server-only?
+- Rate limiting: Are new endpoints rate-limited?
+- XSS/injection: Are user inputs properly sanitized?
 
 ### 4. Write E2E Tests
 Write Playwright tests in `tests/<feature-name>.spec.ts`:
