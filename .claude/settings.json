@@ -23,7 +23,31 @@
       "Bash(npm test:*)",
       "Skill(deploy)",
       "Skill(deploy:*)",
-      "Bash(npx playwright:*)"
+      "Bash(npx playwright:*)",
+      "Skill(architecture)",
+      "Skill(architecture:*)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf checkout -b feat/proj-23-externer-webhook-token)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add features/PROJ-23-externer-webhook-token.md features/INDEX.md docs/PRD.md src/app/runs/page.tsx src/app/api/runner/webhook-token/ src/app/api/webhook/ src/components/external-webhook-section.tsx supabase/migrations/20260403001_create_external_webhook_tokens.sql)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf diff --cached --stat)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf commit -m ':*)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf push -u origin feat/proj-23-externer-webhook-token)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add src/middleware.ts)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf push)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add src/app/api/webhook/external/route.ts features/PROJ-23-externer-webhook-token.md)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add src/components/external-webhook-section.tsx features/PROJ-23-externer-webhook-token.md)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf ls-files src/app/admin/)",
+      "Bash(npm --prefix /Users/jfrankenberger/projects/24_tage_lauf run build)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add src/app/api/admin/external-webhook/status/route.ts src/components/external-webhook-control.tsx src/app/api/webhook/external/route.ts src/app/admin/page.tsx features/PROJ-23-externer-webhook-token.md)",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add features/PROJ-23-externer-webhook-token.md features/INDEX.md)",
+      "Bash(npm --prefix /Users/jfrankenberger/projects/24_tage_lauf run test)",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(s['title'], '|', s['status']\\) for suite in data.get\\('suites',[]\\) for spec in suite.get\\('specs',[]\\) for s in [spec] if s.get\\('ok'\\) == False or any\\(r.get\\('status'\\)=='skipped' for r in s.get\\('tests',[{}]\\)[0].get\\('results',[]\\)\\)]\")",
+      "Bash(git -C /Users/jfrankenberger/projects/24_tage_lauf add tests/external-webhook.spec.ts)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(git reset:*)",
+      "Bash(git merge:*)",
+      "Bash(grep -r \"NEXT_PUBLIC_SUPABASE_URL\" .env*)",
+      "Bash(chmod +x scripts/create-users.js)"
     ]
   }
 }

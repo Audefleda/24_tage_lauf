@@ -36,7 +36,8 @@
 | PROJ-22 | Umgebungsanzeige im Header | Deployed | [PROJ-22](PROJ-22-umgebungsanzeige.md) | 2026-03-31 |
 | PROJ-23 | Externer Webhook-Token (Make.com / Zapier Alternative) | Deployed | [PROJ-23](PROJ-23-externer-webhook-token.md) | 2026-04-03 |
 | PROJ-24 | Firmen-Erstattungs-Cap (100km pro Läufer) | In Progress | [PROJ-24](PROJ-24-firmen-erstattungs-cap.md) | 2026-04-15 |
+| PROJ-25 | Strava UI-Sichtbarkeit Toggle (Admin) | In Review | [PROJ-25](PROJ-25-strava-ui-sichtbarkeit-toggle.md) | 2026-04-17 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-25
+## Next Available ID: PROJ-26
