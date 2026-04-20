@@ -231,8 +231,8 @@ export function ExternalWebhookSection() {
                       <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 [[data-state=open]_&]:rotate-180" />
                     </Button>
                   </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="mt-1 space-y-3 rounded-md border bg-muted/50 p-4">
+                  <CollapsibleContent className="overflow-hidden">
+                    <div className="mt-1 space-y-3 rounded-md border bg-muted/50 p-4 overflow-hidden">
                       <p className="text-sm text-muted-foreground">
                         Konfiguriere dein Make.com-Szenario oder Zapier-Zap mit folgenden Daten:
                       </p>
