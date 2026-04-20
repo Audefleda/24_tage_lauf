@@ -246,7 +246,7 @@ async function doSendNotification(
 
   const runner = runners.find((r) => r.uid === typo3Uid)
   const runnerName = runner?.name ?? `Läufer*in #${typo3Uid}`
-  const runnerTotalRuns = runner?.runs?.length ?? 0
+  const runnerTotalRuns = runner?.runs?.filter((r) => parseFloat((r.distance ?? '0').replace(',', '.')) > 0).length ?? 0
   const runnerTotalKm = runner ? sumRunsKm(runner.runs ?? []) : 0
 
   // PROJ-24: Team total km with 100km cap per runner (company reimbursement limit)
