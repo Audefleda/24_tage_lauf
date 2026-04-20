@@ -1,6 +1,6 @@
 # PROJ-26: Team-Gesamtkilometer in UI anzeigen
 
-## Status: In Progress
+## Status: Deployed
 **Created:** 2026-04-20
 **Last Updated:** 2026-04-20
 
@@ -404,4 +404,9 @@ Alle Tools bereits vorhanden:
 - **Empfehlung:** BUG-1 im selben Release fixen (1 Zeile Änderung)
 
 ## Deployment
-_To be added by /deploy_
+
+**Deployed:** 2026-04-20
+
+- Keine Datenbank-Migration nötig
+- Keine Umgebungsvariablen-Änderungen
+- Automatisches Deployment via Push auf `main`
