@@ -151,9 +151,7 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         const updatedRuns = localRunsRef.current
           .filter((r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart)
           .concat(
-            newDistance > 0
-              ? [{ runDate: typo3Date, runDistance: newDistance.toString() }]
-              : []
+            [{ runDate: typo3Date, runDistance: newDistance.toString() }]
           )
           .sort((a, b) =>
             ((a.runDate ?? '').split(' ')[0] ?? '').localeCompare(((b.runDate ?? '').split(' ')[0]) ?? '')
