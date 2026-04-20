@@ -89,7 +89,8 @@ Das System fungiert als moderne Benutzeroberfläche vor einer Legacy-Backend-Str
 #### Übersicht
 - **Event-Zeitraum:** 20.04.2026 bis 14.05.2026 (25 Tage)
 - **Wochenweise Darstellung:** Jede Woche als separate Karte (4 Wochen + 4 Tage)
-- **Statistiken:** Gesamtdistanz, letzter Lauf, längster Lauf, Durchschnitt
+- **Statistiken:** Gesamtdistanz, Lauftage, Team-Gesamtkilometer BettercallPaul
+- **Team-Gesamtkilometer:** Zeigt die erstattungsfähige Summe aller Läufer*innen (mit 100km-Cap pro Person) — sichtbar für alle eingeloggten Nutzer*innen
 - **Firmen-Erstattungs-Cap:** Visuelle Anzeige, welche Läufe die ersten 100 km abdecken (werden vom Arbeitgeber erstattet)
 
 #### Eintragen & Bearbeiten
@@ -352,4 +353,5 @@ Werden in Vercel konfiguriert (keine manuelle Datei-Verwaltung im Production-Bet
 | Datum | Version | Änderung |
 |-------|---------|----------|
 | 2026-04-17 | 1.0 | Initiale Erstellung — 25 Features dokumentiert |
+| 2026-04-20 | 1.1 | PROJ-26: Team-Gesamtkilometer BettercallPaul in Läufe-Übersicht hinzugefügt |
 
