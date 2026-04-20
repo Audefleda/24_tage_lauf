@@ -78,6 +78,10 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
   // saves don't overwrite each other (race condition fix)
   const localRunsRef = useRef<Run[]>(allRuns)
 
+  // Save queue: serializes PUT requests so concurrent blurs never overlap
+  const saveQueueRef = useRef<Promise<void>>(Promise.resolve())
+  const pendingSavesRef = useRef(0)
+
   // Clear success indicator after a delay
   const clearSuccessTimeout = useRef<Record<number, ReturnType<typeof setTimeout>>>({})
 
@@ -112,7 +116,7 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
   }, [])
 
   const handleBlur = useCallback(
-    async (day: EventDay) => {
+    (day: EventDay) => {
       const rawValue = inputValues[day.index] ?? ''
       const validationResult = validateDistance(rawValue)
 
@@ -139,77 +143,84 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         return
       }
 
-      // Save
-      setRowState(day.index, { status: 'saving' })
+      // Prepare data synchronously so the optimistic local copy is updated
+      // before the next blur can read it
+      const typo3Date = toTypo3DateStr(day.date)
+      const targetDatePart = typo3Date.split(' ')[0]
 
-      try {
-        const typo3Date = toTypo3DateStr(day.date)
-        const targetDatePart = typo3Date.split(' ')[0]
-
-        // Build updated runs array using the optimistic local copy so rapid
-        // sequential saves don't overwrite each other
-        const updatedRuns = localRunsRef.current
-          .filter((r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart)
-          .concat(
-            [{ runDate: typo3Date, runDistance: newDistance.toString() }]
-          )
-          .sort((a, b) =>
-            ((a.runDate ?? '').split(' ')[0] ?? '').localeCompare(((b.runDate ?? '').split(' ')[0]) ?? '')
-          )
-
-        // Optimistically update local copy so the next save builds on this result
-        localRunsRef.current = updatedRuns
-
-        // PROJ-19: Signal new/updated run to trigger Teams notification
-        const requestBody: Record<string, unknown> = { runs: updatedRuns }
-        if (newDistance > 0) {
-          requestBody.notifyRun = { runDate: typo3Date, runDistance: newDistance.toString() }
-        }
-
-        const resp = await fetch('/api/runner/runs', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody),
-        })
-
-        if (!resp.ok) {
-          const body = await resp.json().catch(() => ({}))
-          throw new Error(body.error ?? 'Fehler beim Speichern')
-        }
-
-        setRowState(day.index, { status: 'success' })
-        toast.success(
-          newDistance > 0 ? 'Lauf gespeichert' : 'Lauf entfernt'
+      const updatedRuns = localRunsRef.current
+        .filter((r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart)
+        .concat(
+          [{ runDate: typo3Date, runDistance: newDistance.toString() }]
+        )
+        .sort((a, b) =>
+          ((a.runDate ?? '').split(' ')[0] ?? '').localeCompare(((b.runDate ?? '').split(' ')[0]) ?? '')
         )
 
-        // Normalize the input display
-        setInputValues((prev) => ({
-          ...prev,
-          [day.index]:
-            newDistance > 0 ? formatDistanceDE(newDistance) : '',
-        }))
+      localRunsRef.current = updatedRuns
 
-        // Refresh parent data (updates stats and allRuns); sync local copy after
-        await onRunsUpdated()
-        localRunsRef.current = allRunsRef.current
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : 'Fehler beim Speichern'
-        setRowState(day.index, { status: 'error', errorMessage: message })
-        toast.error(message)
+      setRowState(day.index, { status: 'saving' })
 
-        // Revert optimistic update on failure
-        localRunsRef.current = allRunsRef.current
+      // Enqueue the API call — waits for any in-flight request to finish first
+      pendingSavesRef.current++
+      const saveTask = async () => {
+        try {
+          const requestBody: Record<string, unknown> = { runs: localRunsRef.current }
+          if (newDistance > 0) {
+            requestBody.notifyRun = { runDate: typo3Date, runDistance: newDistance.toString() }
+          }
 
-        // Restore original value
-        setInputValues((prev) => ({
-          ...prev,
-          [day.index]:
-            day.distance !== null && day.distance > 0
-              ? formatDistanceDE(day.distance)
-              : '',
-        }))
+          const resp = await fetch('/api/runner/runs', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+          })
+
+          if (!resp.ok) {
+            const body = await resp.json().catch(() => ({}))
+            throw new Error(body.error ?? 'Fehler beim Speichern')
+          }
+
+          setRowState(day.index, { status: 'success' })
+          toast.success(
+            newDistance > 0 ? 'Lauf gespeichert' : 'Lauf entfernt'
+          )
+
+          setInputValues((prev) => ({
+            ...prev,
+            [day.index]:
+              newDistance > 0 ? formatDistanceDE(newDistance) : '',
+          }))
+
+          // Only refresh parent data after the last queued save completes
+          pendingSavesRef.current--
+          if (pendingSavesRef.current === 0) {
+            await onRunsUpdated()
+            localRunsRef.current = allRunsRef.current
+          }
+        } catch (error) {
+          pendingSavesRef.current--
+          const message =
+            error instanceof Error ? error.message : 'Fehler beim Speichern'
+          setRowState(day.index, { status: 'error', errorMessage: message })
+          toast.error(message)
+
+          // Revert optimistic update on failure only if no more saves pending
+          if (pendingSavesRef.current === 0) {
+            localRunsRef.current = allRunsRef.current
+          }
+
+          setInputValues((prev) => ({
+            ...prev,
+            [day.index]:
+              day.distance !== null && day.distance > 0
+                ? formatDistanceDE(day.distance)
+                : '',
+          }))
+        }
       }
+
+      saveQueueRef.current = saveQueueRef.current.then(saveTask)
     },
     [inputValues, onRunsUpdated, setRowState]
   )
