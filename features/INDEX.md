@@ -38,7 +38,8 @@
 | PROJ-24 | Firmen-Erstattungs-Cap (100km pro Läufer) | In Progress | [PROJ-24](PROJ-24-firmen-erstattungs-cap.md) | 2026-04-15 |
 | PROJ-25 | Strava UI-Sichtbarkeit Toggle (Admin) | In Review | [PROJ-25](PROJ-25-strava-ui-sichtbarkeit-toggle.md) | 2026-04-17 |
 | PROJ-26 | Team-Gesamtkilometer in UI anzeigen | Deployed | [PROJ-26](PROJ-26-team-gesamtkilometer-ui.md) | 2026-04-20 |
+| PROJ-27 | Rangliste (Admin) | Planned | [PROJ-27](PROJ-27-rangliste-admin.md) | 2026-04-20 |
 
 <!-- Add features above this line -->
 
-## Next Available ID: PROJ-27
+## Next Available ID: PROJ-28
