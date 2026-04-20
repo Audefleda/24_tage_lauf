@@ -35,6 +35,7 @@
 | P2 | Sprache — Umlaute & gendergerechte Formulierungen (Genderstern) | Planned |
 | P2 | Dev/Prod Datenbank-Trennung (Supabase CLI + GitHub Actions) | Planned |
 | P2 | Externer Webhook-Token (Make.com / Zapier Alternative zu Strava-App) | Planned |
+| P2 | Team-Gesamtkilometer in UI anzeigen (mit 100km-Cap) | Planned |
 
 ## Success Metrics
 - Alle Läufer können sich anmelden und ihre eigenen Läufe eintragen
