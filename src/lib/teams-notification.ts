@@ -39,12 +39,11 @@ function formatDate(isoDate: string): string {
   return `${parts[2]}.${parts[1]}.${parts[0]}`
 }
 
-/** Format a number string to German locale (dot → comma), e.g. "8.40" → "8,4" */
+/** Format a number string to German locale (dot → comma), e.g. "8.40" → "8,40" */
 function formatKm(km: string): string {
   const num = parseFloat(km)
   if (isNaN(num)) return km
-  // Use German locale: comma as decimal separator, remove trailing zeros
-  return num.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 1 })
+  return num.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
 /** Replace {name}, {datum}, {km} placeholders in a template string */
@@ -266,13 +265,13 @@ async function doSendNotification(
     {
       title: `Kilometer gesamt ${runnerName}`,
       value: runnerTotalKm > 0
-        ? `${runnerTotalKm.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`
+        ? `${runnerTotalKm.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} km`
         : '–',
     },
     {
       title: 'Kilometer gesamt BettercallPaul',
       value: teamTotalKm > 0
-        ? `${teamTotalKm.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`
+        ? `${teamTotalKm.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} km`
         : '–',
     },
   ]
