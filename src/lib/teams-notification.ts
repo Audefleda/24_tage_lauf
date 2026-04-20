@@ -21,11 +21,24 @@ export interface TeamsNotificationPayload {
   teamsNotificationsEnabled?: boolean
 }
 
+interface Typo3RawRun {
+  rundate: string
+  rundateObj: string
+  distance: string
+}
+
 interface Typo3Runner {
   uid: number
   name: string
   totaldistance: string
-  runs: { runDate: string; runDistance: string }[]
+  runs: Typo3RawRun[]
+}
+
+function sumRunsKm(runs: Typo3RawRun[]): number {
+  return runs.reduce((sum, r) => {
+    const dist = parseFloat((r.distance ?? '0').replace(',', '.'))
+    return sum + (isNaN(dist) ? 0 : dist)
+  }, 0)
 }
 
 // ---------------------------------------------------------------------------
@@ -234,12 +247,12 @@ async function doSendNotification(
   const runner = runners.find((r) => r.uid === typo3Uid)
   const runnerName = runner?.name ?? `Läufer*in #${typo3Uid}`
   const runnerTotalRuns = runner?.runs?.length ?? 0
-  const runnerTotalKm = runner ? (parseFloat(runner.totaldistance) || 0) : 0
+  const runnerTotalKm = runner ? sumRunsKm(runner.runs ?? []) : 0
 
   // PROJ-24: Team total km with 100km cap per runner (company reimbursement limit)
   // Individual runner stats remain uncapped for motivation
   const teamTotalKm = runners.reduce((sum, r) => {
-    const runnerKm = parseFloat(r.totaldistance) || 0
+    const runnerKm = sumRunsKm(r.runs ?? [])
     return sum + Math.min(runnerKm, 100)
   }, 0)
 
