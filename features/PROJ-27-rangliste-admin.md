@@ -1,6 +1,6 @@
 # PROJ-27: Rangliste (Admin)
 
-## Status: Planned
+## Status: In Progress
 **Created:** 2026-04-20
 **Last Updated:** 2026-04-20
 
@@ -54,7 +54,166 @@
 <!-- Sections below are added by subsequent skills -->
 
 ## Tech Design (Solution Architect)
-_To be added by /architecture_
+
+### Überblick
+Diese Admin-Seite zeigt eine sortierte Rangliste aller Läufer*innen basierend auf TYPO3-Daten. Sie nutzt die bestehende API-Infrastruktur und ergänzt eine neue Seite mit Tabellen-Darstellung.
+
+### Komponenten-Struktur
+```
+/rangliste (neue Seite, Admin-only)
++-- PageHeader
+|   +-- Titel: "Rangliste"
+|   +-- Beschreibung: "Alle Läufer*innen sortiert nach Gesamtkilometern"
++-- Card (shadcn/ui)
+    +-- CardHeader (Zusammenfassung)
+    |   +-- Anzahl Läufer*innen gesamt
+    |   +-- Anzahl aktive Läufer*innen (mit Läufen)
+    +-- CardContent
+        +-- Table (shadcn/ui)
+            +-- TableHeader
+            |   +-- Rang | Name | Gesamtkm | Anzahl Läufe
+            +-- TableBody
+                +-- TableRow (für jeden Läufer)
+                    +-- Rang-Badge (1., 2., 3., ...)
+                    +-- Name + Startnummer
+                    +-- Gesamtkilometer (formatiert)
+                    +-- Anzahl Läufe
++-- Loading State (Skeleton)
++-- Error State (Alert mit Fehlermeldung)
++-- Empty State (wenn keine Daten vorhanden)
+```
+
+### Datenmodell
+
+**Quelle:** TYPO3-API über bestehenden Endpoint `/api/admin/runners`
+
+**Was wird abgerufen:**
+- Alle Läufer*innen mit ihren Läufen
+- Für jeden Läufer: `uid`, `nr` (Startnummer), `name`, `runs` (Array)
+
+**Client-seitige Berechnung:**
+- Gesamtkilometer: Summe aller `runs[].distance` im Event-Zeitraum (20.04. - 14.05.2026)
+- Anzahl Läufe: Anzahl der Einträge in `runs[]` im Event-Zeitraum
+- Sortierung:
+  1. Gesamtkilometer (absteigend)
+  2. Anzahl Läufe (absteigend, bei gleichen km)
+  3. Name (alphabetisch, bei gleichen km + Läufen)
+- Rang: Fortlaufende Nummerierung nach Sortierung (1., 2., 3., ...)
+
+**Warum client-seitig?**
+Die TYPO3-API liefert bereits alle Läufer-Daten. Eine neue Backend-Route würde nur die gleichen Daten erneut verarbeiten. Client-seitige Berechnung ist hier effizienter und reduziert Server-Last.
+
+### Navigation
+
+**Erweiterung in `app-header.tsx`:**
+- Neuer Link "RANGLISTE" zwischen "LÄUFE" und "ADMIN"
+- Sichtbar nur für Admins (`user.app_metadata?.role === 'admin'`)
+- Active-State-Highlighting wie bei bestehenden Links
+
+### Technische Entscheidungen
+
+#### 1. Keine neue API-Route
+**Entscheidung:** Bestehender Endpoint `/api/admin/runners` wird wiederverwendet
+
+**Begründung:**
+- Der Endpoint liefert bereits alle benötigten Daten (Läufer + Läufe)
+- Sortierung und Aggregation sind auf Client-Seite einfach und schnell
+- Vermeidet Code-Duplizierung
+- Reduziert Server-Last (keine zusätzliche TYPO3-Anfrage)
+
+#### 2. shadcn/ui Table-Komponente
+**Entscheidung:** Verwendung der bestehenden `Table`-Komponente aus `src/components/ui/table.tsx`
+
+**Begründung:**
+- Bereits installiert und CI-konform gestylt
+- Dark-Mode-kompatibel
+- Responsive Design out-of-the-box
+- Konsistent mit anderen Tabellen in der App (z.B. Benutzerverwaltung)
+
+#### 3. Client-seitige Sortierung
+**Entscheidung:** Daten werden im Browser sortiert, nicht serverseitig
+
+**Begründung:**
+- Datenmenge ist klein (5-30 Läufer*innen)
+- Event-Zeitraum-Filter muss sowieso client-seitig angewendet werden
+- Flexibilität für zukünftige Filter-Funktionen (z.B. nach Woche)
+- Kein zusätzlicher API-Call nötig
+
+#### 4. Admin-Only Access
+**Entscheidung:** Zugriff nur für Admins, andere werden auf `/` weitergeleitet
+
+**Begründung:**
+- Rangliste zeigt Daten aller Läufer*innen → Datenschutz
+- Nutzer*innen sollen nur ihre eigenen Daten sehen (bestehendes Prinzip)
+- Middleware prüft `app_metadata.role === 'admin'` (bereits etabliert)
+
+#### 5. Keine Live-Aktualisierung
+**Entscheidung:** Statische Datendarstellung, manuelle Aktualisierung via Browser-Reload
+
+**Begründung:**
+- Admin-Funktion, keine Echtzeit-Anforderung
+- Event-Zeitraum ist begrenzt (25 Tage), Daten ändern sich nicht sekündlich
+- Vermeidet unnötige API-Calls
+- Konsistent mit anderen Admin-Seiten
+
+### Abhängigkeiten (npm packages)
+
+**Keine neuen Abhängigkeiten nötig** — alle benötigten Komponenten existieren bereits:
+- `@/components/ui/table` (shadcn/ui)
+- `@/components/ui/card` (shadcn/ui)
+- `@/components/ui/badge` (shadcn/ui)
+- `@/components/ui/alert` (shadcn/ui)
+- `@/components/ui/skeleton` (shadcn/ui)
+- `@/components/page-header` (Custom, bereits vorhanden)
+
+### Performance-Überlegungen
+
+**Ladezeit-Ziel:** < 2 Sekunden
+
+**Optimierungen:**
+1. **Skeleton-Loading:** Während API-Call läuft, wird Tabellen-Struktur als Skeleton angezeigt
+2. **Caching:** Browser cached die `/api/admin/runners` Response (Standard-HTTP-Caching)
+3. **Client-seitige Sortierung:** Einmalige Berechnung nach API-Response, kein Re-Fetching
+
+**Bottleneck:**
+- TYPO3-API-Antwortzeit (außerhalb unserer Kontrolle)
+- Falls TYPO3 > 2 Sekunden braucht, wird Error-State angezeigt
+
+### Sicherheitsaspekte
+
+1. **Admin-Authentifizierung:**
+   - Middleware prüft `app_metadata.role === 'admin'` vor Zugriff auf `/rangliste`
+   - Nicht-Admins werden auf `/` weitergeleitet
+
+2. **API-Zugriff:**
+   - `/api/admin/runners` hat bereits Admin-Check (`requireAdmin()`)
+   - Rate Limiting: 30 Requests/Minute (bereits implementiert)
+
+3. **Datenschutz:**
+   - Nur Admins sehen die Rangliste (alle Läufer*innen)
+   - Normale Nutzer*innen sehen weiterhin nur ihre eigenen Daten
+
+### Ausnahmen & Fehlerbehandlung
+
+1. **TYPO3-API nicht erreichbar:**
+   - Error-State mit Alert: "Rangliste konnte nicht geladen werden. Bitte versuche es später erneut."
+   - Retry-Option: Button "Erneut versuchen"
+
+2. **Keine Läufer*innen vorhanden:**
+   - Empty-State: "Noch keine Läufer*innen vorhanden"
+
+3. **Alle Läufer*innen haben 0 km:**
+   - Normale Anzeige mit 0 km und 0 Läufen für alle
+
+4. **Admin-Rechte fehlen:**
+   - Middleware-Redirect zu `/` (vor Seiten-Load)
+
+### Responsive Design
+
+- **Desktop (> 1024px):** Volle Tabelle mit allen Spalten
+- **Tablet (768px - 1024px):** Volle Tabelle, kleinere Schrift
+- **Mobile (< 768px):** Optional, da Admin-Funktion primär auf Desktop genutzt wird
+  - Falls implementiert: Stacked Cards statt Tabelle
 
 ## QA Test Results
 _To be added by /qa_
