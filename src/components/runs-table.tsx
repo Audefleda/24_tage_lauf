@@ -149,14 +149,14 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         // Build updated runs array using the optimistic local copy so rapid
         // sequential saves don't overwrite each other
         const updatedRuns = localRunsRef.current
-          .filter((r) => r.runDate.split(' ')[0] !== targetDatePart)
+          .filter((r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart)
           .concat(
             newDistance > 0
               ? [{ runDate: typo3Date, runDistance: newDistance.toString() }]
               : []
           )
           .sort((a, b) =>
-            (a.runDate.split(' ')[0] ?? '').localeCompare(b.runDate.split(' ')[0] ?? '')
+            ((a.runDate ?? '').split(' ')[0] ?? '').localeCompare(((b.runDate ?? '').split(' ')[0]) ?? '')
           )
 
         // Optimistically update local copy so the next save builds on this result

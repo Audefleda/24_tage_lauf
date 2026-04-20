@@ -5,9 +5,11 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { typo3Fetch, Typo3Error } from '@/lib/typo3-client'
 
-interface Typo3Run {
-  runDate: string
-  runDistance: string
+interface Typo3RawRun {
+  uid?: number
+  rundate: string
+  rundateObj: string
+  distance: string
 }
 
 interface Typo3Runner {
@@ -17,8 +19,17 @@ interface Typo3Runner {
   age?: number
   totaldistance: string
   crdate: string
-  runs: Typo3Run[]
+  runs: Typo3RawRun[]
   totaldistanceFromArray: number
+}
+
+function mapTypo3Run(raw: Typo3RawRun): { runDate: string; runDistance: string } | null {
+  const dateStr = raw.rundateObj
+  if (!dateStr) return null
+  return {
+    runDate: dateStr + ' 06:00:00',
+    runDistance: (raw.distance ?? '0').replace(',', '.'),
+  }
 }
 
 export async function GET() {
@@ -93,11 +104,15 @@ export async function GET() {
       )
     }
 
+    const mappedRuns = (runner.runs ?? [])
+      .map(mapTypo3Run)
+      .filter((r): r is NonNullable<typeof r> => r !== null)
+
     return NextResponse.json({
       uid: runner.uid,
       name: runner.name,
       age: (Number(runner.age) > 0 ? Number(runner.age) : null),
-      runs: runner.runs ?? [],
+      runs: mappedRuns,
       teamsNotificationsEnabled: profile.teams_notifications_enabled,
     })
   } catch (error) {

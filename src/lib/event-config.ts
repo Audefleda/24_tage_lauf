@@ -82,6 +82,7 @@ export function buildEventDays(
   // Build a map from "YYYY-MM-DD" to distance
   const runMap = new Map<string, number>()
   for (const run of runs) {
+    if (!run.runDate) continue
     const datePart = run.runDate.split(' ')[0]
     if (!datePart) continue
     const dist = parseFloat(run.runDistance)
