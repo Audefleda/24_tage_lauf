@@ -3,6 +3,9 @@
 # Backup credentials (production secrets, never commit)
 .env.backup-production
 
+# User data (sensitive email addresses, never commit)
+scripts/emails.csv
+
 # dependencies
 /node_modules
 /.pnp
