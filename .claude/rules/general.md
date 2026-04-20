@@ -28,6 +28,17 @@ Before starting ANY work, check if the project has been initialized:
 - Check existing components before building: `git ls-files src/components/`
 - Check existing APIs before building: `git ls-files src/app/api/`
 
+### Feature Branches (MANDATORY)
+Neue Features und größere Änderungen MÜSSEN immer in einem Feature-Branch entwickelt werden — niemals direkt auf `main`.
+1. **Vor dem ersten Commit** eines neuen Features: `git checkout -b feature/proj-X-kurzbeschreibung`
+2. Alle Commits (Requirements, Architecture, Frontend, Backend, Tests) auf diesem Branch
+3. Erst nach User-Freigabe wird der Branch zu `main` gemerged
+
+**Ausnahmen (direkt auf main erlaubt):**
+- Bugfixes auf bereits deployte Features
+- Reine Dokumentations-Updates ohne Code-Änderung
+- Hotfixes für kritische Production-Bugs
+
 ## Human-in-the-Loop
 - Always ask for user approval before finalizing deliverables
 - Present options using clear choices rather than open-ended questions

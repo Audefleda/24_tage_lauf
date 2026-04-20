@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
     // 4. Calculate per-runner stats (only runs within event period)
     const entries: Omit<RankingEntry, 'rank'>[] = runners.map((runner) => {
       const eventRuns = (runner.runs ?? []).filter((r) =>
-        isInEventPeriod(r.rundate ?? r.rundateObj ?? '')
+        isInEventPeriod(r.rundateObj ?? r.rundate ?? '')
       )
 
       const totalKm = eventRuns.reduce((sum, r) => {
