@@ -133,6 +133,7 @@ export async function updateRunnerRuns(
   })
 
   debug('typo3-runs', 'PUT-Anfrage an TYPO3 gestartet', { runnerUid: typo3Uid, runCount: runs.length })
+  debug('typo3-runs', 'Gesendete Laufdaten', runs)
 
   let responseText = ''
   let httpStatus: number | null = null
