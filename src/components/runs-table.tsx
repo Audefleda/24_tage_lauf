@@ -10,15 +10,8 @@ import {
   toTypo3DateStr,
 } from '@/lib/event-config'
 
-interface Run {
-  runDate: string
-  runDistance: string
-}
-
 interface RunsTableProps {
   days: EventDay[]
-  /** The raw runs array from the API (needed for replace-all updates) */
-  allRuns: Run[]
   /** Called after a successful save so the parent can refresh data */
   onRunsUpdated: () => Promise<void>
 }
@@ -54,7 +47,7 @@ function validateDistance(value: string): number | string {
   return num
 }
 
-export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
+export function RunsTable({ days, onRunsUpdated }: RunsTableProps) {
   // Track the current input value for each row (index -> value string)
   const [inputValues, setInputValues] = useState<Record<number, string>>(() => {
     const initial: Record<number, string> = {}
@@ -69,14 +62,6 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
 
   // Track per-row save status
   const [rowStates, setRowStates] = useState<Record<number, RowState>>({})
-
-  // Ref to track the latest allRuns from parent
-  const allRunsRef = useRef(allRuns)
-  allRunsRef.current = allRuns
-
-  // Optimistic local copy — updated immediately after each save so rapid sequential
-  // saves don't overwrite each other (race condition fix)
-  const localRunsRef = useRef<Run[]>(allRuns)
 
   // Save queue: serializes PUT requests so concurrent blurs never overlap
   const saveQueueRef = useRef<Promise<void>>(Promise.resolve())
@@ -143,37 +128,20 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
         return
       }
 
-      // Prepare data synchronously so the optimistic local copy is updated
-      // before the next blur can read it
       const typo3Date = toTypo3DateStr(day.date)
-      const targetDatePart = typo3Date.split(' ')[0]
-
-      const updatedRuns = localRunsRef.current
-        .filter((r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart)
-        .concat(
-          [{ runDate: typo3Date, runDistance: newDistance.toString() }]
-        )
-        .sort((a, b) =>
-          ((a.runDate ?? '').split(' ')[0] ?? '').localeCompare(((b.runDate ?? '').split(' ')[0]) ?? '')
-        )
-
-      localRunsRef.current = updatedRuns
 
       setRowState(day.index, { status: 'saving' })
 
-      // Enqueue the API call — waits for any in-flight request to finish first
       pendingSavesRef.current++
       const saveTask = async () => {
         try {
-          const requestBody: Record<string, unknown> = { runs: localRunsRef.current }
-          if (newDistance > 0) {
-            requestBody.notifyRun = { runDate: typo3Date, runDistance: newDistance.toString() }
-          }
-
           const resp = await fetch('/api/runner/runs', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify({
+              runDate: typo3Date,
+              runDistance: newDistance.toString(),
+            }),
           })
 
           if (!resp.ok) {
@@ -192,11 +160,9 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
               newDistance > 0 ? formatDistanceDE(newDistance) : '',
           }))
 
-          // Only refresh parent data after the last queued save completes
           pendingSavesRef.current--
           if (pendingSavesRef.current === 0) {
             await onRunsUpdated()
-            localRunsRef.current = allRunsRef.current
           }
         } catch (error) {
           pendingSavesRef.current--
@@ -204,11 +170,6 @@ export function RunsTable({ days, allRuns, onRunsUpdated }: RunsTableProps) {
             error instanceof Error ? error.message : 'Fehler beim Speichern'
           setRowState(day.index, { status: 'error', errorMessage: message })
           toast.error(message)
-
-          // Revert optimistic update on failure only if no more saves pending
-          if (pendingSavesRef.current === 0) {
-            localRunsRef.current = allRunsRef.current
-          }
 
           setInputValues((prev) => ({
             ...prev,

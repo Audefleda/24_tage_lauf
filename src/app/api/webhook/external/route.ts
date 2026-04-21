@@ -8,6 +8,7 @@ import { createAdminClient } from '@/lib/supabase-admin'
 import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
 import { Typo3Error } from '@/lib/typo3-client'
 import { sendTeamsNotification } from '@/lib/teams-notification'
+import { withUserLock } from '@/lib/typo3-mutex'
 import { rateLimit } from '@/lib/rate-limit'
 import * as logger from '@/lib/logger'
 
@@ -130,21 +131,22 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // 6. Fetch existing runs and append the new one
+  // 6. Fetch existing runs and append the new one (with per-user mutex)
   try {
-    const existingRuns = await fetchRunnerRuns(profile.typo3_uid)
+    await withUserLock(tokenRow.user_id, async () => {
+      const existingRuns = await fetchRunnerRuns(profile.typo3_uid)
 
-    const newRun = {
-      runDate: date,
-      runDistance: distance_km.toFixed(2),
-    }
+      const newRun = {
+        runDate: date,
+        runDistance: distance_km.toFixed(2),
+      }
 
-    // Idempotenz: Lauf mit gleichem Datum ersetzen statt doppelt eintragen (BUG-2)
-    const updatedRuns = [
-      ...existingRuns.filter((r) => r.runDate !== date),
-      newRun,
-    ]
-    await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+      const updatedRuns = [
+        ...existingRuns.filter((r) => r.runDate !== date),
+        newRun,
+      ]
+      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+    })
 
     logger.debug('webhook-external', 'Lauf eingetragen', {
       typo3Uid: profile.typo3_uid,
@@ -155,8 +157,8 @@ export async function POST(request: NextRequest) {
     // PROJ-19: Teams notification (non-blocking)
     const notifyPayload = {
       typo3Uid: profile.typo3_uid,
-      runDate: newRun.runDate,
-      runDistanceKm: newRun.runDistance,
+      runDate: date,
+      runDistanceKm: distance_km.toFixed(2),
       teamsNotificationsEnabled: profile.teams_notifications_enabled,
     }
     after(() => sendTeamsNotification(notifyPayload))

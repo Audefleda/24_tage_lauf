@@ -12,6 +12,7 @@ import {
 } from '@/lib/strava'
 import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
 import { sendTeamsNotification } from '@/lib/teams-notification'
+import { withUserLock } from '@/lib/typo3-mutex'
 import * as logger from '@/lib/logger'
 
 // BUG-5 fix: Zod schema for incoming Strava webhook event
@@ -22,36 +23,6 @@ const StravaEventSchema = z.object({
   owner_id: z.number(),
   subscription_id: z.number(),
 })
-
-// ---------------------------------------------------------------------------
-// Per-user in-memory mutex (serializes concurrent webhook events for same user)
-// Note: effective within a single Vercel function instance only.
-// For a 5–30 user app, this is sufficient.
-// ---------------------------------------------------------------------------
-const userLocks = new Map<string, Promise<void>>()
-
-async function processWithLock(userId: string, fn: () => Promise<void>): Promise<void> {
-  // Read previous lock and set new one atomically (before any await)
-  const previous = userLocks.get(userId) ?? Promise.resolve()
-  let resolveMyLock!: () => void
-  const myLock = new Promise<void>((resolve) => {
-    resolveMyLock = resolve
-  })
-  userLocks.set(userId, myLock)
-
-  // Wait for the previous operation to finish
-  await previous.catch(() => {}) // swallow errors from the previous task
-
-  try {
-    await fn()
-  } finally {
-    resolveMyLock()
-    // Clean up map entry if no other task has replaced ours
-    if (userLocks.get(userId) === myLock) {
-      userLocks.delete(userId)
-    }
-  }
-}
 
 // ---------------------------------------------------------------------------
 // GET — Strava hub challenge verification
@@ -135,7 +106,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Process the activity with a per-user lock to prevent race conditions
-  await processWithLock(connection.user_id, async () => {
+  await withUserLock(connection.user_id, async () => {
     try {
       // Refresh access token if needed
       const { access_token, newTokens } = await getValidAccessToken(connection)

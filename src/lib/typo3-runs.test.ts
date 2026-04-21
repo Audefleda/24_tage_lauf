@@ -1,11 +1,19 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 vi.mock('server-only', () => ({}))
-vi.mock('@/lib/supabase-admin', () => ({ createAdminClient: vi.fn() }))
-vi.mock('@/lib/typo3-client', () => ({ typo3Fetch: vi.fn(), Typo3Error: class Typo3Error extends Error {} }))
+vi.mock('@/lib/supabase-admin', () => ({
+  createAdminClient: () => ({
+    from: () => ({ insert: () => ({ error: null }) }),
+  }),
+}))
+const mockTypo3Fetch = vi.fn()
+vi.mock('@/lib/typo3-client', () => ({
+  typo3Fetch: (...args: unknown[]) => mockTypo3Fetch(...args),
+  Typo3Error: class Typo3Error extends Error {},
+}))
 vi.mock('@/lib/logger', () => ({ debug: vi.fn(), error: vi.fn() }))
 
-import { parseTypo3Response } from './typo3-runs'
+import { parseTypo3Response, updateRunnerRuns } from './typo3-runs'
 
 describe('parseTypo3Response', () => {
   describe('valid JSON responses', () => {
@@ -60,5 +68,72 @@ describe('parseTypo3Response', () => {
       const result = parseTypo3Response(longText)
       expect(result.responseMessage?.length).toBe(2000)
     })
+  })
+})
+
+describe('updateRunnerRuns', () => {
+  beforeEach(() => {
+    mockTypo3Fetch.mockReset()
+    mockTypo3Fetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({ success: true }),
+    })
+  })
+
+  function getSentRuns(): unknown[] {
+    const body = mockTypo3Fetch.mock.calls[0][1].body as string
+    const params = new URLSearchParams(body)
+    return JSON.parse(params.get('request[arguments][runs]')!)
+  }
+
+  it('converts decimal points to commas for TYPO3', async () => {
+    await updateRunnerRuns(123, [
+      { runDate: '2026-04-20 06:00:00', runDistance: '8.67' },
+    ])
+
+    const runs = getSentRuns()
+    expect(runs).toEqual([
+      { runDate: '2026-04-20 06:00:00', runDistance: '8,67' },
+    ])
+  })
+
+  it('sends distance "0" as "0" (no decimal point to convert)', async () => {
+    await updateRunnerRuns(123, [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+      { runDate: '2026-04-21 06:00:00', runDistance: '0' },
+    ])
+
+    const runs = getSentRuns()
+    expect(runs).toEqual([
+      { runDate: '2026-04-20 06:00:00', runDistance: '5,5' },
+      { runDate: '2026-04-21 06:00:00', runDistance: '0' },
+    ])
+  })
+
+  it('keeps run entries with distance "0" in the array (TYPO3 needs them to delete)', async () => {
+    const runs = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '3.5' },
+      { runDate: '2026-04-21 06:00:00', runDistance: '0' },
+    ]
+
+    await updateRunnerRuns(123, runs)
+
+    const sentRuns = getSentRuns() as { runDate: string; runDistance: string }[]
+    expect(sentRuns).toHaveLength(2)
+    const deleteEntry = sentRuns.find((r) => r.runDate === '2026-04-21 06:00:00')
+    expect(deleteEntry).toBeDefined()
+    expect(deleteEntry!.runDistance).toBe('0')
+  })
+
+  it('handles whole numbers without decimal point', async () => {
+    await updateRunnerRuns(123, [
+      { runDate: '2026-04-20 06:00:00', runDistance: '10' },
+    ])
+
+    const runs = getSentRuns()
+    expect(runs).toEqual([
+      { runDate: '2026-04-20 06:00:00', runDistance: '10' },
+    ])
   })
 })

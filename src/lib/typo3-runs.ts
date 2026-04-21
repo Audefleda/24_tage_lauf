@@ -121,6 +121,12 @@ export async function updateRunnerRuns(
   typo3Uid: number,
   runs: RunPayload[]
 ): Promise<void> {
+  // TYPO3 expects Komma as decimal separator (e.g. "8,67" not "8.67")
+  const typo3Runs = runs.map((r) => ({
+    runDate: r.runDate,
+    runDistance: r.runDistance.replace('.', ','),
+  }))
+
   const formBody = new URLSearchParams({
     type: '191',
     'request[extensionName]': 'SwitRunners',
@@ -129,7 +135,7 @@ export async function updateRunnerRuns(
     'request[action]': 'setdata',
     'request[arguments][perform]': 'updateruns',
     'request[arguments][userUid]': String(typo3Uid),
-    'request[arguments][runs]': JSON.stringify(runs),
+    'request[arguments][runs]': JSON.stringify(typo3Runs),
   })
 
   debug('typo3-runs', 'PUT-Anfrage an TYPO3 gestartet', { runnerUid: typo3Uid, runCount: runs.length })

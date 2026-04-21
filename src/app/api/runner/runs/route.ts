@@ -1,23 +1,20 @@
-// PUT /api/runner/runs — Replace all runs for the logged-in user
-// Used by PROJ-3 (delete) and PROJ-4 (create/edit)
-// Sends the complete runs array to TYPO3 updateruns endpoint
+// PUT /api/runner/runs — Update a single run for the logged-in user
+// Uses server-side read-modify-write with per-user mutex to prevent race conditions.
+// The client sends only the changed run { runDate, runDistance }.
+// The server fetches the current list from TYPO3, applies the change, and writes back.
 
 import { NextResponse, type NextRequest, after } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
-import { type RunPayload, updateRunnerRuns } from '@/lib/typo3-runs'
+import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
 import { Typo3Error } from '@/lib/typo3-client'
 import { sendTeamsNotification } from '@/lib/teams-notification'
+import { withUserLock } from '@/lib/typo3-mutex'
 import { rateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
 
-const RunItemSchema = z.object({
+const PutBodySchema = z.object({
   runDate: z.string().min(1),
   runDistance: z.string().regex(/^\d+(\.\d+)?$/, 'Ungültige Distanz'),
-})
-
-const NotifyRunSchema = z.object({
-  runDate: z.string().min(1),
-  runDistance: z.string().min(1),
 })
 
 export async function PUT(request: NextRequest) {
@@ -60,25 +57,14 @@ export async function PUT(request: NextRequest) {
   }
 
   // 4. Parse and validate request body
-  let runs: RunPayload[]
-  let notifyRun: { runDate: string; runDistance: string } | undefined
+  let change: { runDate: string; runDistance: string }
   try {
     const body = await request.json()
-    if (!Array.isArray(body.runs)) {
-      throw new Error('runs muss ein Array sein')
-    }
-    const runsResult = z.array(RunItemSchema).safeParse(body.runs)
-    if (!runsResult.success) {
+    const result = PutBodySchema.safeParse(body)
+    if (!result.success) {
       return NextResponse.json({ error: 'Ungültige Laufdaten' }, { status: 400 })
     }
-    runs = runsResult.data
-    // Optional: validate notifyRun with Zod if present (BUG-1 fix)
-    if (body.notifyRun !== undefined) {
-      const result = NotifyRunSchema.safeParse(body.notifyRun)
-      if (result.success) {
-        notifyRun = result.data
-      }
-    }
+    change = result.data
   } catch {
     return NextResponse.json(
       { error: 'Ungültiges Request-Format' },
@@ -86,16 +72,28 @@ export async function PUT(request: NextRequest) {
     )
   }
 
-  // 5. Send to TYPO3 (shared logic also handles logging)
+  // 5. Read-modify-write inside per-user mutex
   try {
-    await updateRunnerRuns(profile.typo3_uid, runs)
+    await withUserLock(user.id, async () => {
+      const existing = await fetchRunnerRuns(profile.typo3_uid)
 
-    // PROJ-19: Teams notification nur nach erfolgreichem TYPO3-Update — non-blocking via after()
-    if (notifyRun) {
+      const targetDatePart = change.runDate.split(' ')[0]
+
+      const filtered = existing.filter(
+        (r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart
+      )
+      const updatedRuns = [...filtered, { runDate: change.runDate, runDistance: change.runDistance }]
+
+      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+    })
+
+    // PROJ-19: Teams notification after successful TYPO3 update — non-blocking
+    const distance = parseFloat(change.runDistance)
+    if (distance > 0) {
       const notifyPayload = {
         typo3Uid: profile.typo3_uid,
-        runDate: notifyRun.runDate.split(' ')[0],
-        runDistanceKm: notifyRun.runDistance,
+        runDate: change.runDate.split(' ')[0],
+        runDistanceKm: change.runDistance,
         teamsNotificationsEnabled: profile.teams_notifications_enabled,
       }
       after(() => sendTeamsNotification(notifyPayload))

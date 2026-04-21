@@ -1,0 +1,18 @@
+fetch("https://www.stuttgarter-kinderstiftung.de/userset.json", {
+    "body": "type=191&request%5BextensionName%5D=SwitRunners&request%5BpluginName%5D=User&request%5Bcontroller%5D=User&request%5Baction%5D=setdata&request%5Barguments%5D%5Bperform%5D=updateruns&request%5Barguments%5D%5BuserUid%5D=5920&request%5Barguments%5D%5Bruns%5D=%5B%7B%22runDate%22%3A%222026-04-20+06%3A00%3A00%22%2C%22runDistance%22%3A%2214%2C13%22%7D%2C%7B%22runDate%22%3A%222026-04-21+06%3A00%3A00%22%2C%22runDistance%22%3A%221%2C3%22%7D%2C%7B%22runDate%22%3A%222026-04-22+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-23+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-24+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-25+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-26+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-27+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-28+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-29+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-04-30+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-01+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-02+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-03+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-04+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-05+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-06+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-07+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-08+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-09+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-10+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-11+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-12+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-13+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%2C%7B%22runDate%22%3A%222026-05-14+06%3A00%3A00%22%2C%22runDistance%22%3A%22%22%7D%5D",
+    "cache": "default",
+    "credentials": "include",
+    "headers": {
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Accept-Language": "de-DE,de;q=0.9",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Priority": "u=3, i",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Safari/605.1.15",
+        "X-Requested-With": "XMLHttpRequest"
+    },
+    "method": "POST",
+    "mode": "cors",
+    "redirect": "follow",
+    "referrer": "https://www.stuttgarter-kinderstiftung.de/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team?tx_felogin_login%5Baction%5D=login&tx_felogin_login%5Bcontroller%5D=Login&cHash=96328911f2da06625662047e794f3584",
+    "referrerPolicy": "strict-origin-when-cross-origin"
+})

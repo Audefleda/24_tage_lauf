@@ -87,3 +87,9 @@ supabase db push --db-url "postgresql://postgres:<password>@db.jyzjyaucwgcxsetpp
 @docs/SYSTEMDOKUMENTATION.md
 
 > Fachliche Gesamtübersicht des Systems. Wird automatisch aktualisiert, wenn neue Features via `/requirements` erstellt werden.
+
+## TYPO3-API-Referenz
+
+@docs/TYPO3-API-REFERENZ.md
+
+> Technische Dokumentation der TYPO3-Schnittstelle (Formate, Endpunkte, Eigenheiten). MUSS bei jeder Implementierung beachtet werden, die mit TYPO3 kommuniziert. Beispiel-Payloads: `features/runnerget.json`, `features/userset.json`.

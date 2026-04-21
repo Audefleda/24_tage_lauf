@@ -259,7 +259,6 @@ export default function RunsPage() {
       />
       <RunsTable
         days={eventDays}
-        allRuns={data.runs}
         onRunsUpdated={refreshRunner}
       />
       {stravaUiVisible && <StravaConnectSection />}

@@ -1,0 +1,1400 @@
+{
+    "runners": [
+        {
+            "uid": 6347,
+            "nr": 1739,
+            "name": "Alexander K.",
+            "age": "",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "26.02.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6347&type=22&cHash=1965844b3f0164c9bd978afe97ed510e",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6347&type=22&cHash=6297420b19e27a74a2b7ce219f2cc744",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6702,
+            "nr": 2075,
+            "name": "Angela",
+            "age": "",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6702&type=22&cHash=5553c0ad9e88ca8ade4a287dc6ac28e2",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6702&type=22&cHash=a1bb81ef8be643fec7bdd66e57df755b",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6756,
+            "nr": 2126,
+            "name": "Bahar",
+            "age": "",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "2,54",
+            "crdate": "18.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6756&type=22&cHash=9e7113612c8493a6ee9b5dfe45a2f29c",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6756&type=22&cHash=6904c27845c369e98ab7279c9fa8580d",
+            "runs": [
+                {
+                    "uid": 84297,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "2,54"
+                }
+            ],
+            "totaldistanceFromArray": 2.54
+        },
+        {
+            "uid": 5971,
+            "nr": 1441,
+            "name": "Bernd",
+            "age": "41",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "18,95",
+            "crdate": "16.05.2025",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5971&type=22&cHash=fccb6c11c7b4e5b7558d3e51061f712d",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5971&type=22&cHash=33329b147f6bb9265df86395e6cbfcbf",
+            "runs": [
+                {
+                    "uid": 84016,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "8,67"
+                },
+                {
+                    "uid": 84133,
+                    "rundate": "21.04.2026",
+                    "rundateObj": "2026-04-21",
+                    "distance": "10,28"
+                }
+            ],
+            "totaldistanceFromArray": 18.95
+        },
+        {
+            "uid": 6700,
+            "nr": 2073,
+            "name": "Bruno",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6700&type=22&cHash=6116b8e6b8d24df43fb8a47af644404d",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6700&type=22&cHash=eb7cae74a1d790e5dc5f5d84a7c45970",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6710,
+            "nr": 2083,
+            "name": "Catherine",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6710&type=22&cHash=95c6a5297e3763a06773db94b3d13034",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6710&type=22&cHash=c1760c57435404a3bfe2aefcace050e3",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6707,
+            "nr": 2080,
+            "name": "Charlotte",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6707&type=22&cHash=0fed82a5a09d527209ebe14f835a0928",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6707&type=22&cHash=7b1abb5aff10652b4d94c6be8efc11e7",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6715,
+            "nr": 2088,
+            "name": "Christian Schumacher",
+            "age": "",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "4,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6715&type=22&cHash=057638a1b3a3786b5552e59343f32f3f",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6715&type=22&cHash=1507dce406a47b93b3978287d0458903",
+            "runs": [
+                {
+                    "uid": 83649,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "4,00"
+                },
+                {
+                    "uid": 83656,
+                    "rundate": "21.04.2026",
+                    "rundateObj": "2026-04-21",
+                    "distance": "0,00"
+                }
+            ],
+            "totaldistanceFromArray": 4
+        },
+        {
+            "uid": 6345,
+            "nr": 1737,
+            "name": "Christian St.",
+            "age": "42",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "6,20",
+            "crdate": "26.02.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6345&type=22&cHash=320791c680baa90d3478b1eed342d454",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6345&type=22&cHash=328f3ef2ccf857ef02c9ac10acf1a49f",
+            "runs": [
+                {
+                    "uid": 83698,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "6,20"
+                }
+            ],
+            "totaldistanceFromArray": 6.2
+        },
+        {
+            "uid": 6775,
+            "nr": 2143,
+            "name": "David",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "2,79",
+            "crdate": "23.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6775&type=22&cHash=fd7cf043a2b0a2fbe73c7c48c3f0741a",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6775&type=22&cHash=d468192abb9192817dc4d7079b1224f0",
+            "runs": [
+                {
+                    "uid": 83695,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "2,79"
+                }
+            ],
+            "totaldistanceFromArray": 2.79
+        },
+        {
+            "uid": 6755,
+            "nr": 2125,
+            "name": "Ela",
+            "age": "0",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "18.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6755&type=22&cHash=b4f3603f194819d3e1dc77d4061d9910",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6755&type=22&cHash=243c4c105094ce5b2dd1dc80fb195b81",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6456,
+            "nr": 1844,
+            "name": "Elisaveta",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "04.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6456&type=22&cHash=651188004869d8f0455283ad3de90976",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6456&type=22&cHash=0d2e8cc5b185df4c4e3e5528c49978ed",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 7234,
+            "nr": 2558,
+            "name": "Fabian",
+            "age": "27",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "13.04.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7234&type=22&cHash=482cc3bfa5fc6ca2a1c148e64b773aa3",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7234&type=22&cHash=eacb5bfa1768c1aa7d4bf11e5fd13f96",
+            "runs": [
+                {
+                    "uid": 83648,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83652,
+                    "rundate": "21.04.2026",
+                    "rundateObj": "2026-04-21",
+                    "distance": "0,00"
+                }
+            ],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6703,
+            "nr": 2076,
+            "name": "Florian",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6703&type=22&cHash=d2dfa83b3f3d65800ec59da2afd1ec8f",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6703&type=22&cHash=a05736225d97b6bf6c11446afa794b51",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6348,
+            "nr": 1740,
+            "name": "Heike",
+            "age": "55",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "2,75",
+            "crdate": "26.02.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6348&type=22&cHash=ff2398daebdeeaa5554160aa276ce357",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6348&type=22&cHash=3e156c8107ecef0dd1fd9af98a2f155d",
+            "runs": [
+                {
+                    "uid": 84097,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "2,75"
+                }
+            ],
+            "totaldistanceFromArray": 2.75
+        },
+        {
+            "uid": 7314,
+            "nr": 2633,
+            "name": "Jana L.",
+            "age": "31",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "14.04.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7314&type=22&cHash=7f722bd12c338ed30be1189f9d80ab3d",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7314&type=22&cHash=08326dfff3bdc78d71cc0196454b5ad8",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 5920,
+            "nr": 1397,
+            "name": "Jonathan",
+            "age": "46",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "15,43",
+            "crdate": "13.05.2025",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5920&type=22&cHash=504ed8c3855961cf05e407ae3786b74b",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5920&type=22&cHash=ee11ecd6163c3dab8121ab1aa731bdbe",
+            "runs": [
+                {
+                    "uid": 83647,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "14,13"
+                },
+                {
+                    "uid": 84346,
+                    "rundate": "21.04.2026",
+                    "rundateObj": "2026-04-21",
+                    "distance": "1,30"
+                },
+                {
+                    "uid": 83651,
+                    "rundate": "24.04.2026",
+                    "rundateObj": "2026-04-24",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83680,
+                    "rundate": "06.05.2026",
+                    "rundateObj": "2026-05-06",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83679,
+                    "rundate": "07.05.2026",
+                    "rundateObj": "2026-05-07",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83678,
+                    "rundate": "08.05.2026",
+                    "rundateObj": "2026-05-08",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83677,
+                    "rundate": "09.05.2026",
+                    "rundateObj": "2026-05-09",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83676,
+                    "rundate": "10.05.2026",
+                    "rundateObj": "2026-05-10",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83674,
+                    "rundate": "11.05.2026",
+                    "rundateObj": "2026-05-11",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83673,
+                    "rundate": "12.05.2026",
+                    "rundateObj": "2026-05-12",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83659,
+                    "rundate": "13.05.2026",
+                    "rundateObj": "2026-05-13",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83658,
+                    "rundate": "14.05.2026",
+                    "rundateObj": "2026-05-14",
+                    "distance": "0,00"
+                }
+            ],
+            "totaldistanceFromArray": 15.430000000000001
+        },
+        {
+            "uid": 5987,
+            "nr": 1456,
+            "name": "Jonny",
+            "age": "28",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "11,00",
+            "crdate": "19.05.2025",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5987&type=22&cHash=cd3ca7f683ac49ffc5f8e04f1e801be1",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5987&type=22&cHash=fe4b1eaa3b8187a61d69d3b52e9d82e9",
+            "runs": [
+                {
+                    "uid": 84044,
+                    "rundate": "21.04.2026",
+                    "rundateObj": "2026-04-21",
+                    "distance": "11,00"
+                }
+            ],
+            "totaldistanceFromArray": 11
+        },
+        {
+            "uid": 5972,
+            "nr": 1442,
+            "name": "Joshua",
+            "age": "25",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.05.2025",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5972&type=22&cHash=c32b2bb0313a57267351c3544df48ed7",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5972&type=22&cHash=d0f6c43e7fc78b6b67a0cfd19d778bd8",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 7227,
+            "nr": 2551,
+            "name": "Jutta",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "13.04.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7227&type=22&cHash=fb13ff326fd851c46986f3702bf60820",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7227&type=22&cHash=b0eb3a8b402a64e20652a61245dc75a4",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6705,
+            "nr": 2078,
+            "name": "Leopold",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6705&type=22&cHash=7d7a8865250e6d26098421f0bc5db150",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6705&type=22&cHash=1289291c4f93407a9ac40dc57ffb55f5",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6706,
+            "nr": 2079,
+            "name": "Linda",
+            "age": "29",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "4,62",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6706&type=22&cHash=a283d894fa93472cd2afcc5955d81747",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6706&type=22&cHash=3d28c45c0d2ba0aded150df0597bf301",
+            "runs": [
+                {
+                    "uid": 83650,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "4,62"
+                }
+            ],
+            "totaldistanceFromArray": 4.62
+        },
+        {
+            "uid": 6701,
+            "nr": 2074,
+            "name": "Luca",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6701&type=22&cHash=8970aaa24cc4025a74a8caf6529920bc",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6701&type=22&cHash=78e102b3c14736ed20038425d7d578f8",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 5986,
+            "nr": 1455,
+            "name": "Lukas",
+            "age": "29",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "19.05.2025",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5986&type=22&cHash=0509bb4f523e5ff6d15539772959d8bc",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5986&type=22&cHash=792209848559e6f03c5ab9368a0bb12c",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 7240,
+            "nr": 2564,
+            "name": "Malek",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "13.04.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7240&type=22&cHash=b1d3d5bc60b60a93fc7fc3c453348cf5",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7240&type=22&cHash=21d2d406c7a080cd504030a9f1978dba",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6704,
+            "nr": 2077,
+            "name": "Marisa",
+            "age": "0",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6704&type=22&cHash=26056a7194be18e197e8867de8ab0502",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6704&type=22&cHash=d43146ac99ceef9e32402ce6be5ff325",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6709,
+            "nr": 2082,
+            "name": "Michael B.",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6709&type=22&cHash=f9ab715dc253723a69e756a18dff117d",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6709&type=22&cHash=9eb324cc9a1f95c240c2ad7252d01002",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6770,
+            "nr": 2140,
+            "name": "Muriel ",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "1,70",
+            "crdate": "20.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6770&type=22&cHash=dc3e570e2e0e08d677ac5860ab2b1d91",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6770&type=22&cHash=223b65374fc9fcbd6bb3ab70b7aa222a",
+            "runs": [
+                {
+                    "uid": 84326,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "1,70"
+                }
+            ],
+            "totaldistanceFromArray": 1.7
+        },
+        {
+            "uid": 6346,
+            "nr": 1738,
+            "name": "Peer",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "26.02.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6346&type=22&cHash=378c9cf5a3429f56eb1b73c3ab1dd6a6",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6346&type=22&cHash=e38f18addf579f0c4db6cc116a78244f",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6711,
+            "nr": 2084,
+            "name": "Philippe R.",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "4,04",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6711&type=22&cHash=58816090de1f91b8fbe51e6c81a464a9",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6711&type=22&cHash=dcd8becd54f2f9211cb064f427b12642",
+            "runs": [
+                {
+                    "uid": 84098,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "4,04"
+                }
+            ],
+            "totaldistanceFromArray": 4.04
+        },
+        {
+            "uid": 6713,
+            "nr": 2086,
+            "name": "Sabine",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6713&type=22&cHash=b3e99d33c73ea5891a0ae1ab014963e5",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6713&type=22&cHash=e781a88dc6d207b40440542ec6f960a6",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6708,
+            "nr": 2081,
+            "name": "Sarah-Lena",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6708&type=22&cHash=9b3eadbf83db4f519e0702ee15fdadd2",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6708&type=22&cHash=664095aa847ce9a0bcba055ac3c1bcec",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6712,
+            "nr": 2085,
+            "name": "Sassan",
+            "age": "34",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6712&type=22&cHash=4f6599a4a1a321229d52168629d11233",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6712&type=22&cHash=931954a18f143b03b9a3c81887e90c0c",
+            "runs": [
+                {
+                    "uid": 83646,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "0,00"
+                },
+                {
+                    "uid": 83653,
+                    "rundate": "21.04.2026",
+                    "rundateObj": "2026-04-21",
+                    "distance": "0,00"
+                }
+            ],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6714,
+            "nr": 2087,
+            "name": "Silke",
+            "age": "",
+            "tshirtsize": "",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "16.03.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6714&type=22&cHash=253a753eb9627f50cfe29c181e53a4d8",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6714&type=22&cHash=6c0b38c67e362a14004a6e91fb83070b",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 7421,
+            "nr": 2730,
+            "name": "Stefan",
+            "age": "33",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "17.04.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7421&type=22&cHash=daa654d63d606c5aa98f4bf575795c04",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7421&type=22&cHash=4421102864bec5a81349c266fc0edd7a",
+            "runs": [
+                {
+                    "uid": 83691,
+                    "rundate": "20.04.2026",
+                    "rundateObj": "2026-04-20",
+                    "distance": "0,00"
+                }
+            ],
+            "totaldistanceFromArray": 0
+        },
+        {
+            "uid": 6344,
+            "nr": 1736,
+            "name": "Tobias E.",
+            "age": "",
+            "tshirtsize": "keins",
+            "runnergroup": 0,
+            "totaldistance": "0,00",
+            "crdate": "26.02.2026",
+            "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6344&type=22&cHash=3b2860710915bcd0ef4fddb9efa902fb",
+            "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6344&type=22&cHash=6eb07d712ec3c4d8e8fb54c0f329d84a",
+            "runs": [],
+            "totaldistanceFromArray": 0
+        }
+    ],
+    "runnergroups": [],
+    "runnergroupblocks": [
+        {
+            "uid": 0,
+            "title": "",
+            "runners": [
+                {
+                    "uid": 6347,
+                    "nr": 1739,
+                    "name": "Alexander K.",
+                    "age": "",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "26.02.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6347&type=22&cHash=1965844b3f0164c9bd978afe97ed510e",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6347&type=22&cHash=6297420b19e27a74a2b7ce219f2cc744",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6702,
+                    "nr": 2075,
+                    "name": "Angela",
+                    "age": "",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6702&type=22&cHash=5553c0ad9e88ca8ade4a287dc6ac28e2",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6702&type=22&cHash=a1bb81ef8be643fec7bdd66e57df755b",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6756,
+                    "nr": 2126,
+                    "name": "Bahar",
+                    "age": "",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "2,54",
+                    "crdate": "18.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6756&type=22&cHash=9e7113612c8493a6ee9b5dfe45a2f29c",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6756&type=22&cHash=6904c27845c369e98ab7279c9fa8580d",
+                    "runs": [
+                        {
+                            "uid": 84297,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "2,54"
+                        }
+                    ],
+                    "totaldistanceFromArray": 2.54
+                },
+                {
+                    "uid": 5971,
+                    "nr": 1441,
+                    "name": "Bernd",
+                    "age": "41",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "18,95",
+                    "crdate": "16.05.2025",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5971&type=22&cHash=fccb6c11c7b4e5b7558d3e51061f712d",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5971&type=22&cHash=33329b147f6bb9265df86395e6cbfcbf",
+                    "runs": [
+                        {
+                            "uid": 84016,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "8,67"
+                        },
+                        {
+                            "uid": 84133,
+                            "rundate": "21.04.2026",
+                            "rundateObj": "2026-04-21",
+                            "distance": "10,28"
+                        }
+                    ],
+                    "totaldistanceFromArray": 18.95
+                },
+                {
+                    "uid": 6700,
+                    "nr": 2073,
+                    "name": "Bruno",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6700&type=22&cHash=6116b8e6b8d24df43fb8a47af644404d",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6700&type=22&cHash=eb7cae74a1d790e5dc5f5d84a7c45970",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6710,
+                    "nr": 2083,
+                    "name": "Catherine",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6710&type=22&cHash=95c6a5297e3763a06773db94b3d13034",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6710&type=22&cHash=c1760c57435404a3bfe2aefcace050e3",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6707,
+                    "nr": 2080,
+                    "name": "Charlotte",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6707&type=22&cHash=0fed82a5a09d527209ebe14f835a0928",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6707&type=22&cHash=7b1abb5aff10652b4d94c6be8efc11e7",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6715,
+                    "nr": 2088,
+                    "name": "Christian Schumacher",
+                    "age": "",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "4,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6715&type=22&cHash=057638a1b3a3786b5552e59343f32f3f",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6715&type=22&cHash=1507dce406a47b93b3978287d0458903",
+                    "runs": [
+                        {
+                            "uid": 83649,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "4,00"
+                        },
+                        {
+                            "uid": 83656,
+                            "rundate": "21.04.2026",
+                            "rundateObj": "2026-04-21",
+                            "distance": "0,00"
+                        }
+                    ],
+                    "totaldistanceFromArray": 4
+                },
+                {
+                    "uid": 6345,
+                    "nr": 1737,
+                    "name": "Christian St.",
+                    "age": "42",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "6,20",
+                    "crdate": "26.02.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6345&type=22&cHash=320791c680baa90d3478b1eed342d454",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6345&type=22&cHash=328f3ef2ccf857ef02c9ac10acf1a49f",
+                    "runs": [
+                        {
+                            "uid": 83698,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "6,20"
+                        }
+                    ],
+                    "totaldistanceFromArray": 6.2
+                },
+                {
+                    "uid": 6775,
+                    "nr": 2143,
+                    "name": "David",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "2,79",
+                    "crdate": "23.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6775&type=22&cHash=fd7cf043a2b0a2fbe73c7c48c3f0741a",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6775&type=22&cHash=d468192abb9192817dc4d7079b1224f0",
+                    "runs": [
+                        {
+                            "uid": 83695,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "2,79"
+                        }
+                    ],
+                    "totaldistanceFromArray": 2.79
+                },
+                {
+                    "uid": 6755,
+                    "nr": 2125,
+                    "name": "Ela",
+                    "age": "0",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "18.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6755&type=22&cHash=b4f3603f194819d3e1dc77d4061d9910",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6755&type=22&cHash=243c4c105094ce5b2dd1dc80fb195b81",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6456,
+                    "nr": 1844,
+                    "name": "Elisaveta",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "04.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6456&type=22&cHash=651188004869d8f0455283ad3de90976",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6456&type=22&cHash=0d2e8cc5b185df4c4e3e5528c49978ed",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 7234,
+                    "nr": 2558,
+                    "name": "Fabian",
+                    "age": "27",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "13.04.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7234&type=22&cHash=482cc3bfa5fc6ca2a1c148e64b773aa3",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7234&type=22&cHash=eacb5bfa1768c1aa7d4bf11e5fd13f96",
+                    "runs": [
+                        {
+                            "uid": 83648,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83652,
+                            "rundate": "21.04.2026",
+                            "rundateObj": "2026-04-21",
+                            "distance": "0,00"
+                        }
+                    ],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6703,
+                    "nr": 2076,
+                    "name": "Florian",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6703&type=22&cHash=d2dfa83b3f3d65800ec59da2afd1ec8f",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6703&type=22&cHash=a05736225d97b6bf6c11446afa794b51",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6348,
+                    "nr": 1740,
+                    "name": "Heike",
+                    "age": "55",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "2,75",
+                    "crdate": "26.02.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6348&type=22&cHash=ff2398daebdeeaa5554160aa276ce357",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6348&type=22&cHash=3e156c8107ecef0dd1fd9af98a2f155d",
+                    "runs": [
+                        {
+                            "uid": 84097,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "2,75"
+                        }
+                    ],
+                    "totaldistanceFromArray": 2.75
+                },
+                {
+                    "uid": 7314,
+                    "nr": 2633,
+                    "name": "Jana L.",
+                    "age": "31",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "14.04.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7314&type=22&cHash=7f722bd12c338ed30be1189f9d80ab3d",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7314&type=22&cHash=08326dfff3bdc78d71cc0196454b5ad8",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 5920,
+                    "nr": 1397,
+                    "name": "Jonathan",
+                    "age": "46",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "15,43",
+                    "crdate": "13.05.2025",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5920&type=22&cHash=504ed8c3855961cf05e407ae3786b74b",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5920&type=22&cHash=ee11ecd6163c3dab8121ab1aa731bdbe",
+                    "runs": [
+                        {
+                            "uid": 83647,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "14,13"
+                        },
+                        {
+                            "uid": 84346,
+                            "rundate": "21.04.2026",
+                            "rundateObj": "2026-04-21",
+                            "distance": "1,30"
+                        },
+                        {
+                            "uid": 83651,
+                            "rundate": "24.04.2026",
+                            "rundateObj": "2026-04-24",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83680,
+                            "rundate": "06.05.2026",
+                            "rundateObj": "2026-05-06",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83679,
+                            "rundate": "07.05.2026",
+                            "rundateObj": "2026-05-07",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83678,
+                            "rundate": "08.05.2026",
+                            "rundateObj": "2026-05-08",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83677,
+                            "rundate": "09.05.2026",
+                            "rundateObj": "2026-05-09",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83676,
+                            "rundate": "10.05.2026",
+                            "rundateObj": "2026-05-10",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83674,
+                            "rundate": "11.05.2026",
+                            "rundateObj": "2026-05-11",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83673,
+                            "rundate": "12.05.2026",
+                            "rundateObj": "2026-05-12",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83659,
+                            "rundate": "13.05.2026",
+                            "rundateObj": "2026-05-13",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83658,
+                            "rundate": "14.05.2026",
+                            "rundateObj": "2026-05-14",
+                            "distance": "0,00"
+                        }
+                    ],
+                    "totaldistanceFromArray": 15.430000000000001
+                },
+                {
+                    "uid": 5987,
+                    "nr": 1456,
+                    "name": "Jonny",
+                    "age": "28",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "11,00",
+                    "crdate": "19.05.2025",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5987&type=22&cHash=cd3ca7f683ac49ffc5f8e04f1e801be1",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5987&type=22&cHash=fe4b1eaa3b8187a61d69d3b52e9d82e9",
+                    "runs": [
+                        {
+                            "uid": 84044,
+                            "rundate": "21.04.2026",
+                            "rundateObj": "2026-04-21",
+                            "distance": "11,00"
+                        }
+                    ],
+                    "totaldistanceFromArray": 11
+                },
+                {
+                    "uid": 5972,
+                    "nr": 1442,
+                    "name": "Joshua",
+                    "age": "25",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.05.2025",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5972&type=22&cHash=c32b2bb0313a57267351c3544df48ed7",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5972&type=22&cHash=d0f6c43e7fc78b6b67a0cfd19d778bd8",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 7227,
+                    "nr": 2551,
+                    "name": "Jutta",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "13.04.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7227&type=22&cHash=fb13ff326fd851c46986f3702bf60820",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7227&type=22&cHash=b0eb3a8b402a64e20652a61245dc75a4",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6705,
+                    "nr": 2078,
+                    "name": "Leopold",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6705&type=22&cHash=7d7a8865250e6d26098421f0bc5db150",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6705&type=22&cHash=1289291c4f93407a9ac40dc57ffb55f5",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6706,
+                    "nr": 2079,
+                    "name": "Linda",
+                    "age": "29",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "4,62",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6706&type=22&cHash=a283d894fa93472cd2afcc5955d81747",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6706&type=22&cHash=3d28c45c0d2ba0aded150df0597bf301",
+                    "runs": [
+                        {
+                            "uid": 83650,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "4,62"
+                        }
+                    ],
+                    "totaldistanceFromArray": 4.62
+                },
+                {
+                    "uid": 6701,
+                    "nr": 2074,
+                    "name": "Luca",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6701&type=22&cHash=8970aaa24cc4025a74a8caf6529920bc",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6701&type=22&cHash=78e102b3c14736ed20038425d7d578f8",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 5986,
+                    "nr": 1455,
+                    "name": "Lukas",
+                    "age": "29",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "19.05.2025",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=5986&type=22&cHash=0509bb4f523e5ff6d15539772959d8bc",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=5986&type=22&cHash=792209848559e6f03c5ab9368a0bb12c",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 7240,
+                    "nr": 2564,
+                    "name": "Malek",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "13.04.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7240&type=22&cHash=b1d3d5bc60b60a93fc7fc3c453348cf5",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7240&type=22&cHash=21d2d406c7a080cd504030a9f1978dba",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6704,
+                    "nr": 2077,
+                    "name": "Marisa",
+                    "age": "0",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6704&type=22&cHash=26056a7194be18e197e8867de8ab0502",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6704&type=22&cHash=d43146ac99ceef9e32402ce6be5ff325",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6709,
+                    "nr": 2082,
+                    "name": "Michael B.",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6709&type=22&cHash=f9ab715dc253723a69e756a18dff117d",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6709&type=22&cHash=9eb324cc9a1f95c240c2ad7252d01002",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6770,
+                    "nr": 2140,
+                    "name": "Muriel ",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "1,70",
+                    "crdate": "20.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6770&type=22&cHash=dc3e570e2e0e08d677ac5860ab2b1d91",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6770&type=22&cHash=223b65374fc9fcbd6bb3ab70b7aa222a",
+                    "runs": [
+                        {
+                            "uid": 84326,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "1,70"
+                        }
+                    ],
+                    "totaldistanceFromArray": 1.7
+                },
+                {
+                    "uid": 6346,
+                    "nr": 1738,
+                    "name": "Peer",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "26.02.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6346&type=22&cHash=378c9cf5a3429f56eb1b73c3ab1dd6a6",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6346&type=22&cHash=e38f18addf579f0c4db6cc116a78244f",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6711,
+                    "nr": 2084,
+                    "name": "Philippe R.",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "4,04",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6711&type=22&cHash=58816090de1f91b8fbe51e6c81a464a9",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6711&type=22&cHash=dcd8becd54f2f9211cb064f427b12642",
+                    "runs": [
+                        {
+                            "uid": 84098,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "4,04"
+                        }
+                    ],
+                    "totaldistanceFromArray": 4.04
+                },
+                {
+                    "uid": 6713,
+                    "nr": 2086,
+                    "name": "Sabine",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6713&type=22&cHash=b3e99d33c73ea5891a0ae1ab014963e5",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6713&type=22&cHash=e781a88dc6d207b40440542ec6f960a6",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6708,
+                    "nr": 2081,
+                    "name": "Sarah-Lena",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6708&type=22&cHash=9b3eadbf83db4f519e0702ee15fdadd2",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6708&type=22&cHash=664095aa847ce9a0bcba055ac3c1bcec",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6712,
+                    "nr": 2085,
+                    "name": "Sassan",
+                    "age": "34",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6712&type=22&cHash=4f6599a4a1a321229d52168629d11233",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6712&type=22&cHash=931954a18f143b03b9a3c81887e90c0c",
+                    "runs": [
+                        {
+                            "uid": 83646,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "0,00"
+                        },
+                        {
+                            "uid": 83653,
+                            "rundate": "21.04.2026",
+                            "rundateObj": "2026-04-21",
+                            "distance": "0,00"
+                        }
+                    ],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6714,
+                    "nr": 2087,
+                    "name": "Silke",
+                    "age": "",
+                    "tshirtsize": "",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "16.03.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6714&type=22&cHash=253a753eb9627f50cfe29c181e53a4d8",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6714&type=22&cHash=6c0b38c67e362a14004a6e91fb83070b",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 7421,
+                    "nr": 2730,
+                    "name": "Stefan",
+                    "age": "33",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "17.04.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=7421&type=22&cHash=daa654d63d606c5aa98f4bf575795c04",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=7421&type=22&cHash=4421102864bec5a81349c266fc0edd7a",
+                    "runs": [
+                        {
+                            "uid": 83691,
+                            "rundate": "20.04.2026",
+                            "rundateObj": "2026-04-20",
+                            "distance": "0,00"
+                        }
+                    ],
+                    "totaldistanceFromArray": 0
+                },
+                {
+                    "uid": 6344,
+                    "nr": 1736,
+                    "name": "Tobias E.",
+                    "age": "",
+                    "tshirtsize": "keins",
+                    "runnergroup": 0,
+                    "totaldistance": "0,00",
+                    "crdate": "26.02.2026",
+                    "pdfUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/urkunde?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Buser%5D=6344&type=22&cHash=3b2860710915bcd0ef4fddb9efa902fb",
+                    "startnrUri": "/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/mein-team/startnummer?no_cache=1&tx_switdompdf_pi1%5Baction%5D=&tx_switdompdf_pi1%5Bargument%5D=printPage&tx_switdompdf_pi1%5Bcontroller%5D=Pdf&tx_switrunners_user%5Baction%5D=show&tx_switrunners_user%5Bcontroller%5D=User&tx_switrunners_user%5Beventtype%5D=24d&tx_switrunners_user%5Bstartnr%5D=1&tx_switrunners_user%5Buser%5D=6344&type=22&cHash=6eb07d712ec3c4d8e8fb54c0f329d84a",
+                    "runs": [],
+                    "totaldistanceFromArray": 0
+                }
+            ]
+        }
+    ],
+    "norunners": 0,
+    "teamruns": [],
+    "totaldistance": "74,02"
+}

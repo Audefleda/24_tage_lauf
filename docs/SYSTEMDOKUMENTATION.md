@@ -102,8 +102,10 @@ Das System fungiert als moderne Benutzeroberfläche vor einer Legacy-Backend-Str
 
 #### TYPO3-API-Besonderheit
 Die TYPO3-API kennt **keine einzelnen Updates** — beim Speichern wird immer die **komplette Laufliste** des Läufers ersetzt. Dies bedeutet:
-- Jede Änderung lädt alle Läufe, modifiziert das Array lokal und schickt alles zurück
+- Jede Änderung wird server-seitig verarbeitet: aktuelle Läufe von TYPO3 laden, Änderung anwenden, alles zurückschreiben (Read-Modify-Write)
+- Ein geteilter Per-User-Mutex serialisiert alle Schreibzugriffe (UI, Strava, externer Webhook), damit keine Race Conditions entstehen
 - Läufe außerhalb des Event-Zeitraums werden automatisch mit übertragen (kein Datenverlust)
+- Detaillierte API-Dokumentation: siehe `docs/TYPO3-API-REFERENZ.md`
 
 ### 3. Strava-Integration (optional)
 
@@ -332,6 +334,9 @@ Werden in Vercel konfiguriert (keine manuelle Datei-Verwaltung im Production-Bet
 - **Kein echtes REST CRUD:** Es gibt nur einen Endpunkt `updateruns`, der immer die komplette Laufliste ersetzt
 - **Keine einzelnen Lauf-IDs:** Läufe werden als Array ohne persistente IDs übertragen
 - **HTML-Parsing:** Login-Flow parst HTML statt JSON (TYPO3 hat keine native JSON REST API)
+- **Dezimalkomma:** TYPO3 verwendet Komma als Dezimaltrennzeichen (`"8,67"` statt `"8.67"`) — sowohl beim Lesen als auch beim Schreiben
+- **HTTP 200 ≠ Erfolg:** TYPO3 kann HTTP 200 zurückgeben, auch wenn intern nichts gespeichert wurde (z.B. bei abgelaufener Session)
+- **Detaillierte API-Referenz:** `docs/TYPO3-API-REFERENZ.md` mit Beispiel-Payloads
 
 ### Funktionale Einschränkungen
 
@@ -354,4 +359,5 @@ Werden in Vercel konfiguriert (keine manuelle Datei-Verwaltung im Production-Bet
 |-------|---------|----------|
 | 2026-04-17 | 1.0 | Initiale Erstellung — 25 Features dokumentiert |
 | 2026-04-20 | 1.1 | PROJ-26: Team-Gesamtkilometer BettercallPaul in Läufe-Übersicht hinzugefügt |
+| 2026-04-21 | 1.2 | Bugfix: Race Condition bei schnellen Speichervorgängen behoben (Read-Modify-Write mit Per-User-Mutex). TYPO3-API-Referenzdokumentation hinzugefügt. |
 
