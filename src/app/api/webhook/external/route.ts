@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest, after } from 'next/server'
 import { z } from 'zod'
 import { createHash, timingSafeEqual } from 'crypto'
 import { createAdminClient } from '@/lib/supabase-admin'
-import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
+import { fetchRunnerRuns, updateRunnerRuns, hasRunDistanceChanged, mergeRunByDate } from '@/lib/typo3-runs'
 import { Typo3Error } from '@/lib/typo3-client'
 import { sendTeamsNotification } from '@/lib/teams-notification'
 import { withUserLock } from '@/lib/typo3-mutex'
@@ -133,20 +133,23 @@ export async function POST(request: NextRequest) {
 
   // 6. Fetch existing runs and append the new one (with per-user mutex)
   try {
-    await withUserLock(tokenRow.user_id, async () => {
+    const changed = await withUserLock(tokenRow.user_id, async () => {
       const existingRuns = await fetchRunnerRuns(profile.typo3_uid)
+      const newRunDistance = distance_km.toFixed(2)
 
-      const newRun = {
-        runDate: date,
-        runDistance: distance_km.toFixed(2),
+      if (!hasRunDistanceChanged(existingRuns, date, newRunDistance)) {
+        logger.debug('webhook-external', 'Kilometerzahl unverändert — Schreiben und Benachrichtigung übersprungen', { date, distance_km })
+        return false
       }
 
-      const updatedRuns = [
-        ...existingRuns.filter((r) => r.runDate !== date),
-        newRun,
-      ]
+      const updatedRuns = mergeRunByDate(existingRuns, date, newRunDistance)
       await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+      return true
     })
+
+    if (!changed) {
+      return NextResponse.json({ ok: true, date, distance_km, changed: false })
+    }
 
     logger.debug('webhook-external', 'Lauf eingetragen', {
       typo3Uid: profile.typo3_uid,

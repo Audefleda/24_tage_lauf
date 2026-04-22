@@ -116,6 +116,31 @@ export async function fetchRunnerRuns(typo3Uid: number): Promise<RunPayload[]> {
     .filter((r): r is RunPayload => r !== null)
 }
 
+/** Check if the distance for a given date has changed compared to existing runs. */
+export function hasRunDistanceChanged(
+  existingRuns: RunPayload[],
+  newRunDate: string,
+  newRunDistance: string,
+): boolean {
+  const datePart = newRunDate.split(' ')[0]
+  const existing = existingRuns.find((r) => r.runDate.split(' ')[0] === datePart)
+  if (!existing) return true
+  return parseFloat(existing.runDistance) !== parseFloat(newRunDistance)
+}
+
+/** Build an updated runs array: replace existing entry for the date (if any) and append the new run. */
+export function mergeRunByDate(
+  existingRuns: RunPayload[],
+  newRunDate: string,
+  newRunDistance: string,
+): RunPayload[] {
+  const datePart = newRunDate.split(' ')[0]
+  return [
+    ...existingRuns.filter((r) => r.runDate.split(' ')[0] !== datePart),
+    { runDate: newRunDate, runDistance: newRunDistance },
+  ]
+}
+
 /** Replace all runs for a runner in TYPO3 (calls updateruns + logs). Throws on failure. */
 export async function updateRunnerRuns(
   typo3Uid: number,

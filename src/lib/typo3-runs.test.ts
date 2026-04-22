@@ -13,7 +13,7 @@ vi.mock('@/lib/typo3-client', () => ({
 }))
 vi.mock('@/lib/logger', () => ({ debug: vi.fn(), error: vi.fn() }))
 
-import { parseTypo3Response, updateRunnerRuns } from './typo3-runs'
+import { parseTypo3Response, updateRunnerRuns, hasRunDistanceChanged, mergeRunByDate } from './typo3-runs'
 
 describe('parseTypo3Response', () => {
   describe('valid JSON responses', () => {
@@ -68,6 +68,105 @@ describe('parseTypo3Response', () => {
       const result = parseTypo3Response(longText)
       expect(result.responseMessage?.length).toBe(2000)
     })
+  })
+})
+
+describe('hasRunDistanceChanged', () => {
+  it('returns true when no existing run for the date', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+    ]
+    expect(hasRunDistanceChanged(existing, '2026-04-21', '8.00')).toBe(true)
+  })
+
+  it('returns false when distance is identical', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '8.50' },
+    ]
+    expect(hasRunDistanceChanged(existing, '2026-04-20', '8.50')).toBe(false)
+  })
+
+  it('returns false when distance is numerically equal despite different formatting', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '8.5' },
+    ]
+    expect(hasRunDistanceChanged(existing, '2026-04-20', '8.50')).toBe(false)
+  })
+
+  it('returns true when distance differs', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+    ]
+    expect(hasRunDistanceChanged(existing, '2026-04-20', '8.50')).toBe(true)
+  })
+
+  it('matches date part correctly when existing has time component', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '10.00' },
+    ]
+    expect(hasRunDistanceChanged(existing, '2026-04-20', '10.00')).toBe(false)
+  })
+
+  it('matches date part correctly when new date has time component', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '10.00' },
+    ]
+    expect(hasRunDistanceChanged(existing, '2026-04-20 06:00:00', '10.00')).toBe(false)
+  })
+
+  it('returns true for empty existing runs array', () => {
+    expect(hasRunDistanceChanged([], '2026-04-20', '5.00')).toBe(true)
+  })
+})
+
+describe('mergeRunByDate', () => {
+  it('appends run when no existing entry for the date', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+    ]
+    const result = mergeRunByDate(existing, '2026-04-21', '8.00')
+    expect(result).toHaveLength(2)
+    expect(result[0]).toEqual({ runDate: '2026-04-20 06:00:00', runDistance: '5.5' })
+    expect(result[1]).toEqual({ runDate: '2026-04-21', runDistance: '8.00' })
+  })
+
+  it('replaces existing entry for the same date', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+      { runDate: '2026-04-22 06:00:00', runDistance: '10.0' },
+    ]
+    const result = mergeRunByDate(existing, '2026-04-20', '12.00')
+    expect(result).toHaveLength(2)
+    expect(result.find((r) => r.runDate.startsWith('2026-04-20'))?.runDistance).toBe('12.00')
+    expect(result.find((r) => r.runDate.startsWith('2026-04-22'))?.runDistance).toBe('10.0')
+  })
+
+  it('handles date matching with time component', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+    ]
+    const result = mergeRunByDate(existing, '2026-04-20 06:00:00', '8.00')
+    expect(result).toHaveLength(1)
+    expect(result[0].runDistance).toBe('8.00')
+  })
+
+  it('works with empty existing runs', () => {
+    const result = mergeRunByDate([], '2026-04-20', '5.00')
+    expect(result).toHaveLength(1)
+    expect(result[0]).toEqual({ runDate: '2026-04-20', runDistance: '5.00' })
+  })
+
+  it('preserves runs for other dates', () => {
+    const existing = [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.5' },
+      { runDate: '2026-04-21 06:00:00', runDistance: '3.0' },
+      { runDate: '2026-04-22 06:00:00', runDistance: '7.0' },
+    ]
+    const result = mergeRunByDate(existing, '2026-04-21', '9.00')
+    expect(result).toHaveLength(3)
+    expect(result.find((r) => r.runDate.startsWith('2026-04-20'))?.runDistance).toBe('5.5')
+    expect(result.find((r) => r.runDate.startsWith('2026-04-21'))?.runDistance).toBe('9.00')
+    expect(result.find((r) => r.runDate.startsWith('2026-04-22'))?.runDistance).toBe('7.0')
   })
 })
 

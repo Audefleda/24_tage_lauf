@@ -10,7 +10,7 @@ import {
   getValidAccessToken,
   fetchStravaActivity,
 } from '@/lib/strava'
-import { fetchRunnerRuns, updateRunnerRuns } from '@/lib/typo3-runs'
+import { fetchRunnerRuns, updateRunnerRuns, hasRunDistanceChanged, mergeRunByDate } from '@/lib/typo3-runs'
 import { sendTeamsNotification } from '@/lib/teams-notification'
 import { withUserLock } from '@/lib/typo3-mutex'
 import * as logger from '@/lib/logger'
@@ -142,20 +142,24 @@ export async function POST(request: NextRequest) {
       const existingRuns = await fetchRunnerRuns(profile.typo3_uid)
 
       // Build new run: date (YYYY-MM-DD) and distance (km, 2 decimal places)
-      const newRun = {
-        runDate: activity.start_date.split('T')[0],
-        runDistance: (activity.distance / 1000).toFixed(2),
+      const newRunDate = activity.start_date.split('T')[0]
+      const newRunDistance = (activity.distance / 1000).toFixed(2)
+
+      // Skip if distance for this date is unchanged (prevents duplicate writes on Strava re-fires)
+      if (!hasRunDistanceChanged(existingRuns, newRunDate, newRunDistance)) {
+        logger.debug('strava', 'Kilometerzahl unverändert — Schreiben und Benachrichtigung übersprungen', { date: newRunDate, distance: newRunDistance })
+        return
       }
 
-      // Append and write back all runs
-      const updatedRuns = [...existingRuns, newRun]
+      // Replace existing entry for this date (if any) and write back all runs
+      const updatedRuns = mergeRunByDate(existingRuns, newRunDate, newRunDistance)
       await updateRunnerRuns(profile.typo3_uid, updatedRuns)
 
       // PROJ-19: Teams notification nur nach erfolgreichem TYPO3-Update — non-blocking via after()
       const notifyPayload = {
         typo3Uid: profile.typo3_uid,
-        runDate: newRun.runDate,
-        runDistanceKm: newRun.runDistance,
+        runDate: newRunDate,
+        runDistanceKm: newRunDistance,
         teamsNotificationsEnabled: profile.teams_notifications_enabled,
       }
       after(() => sendTeamsNotification(notifyPayload))
@@ -166,7 +170,7 @@ export async function POST(request: NextRequest) {
         .update({ last_synced_at: new Date().toISOString() })
         .eq('user_id', connection.user_id)
 
-      logger.debug('strava', 'Webhook-Event verarbeitet', { activityId, runDate: newRun.runDate, runDistance: newRun.runDistance })
+      logger.debug('strava', 'Webhook-Event verarbeitet', { activityId, runDate: newRunDate, runDistance: newRunDistance })
     } catch (err) {
       logger.error('strava', 'Fehler beim Verarbeiten des Webhook-Events', err)
     }

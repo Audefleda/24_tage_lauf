@@ -2,7 +2,7 @@
 
 ## Status: Deployed
 **Created:** 2026-03-17
-**Last Updated:** 2026-03-23
+**Last Updated:** 2026-04-22
 
 ## Dependencies
 - Requires: PROJ-1 (API-Konfiguration & Superuser-Authentifizierung)
@@ -30,7 +30,8 @@
 - [ ] **AC-12:** Strava API-Credentials (`STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET`, `STRAVA_VERIFY_TOKEN`) sind als Env-Variablen konfigurierbar
 
 ## Edge Cases
-- Was passiert, wenn Strava den Webhook nicht zustellen kann (Timeout)? → Strava wiederholt automatisch. Der Endpunkt ist idempotent — doppelte Events für dieselbe Aktivität werden geloggt, TYPO3 wird erneut aktualisiert (letzter Stand gewinnt)
+- Was passiert, wenn Strava den Webhook nicht zustellen kann (Timeout)? → Strava wiederholt automatisch. Der Endpunkt prüft, ob sich die Kilometerzahl für den Tag geändert hat — bei unveränderter Distanz wird weder geschrieben noch benachrichtigt.
+- Was passiert, wenn Strava mehrfach auslöst (z.B. Titel-Edit)? → Kilometerzahl wird mit bestehendem Lauf verglichen. Nur bei tatsächlicher Änderung wird TYPO3 aktualisiert und Teams benachrichtigt.
 - Was passiert, wenn der Aktivitätstyp nicht in der erlaubten Liste ist? → Event wird ignoriert (HTTP 200, kein Lauf eingetragen)
 - Was passiert, wenn die Strava API die Aktivitätsdetails nicht zurückgibt (Fehler)? → Fehler wird geloggt, TYPO3 bleibt unverändert
 - Was passiert, wenn TYPO3 den automatisch eingetragenen Lauf ablehnt? → Fehler wird im TYPO3-Request-Log (PROJ-8) erfasst

@@ -119,6 +119,7 @@ Die TYPO3-API kennt **keine einzelnen Updates** — beim Speichern wird immer di
 - **Strava-Webhook:** Benachrichtigt die App bei jedem neuen Lauf
 - **Erlaubte Aktivitätstypen:** Run, TrailRun, VirtualRun, Hike, Walk
 - **Automatischer Eintrag:** Datum und Distanz werden extrahiert und wie ein manueller Lauf eingetragen
+- **Deduplizierung:** Bei mehrfachem Auslösen (z.B. Titel-Edit einer Aktivität) wird die Kilometerzahl mit dem bestehenden Lauf verglichen — nur bei tatsächlicher Änderung wird geschrieben und benachrichtigt
 - **Token-Refresh:** Abgelaufene Access-Tokens werden automatisch erneuert
 
 #### Für Administrator*innen
@@ -360,4 +361,5 @@ Werden in Vercel konfiguriert (keine manuelle Datei-Verwaltung im Production-Bet
 | 2026-04-17 | 1.0 | Initiale Erstellung — 25 Features dokumentiert |
 | 2026-04-20 | 1.1 | PROJ-26: Team-Gesamtkilometer BettercallPaul in Läufe-Übersicht hinzugefügt |
 | 2026-04-21 | 1.2 | Bugfix: Race Condition bei schnellen Speichervorgängen behoben (Read-Modify-Write mit Per-User-Mutex). TYPO3-API-Referenzdokumentation hinzugefügt. |
+| 2026-04-22 | 1.3 | Webhook-Deduplizierung: Strava- und externer Webhook schreiben nur noch bei tatsächlicher Kilometerzahl-Änderung. Verhindert doppelte Teams-Benachrichtigungen. |
 
