@@ -134,7 +134,7 @@ Antwort an Browser
 - `src/app/admin/page.tsx` — added link card to the request log page.
 
 ### Design Decisions
-- Logging writes one entry per run in the payload (not one per request) for better traceability, except when payload is empty (one placeholder entry).
+- ~~Logging writes one entry per run in the payload (not one per request) for better traceability, except when payload is empty (one placeholder entry).~~ **Fixed 2026-04-22:** Now logs exactly one entry per TYPO3 request, containing only the changed run. This matches the spec edge case ("Pro Laeufer-Request ein Log-Eintrag, nicht pro Einzellauf").
 - Response text truncated to 2000 chars before parsing to avoid oversized log entries.
 - `parseTypo3Response()` handles all edge cases: valid JSON with both fields, JSON missing fields, non-JSON text, empty string.
 - Pagination with 50 entries per page, max 500 per API call.
@@ -283,3 +283,101 @@ Antwort an Browser
 - BUG-3 (P3): Non-numeric UID input validation with inline error message
 - BUG-4 (P3): Success + Message columns now sortable (7/7 columns)
 - BUG-5 (P3): Removed pre-truncation before JSON parsing — prevents corruption of large valid JSON responses
+
+---
+
+## QA Test Results (Bugfix: One log entry per TYPO3 request, not per run)
+
+**Tested:** 2026-04-22
+**Tester:** QA Engineer (AI)
+**Scope:** Verify bugfix that changes `logTypo3Request` to accept a single `changedRun` instead of the full runs array, and that all 3 callers pass the changed run correctly.
+
+### Bug Description
+
+The previous implementation of `logTypo3Request` accepted the entire `runs: RunPayload[]` array and created one log entry per run in the array. This meant that saving a single run for a runner with 25 existing runs would generate 25 log entries instead of 1. The fix changes the signature to accept `changedRun: RunPayload | null` (a single run) and all callers now pass only the specific run that was modified.
+
+### Code Review Results
+
+#### 1. `src/lib/typo3-runs.ts` -- Core fix
+
+- [x] `logTypo3Request` signature changed from `runs: RunPayload[]` to `changedRun: RunPayload | null`
+- [x] Single `entry` object constructed instead of mapping over array
+- [x] Fallback for `changedRun === null`: uses today's date and distance 0 (same as the old empty-array fallback)
+- [x] `parseFloat(run.runDistance) || 0` fallback preserved for non-numeric distances
+- [x] Date extraction via `.split(' ')[0]` preserved -- correctly handles `YYYY-MM-DD HH:MM:SS` format
+- [x] `supabaseAdmin.from('typo3_request_log').insert(entry)` now inserts a single object, not an array
+- [x] Fire-and-forget error handling preserved (try/catch, never throws)
+- [x] `updateRunnerRuns` signature accepts optional `changedRun?: RunPayload | null` (backward compatible)
+- [x] Both call sites inside `updateRunnerRuns` (success path line 177, catch path line 194) pass `changedRun ?? null`
+
+#### 2. `src/app/api/runner/runs/route.ts` -- Manual runs PUT caller
+
+- [x] `changedRun` variable extracted before building `updatedRuns` array (line 85)
+- [x] `changedRun` passed as 3rd argument to `updateRunnerRuns` (line 88)
+- [x] `changedRun` is the exact same object that gets appended to the runs array -- no duplication or mismatch
+- [x] No other behavioral changes to the route
+
+#### 3. `src/app/api/strava/webhook/route.ts` -- Strava webhook caller
+
+- [x] `changedRun` constructed with `newRunDate + ' 06:00:00'` and `newRunDistance` (line 155)
+- [x] Matches the format used by `mergeRunByDate` which creates `{ runDate: newRunDate, runDistance: newRunDistance }` (date without time)
+- [x] Note: `changedRun` has time component `06:00:00` while `mergeRunByDate` builds the entry without it. This is not a bug -- `logTypo3Request` splits on space to get just the date part. However, the logged run and the run sent to TYPO3 have slightly different `runDate` formats. No functional impact.
+- [x] `changedRun` passed as 3rd argument to `updateRunnerRuns` (line 157)
+
+#### 4. `src/app/api/webhook/external/route.ts` -- External webhook caller
+
+- [x] `changedRun` constructed with `date + ' 06:00:00'` and `newRunDistance` (line 145)
+- [x] Same pattern as Strava webhook -- consistent
+- [x] `changedRun` passed as 3rd argument to `updateRunnerRuns` (line 147)
+
+### Acceptance Criteria Verification (updated for this bugfix)
+
+| # | Criterion | Result | Notes |
+|---|-----------|--------|-------|
+| AC-6 (spec) | "Was passiert wenn updateruns mehrere Laeufe auf einmal sendet? Pro Laeufer-Request ein Log-Eintrag (nicht pro Einzellauf)" | PASS | This was the core bug. Now `logTypo3Request` creates exactly 1 entry per call. All 3 callers pass only the single changed run. |
+| Backward compat | `updateRunnerRuns` works without 3rd argument | PASS | `changedRun` parameter is optional (`?`), falls back to `null` via `changedRun ?? null`. Unit test confirms fallback behavior. |
+| No regression: Strava | Strava webhook still logs correctly | PASS | `changedRun` constructed before `mergeRunByDate` call, passed to `updateRunnerRuns`. |
+| No regression: Manual | Manual PUT still logs correctly | PASS | `changedRun` extracted from validated input, passed to `updateRunnerRuns`. |
+| No regression: External | External webhook still logs correctly | PASS | `changedRun` constructed identically to Strava pattern. |
+| Fire-and-forget | Logging failure does not break main flow | PASS | try/catch preserved in `logTypo3Request`. Unit test confirms no throw on DB error. |
+
+### Unit Test Results
+
+10 new tests added to `src/lib/typo3-runs.test.ts`:
+
+| Test | Result |
+|------|--------|
+| logTypo3Request: inserts exactly one entry when changedRun provided | PASS |
+| logTypo3Request: inserts exactly one entry when changedRun is null (fallback) | PASS |
+| logTypo3Request: does NOT create multiple entries (old bug scenario) | PASS |
+| logTypo3Request: correctly extracts date part from runDate with time | PASS |
+| logTypo3Request: handles empty runDistance gracefully | PASS |
+| logTypo3Request: logs timeout errors with null httpStatus | PASS |
+| logTypo3Request: does not throw when insert fails | PASS |
+| updateRunnerRuns: passes changedRun to logTypo3Request when provided | PASS |
+| updateRunnerRuns: uses null changedRun fallback when not passed | PASS |
+| updateRunnerRuns: logs only ONE entry for 25 runs in array (core bug test) | PASS |
+
+**Total: 210/210 tests pass (10 new + 200 existing)**
+
+### Bugs Found
+
+No new bugs found. The fix is clean and correct.
+
+### Security Audit (for this change)
+
+- [x] No new endpoints or routes added -- no new attack surface
+- [x] No changes to authentication or authorization logic
+- [x] No new user input accepted -- `changedRun` is constructed server-side from already-validated data
+- [x] Supabase insert still uses parameterized queries via service role -- no injection risk
+- [x] Log entry data (run_date, run_distance_km) is derived from server-validated input, not raw user input
+
+### Summary
+
+- **Acceptance criteria: 6/6 passed**
+- **Unit tests: 10 new, all passing (210 total)**
+- **Bugs found: 0**
+- **Security: PASS -- no new attack surface**
+- **Build: PASS (compiles cleanly, no TypeScript errors, no new lint warnings)**
+- **Production Ready: YES**
+- **Recommendation: Deploy -- fix is correct, all callers updated consistently, backward compatible**

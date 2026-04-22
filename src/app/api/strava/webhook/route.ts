@@ -152,8 +152,9 @@ export async function POST(request: NextRequest) {
       }
 
       // Replace existing entry for this date (if any) and write back all runs
+      const changedRun = { runDate: newRunDate + ' 06:00:00', runDistance: newRunDistance }
       const updatedRuns = mergeRunByDate(existingRuns, newRunDate, newRunDistance)
-      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+      await updateRunnerRuns(profile.typo3_uid, updatedRuns, changedRun)
 
       // PROJ-19: Teams notification nur nach erfolgreichem TYPO3-Update — non-blocking via after()
       const notifyPayload = {

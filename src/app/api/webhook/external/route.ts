@@ -142,8 +142,9 @@ export async function POST(request: NextRequest) {
         return false
       }
 
+      const changedRun = { runDate: date + ' 06:00:00', runDistance: newRunDistance }
       const updatedRuns = mergeRunByDate(existingRuns, date, newRunDistance)
-      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+      await updateRunnerRuns(profile.typo3_uid, updatedRuns, changedRun)
       return true
     })
 

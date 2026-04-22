@@ -50,7 +50,7 @@ export function parseTypo3Response(responseText: string): {
 
 export async function logTypo3Request(params: {
   typo3RunnerUid: number
-  runs: RunPayload[]
+  changedRun: RunPayload | null
   httpStatus: number | null
   responseText: string
 }): Promise<void> {
@@ -58,27 +58,17 @@ export async function logTypo3Request(params: {
     const supabaseAdmin = createAdminClient()
     const { responseSuccess, responseMessage } = parseTypo3Response(params.responseText)
 
-    const entries = params.runs.filter((run) => run.runDate).map((run) => ({
+    const run = params.changedRun
+    const entry = {
       typo3_runner_uid: params.typo3RunnerUid,
-      run_date: run.runDate.split(' ')[0],
-      run_distance_km: parseFloat(run.runDistance) || 0,
+      run_date: run ? run.runDate.split(' ')[0] : new Date().toISOString().split('T')[0],
+      run_distance_km: run ? (parseFloat(run.runDistance) || 0) : 0,
       http_status: params.httpStatus,
       response_success: responseSuccess,
       response_message: responseMessage,
-    }))
-
-    if (entries.length === 0) {
-      entries.push({
-        typo3_runner_uid: params.typo3RunnerUid,
-        run_date: new Date().toISOString().split('T')[0],
-        run_distance_km: 0,
-        http_status: params.httpStatus,
-        response_success: responseSuccess,
-        response_message: responseMessage,
-      })
     }
 
-    const { error } = await supabaseAdmin.from('typo3_request_log').insert(entries)
+    const { error } = await supabaseAdmin.from('typo3_request_log').insert(entry)
     if (error) {
       console.error('[PROJ-8] Failed to write TYPO3 request log:', error.message)
     }
@@ -141,10 +131,12 @@ export function mergeRunByDate(
   ]
 }
 
-/** Replace all runs for a runner in TYPO3 (calls updateruns + logs). Throws on failure. */
+/** Replace all runs for a runner in TYPO3 (calls updateruns + logs). Throws on failure.
+ *  changedRun — the single run that was actually modified (used for logging only). */
 export async function updateRunnerRuns(
   typo3Uid: number,
-  runs: RunPayload[]
+  runs: RunPayload[],
+  changedRun?: RunPayload | null,
 ): Promise<void> {
   // TYPO3 expects Komma as decimal separator (e.g. "8,67" not "8.67")
   const typo3Runs = runs.map((r) => ({
@@ -182,7 +174,7 @@ export async function updateRunnerRuns(
     debug('typo3-runs', 'HTTP-Status der TYPO3-Antwort', { httpStatus })
     debug('typo3-runs', 'TYPO3-Antwort-Body', responseText)
 
-    await logTypo3Request({ typo3RunnerUid: typo3Uid, runs, httpStatus, responseText })
+    await logTypo3Request({ typo3RunnerUid: typo3Uid, changedRun: changedRun ?? null, httpStatus, responseText })
 
     if (!resp.ok) {
       throw new Typo3Error(`TYPO3 API antwortet mit HTTP ${resp.status}`, resp.status)
@@ -199,7 +191,7 @@ export async function updateRunnerRuns(
       // Network/timeout error — log and re-throw
       await logTypo3Request({
         typo3RunnerUid: typo3Uid,
-        runs,
+        changedRun: changedRun ?? null,
         httpStatus: null,
         responseText: err instanceof Error ? err.message : 'Unknown error',
       })

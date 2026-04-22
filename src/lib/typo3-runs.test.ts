@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 vi.mock('server-only', () => ({}))
+const mockInsert = vi.fn().mockReturnValue({ error: null })
 vi.mock('@/lib/supabase-admin', () => ({
   createAdminClient: () => ({
-    from: () => ({ insert: () => ({ error: null }) }),
+    from: () => ({ insert: (...args: unknown[]) => mockInsert(...args) }),
   }),
 }))
 const mockTypo3Fetch = vi.fn()
@@ -13,7 +14,7 @@ vi.mock('@/lib/typo3-client', () => ({
 }))
 vi.mock('@/lib/logger', () => ({ debug: vi.fn(), error: vi.fn() }))
 
-import { parseTypo3Response, updateRunnerRuns, hasRunDistanceChanged, mergeRunByDate } from './typo3-runs'
+import { parseTypo3Response, logTypo3Request, updateRunnerRuns, hasRunDistanceChanged, mergeRunByDate } from './typo3-runs'
 
 describe('parseTypo3Response', () => {
   describe('valid JSON responses', () => {
@@ -68,6 +69,118 @@ describe('parseTypo3Response', () => {
       const result = parseTypo3Response(longText)
       expect(result.responseMessage?.length).toBe(2000)
     })
+  })
+})
+
+describe('logTypo3Request (PROJ-8 bugfix: one entry per request, not per run)', () => {
+  beforeEach(() => {
+    mockInsert.mockReset()
+    mockInsert.mockReturnValue({ error: null })
+  })
+
+  it('inserts exactly one log entry when changedRun is provided', async () => {
+    await logTypo3Request({
+      typo3RunnerUid: 5971,
+      changedRun: { runDate: '2026-04-20 06:00:00', runDistance: '8.67' },
+      httpStatus: 200,
+      responseText: JSON.stringify({ success: true, message: 'OK' }),
+    })
+
+    expect(mockInsert).toHaveBeenCalledTimes(1)
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry).toEqual({
+      typo3_runner_uid: 5971,
+      run_date: '2026-04-20',
+      run_distance_km: 8.67,
+      http_status: 200,
+      response_success: true,
+      response_message: 'OK',
+    })
+  })
+
+  it('inserts exactly one log entry when changedRun is null (fallback to today)', async () => {
+    await logTypo3Request({
+      typo3RunnerUid: 5971,
+      changedRun: null,
+      httpStatus: 200,
+      responseText: JSON.stringify({ success: true }),
+    })
+
+    expect(mockInsert).toHaveBeenCalledTimes(1)
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.typo3_runner_uid).toBe(5971)
+    expect(entry.run_distance_km).toBe(0)
+    expect(entry.run_date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+  })
+
+  it('does NOT create multiple entries for multiple runs (old bug)', async () => {
+    // The old code would iterate over the full runs array, creating N entries.
+    // With the fix, only the single changedRun is logged.
+    await logTypo3Request({
+      typo3RunnerUid: 5971,
+      changedRun: { runDate: '2026-04-22 06:00:00', runDistance: '5.5' },
+      httpStatus: 200,
+      responseText: JSON.stringify({ success: true }),
+    })
+
+    expect(mockInsert).toHaveBeenCalledTimes(1)
+    // Verify it's the changed run, not the whole array
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.run_date).toBe('2026-04-22')
+    expect(entry.run_distance_km).toBe(5.5)
+  })
+
+  it('correctly extracts date part from runDate with time component', async () => {
+    await logTypo3Request({
+      typo3RunnerUid: 123,
+      changedRun: { runDate: '2026-05-10 06:00:00', runDistance: '12.345' },
+      httpStatus: 200,
+      responseText: '{}',
+    })
+
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.run_date).toBe('2026-05-10')
+    expect(entry.run_distance_km).toBe(12.345)
+  })
+
+  it('handles changedRun with non-numeric runDistance gracefully', async () => {
+    await logTypo3Request({
+      typo3RunnerUid: 123,
+      changedRun: { runDate: '2026-04-20 06:00:00', runDistance: '' },
+      httpStatus: 200,
+      responseText: '{}',
+    })
+
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.run_distance_km).toBe(0) // parseFloat('') is NaN, fallback || 0
+  })
+
+  it('logs timeout errors with null httpStatus', async () => {
+    await logTypo3Request({
+      typo3RunnerUid: 123,
+      changedRun: { runDate: '2026-04-20 06:00:00', runDistance: '5.0' },
+      httpStatus: null,
+      responseText: 'network timeout',
+    })
+
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.http_status).toBeNull()
+    expect(entry.response_success).toBeNull()
+    expect(entry.response_message).toBe('network timeout')
+  })
+
+  it('does not throw when insert fails — fire-and-forget', async () => {
+    mockInsert.mockReturnValue({ error: { message: 'DB error' } })
+
+    // Should not throw
+    await logTypo3Request({
+      typo3RunnerUid: 123,
+      changedRun: { runDate: '2026-04-20 06:00:00', runDistance: '5.0' },
+      httpStatus: 200,
+      responseText: '{}',
+    })
+
+    expect(mockInsert).toHaveBeenCalledTimes(1)
   })
 })
 
@@ -234,5 +347,59 @@ describe('updateRunnerRuns', () => {
     expect(runs).toEqual([
       { runDate: '2026-04-20 06:00:00', runDistance: '10' },
     ])
+  })
+
+  it('passes changedRun to logTypo3Request when provided', async () => {
+    mockInsert.mockReset()
+    mockInsert.mockReturnValue({ error: null })
+
+    const changedRun = { runDate: '2026-04-22 06:00:00', runDistance: '7.5' }
+    await updateRunnerRuns(123, [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.0' },
+      { runDate: '2026-04-21 06:00:00', runDistance: '3.0' },
+      changedRun,
+    ], changedRun)
+
+    // logTypo3Request should have been called once with the single changed run
+    expect(mockInsert).toHaveBeenCalledTimes(1)
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.run_date).toBe('2026-04-22')
+    expect(entry.run_distance_km).toBe(7.5)
+    expect(entry.typo3_runner_uid).toBe(123)
+  })
+
+  it('uses null changedRun fallback when changedRun is not passed', async () => {
+    mockInsert.mockReset()
+    mockInsert.mockReturnValue({ error: null })
+
+    await updateRunnerRuns(123, [
+      { runDate: '2026-04-20 06:00:00', runDistance: '5.0' },
+    ])
+
+    // Should log exactly one entry even though changedRun is undefined
+    expect(mockInsert).toHaveBeenCalledTimes(1)
+    const entry = mockInsert.mock.calls[0][0]
+    // Fallback: today's date and 0 distance
+    expect(entry.run_date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    expect(entry.run_distance_km).toBe(0)
+  })
+
+  it('logs only ONE entry regardless of how many runs are in the array', async () => {
+    mockInsert.mockReset()
+    mockInsert.mockReturnValue({ error: null })
+
+    const runs = Array.from({ length: 25 }, (_, i) => ({
+      runDate: `2026-04-${String(i + 1).padStart(2, '0')} 06:00:00`,
+      runDistance: String(i + 1),
+    }))
+    const changedRun = runs[12]
+
+    await updateRunnerRuns(123, runs, changedRun)
+
+    // Critical: old bug would create 25 entries. Fix should create exactly 1.
+    expect(mockInsert).toHaveBeenCalledTimes(1)
+    const entry = mockInsert.mock.calls[0][0]
+    expect(entry.run_date).toBe('2026-04-13')
+    expect(entry.run_distance_km).toBe(13)
   })
 })

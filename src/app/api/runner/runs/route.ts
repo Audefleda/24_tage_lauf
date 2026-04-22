@@ -82,9 +82,10 @@ export async function PUT(request: NextRequest) {
       const filtered = existing.filter(
         (r) => r.runDate && r.runDate.split(' ')[0] !== targetDatePart
       )
-      const updatedRuns = [...filtered, { runDate: change.runDate, runDistance: change.runDistance }]
+      const changedRun = { runDate: change.runDate, runDistance: change.runDistance }
+      const updatedRuns = [...filtered, changedRun]
 
-      await updateRunnerRuns(profile.typo3_uid, updatedRuns)
+      await updateRunnerRuns(profile.typo3_uid, updatedRuns, changedRun)
     })
 
     // PROJ-19: Teams notification after successful TYPO3 update — non-blocking
