@@ -53,7 +53,7 @@ async function loginAndSave(
 async function globalSetup(_config: FullConfig) {
   fs.mkdirSync(AUTH_DIR, { recursive: true })
 
-  const baseURL = 'http://localhost:3000'
+  const baseURL = process.env.BASE_URL || 'http://localhost:3000'
   const userEmail = process.env.E2E_TEST_EMAIL
   const userPassword = process.env.E2E_TEST_PASSWORD
   const adminEmail = process.env.E2E_ADMIN_EMAIL

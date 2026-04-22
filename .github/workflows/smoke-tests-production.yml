@@ -1,21 +1,20 @@
 name: Smoke Tests - Production
 
 on:
-  workflow_dispatch:  # Manuell auslösbar
-  workflow_run:       # Automatisch nach Migration
-    workflows: ["Migrate Production Database"]
-    types:
-      - completed
+  push:
     branches:
       - main
+  workflow_dispatch:  # Manuell auslösbar
+
+# Nur ein laufender Smoke-Test pro Branch — ältere Runs abbrechen
+concurrency:
+  group: smoke-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   smoke-tests:
     name: Smoke Tests (Production)
     runs-on: ubuntu-latest
-    # Läuft nur wenn Migration erfolgreich war (bei workflow_run)
-    # Bei workflow_dispatch (manuell) läuft es immer
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
@@ -34,27 +33,37 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Wait for Vercel Production Deployment
-        run: sleep 60
-        # Alternative: Vercel CLI nutzen oder Deployment API abfragen
-
-      - name: Run smoke tests on Production
-        run: npx playwright test --grep "@smoke"
+        run: |
+          echo "Warte auf Vercel Production Deployment fuer Commit $GITHUB_SHA ..."
+          # Vercel braucht typischerweise 60-120s fuer ein Production Deployment.
+          # Wir pruefen alle 15s ob die Seite erreichbar ist (max 5 Minuten).
+          for i in $(seq 1 20); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/api/health" || echo "000")
+            if [ "$STATUS" = "200" ]; then
+              echo "Production erreichbar (HTTP $STATUS) nach $((i * 15))s"
+              # Zusaetzlich 15s warten, damit alle Serverless Functions warm sind
+              sleep 15
+              exit 0
+            fi
+            echo "Versuch $i/20: HTTP $STATUS — warte 15s ..."
+            sleep 15
+          done
+          echo "::error::Production nicht erreichbar nach 5 Minuten"
+          exit 1
         env:
           BASE_URL: https://24-tage-lauf.vercel.app
-        continue-on-error: true
-        # continue-on-error: true verhindert dass der Job bei Fehlern abbricht
-        # So können wir unten eine Notification senden
+
+      - name: Run smoke tests on Production
+        run: npx playwright test tests/smoke.spec.ts --grep "@smoke" --project chromium
+        env:
+          BASE_URL: https://24-tage-lauf.vercel.app
+          E2E_TEST_EMAIL: ${{ secrets.E2E_TEST_EMAIL }}
+          E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
           name: playwright-report-production
           path: playwright-report/
           retention-days: 30
-
-      - name: Notify on failure (optional)
-        if: failure()
-        run: |
-          echo "::warning::Production Smoke Tests fehlgeschlagen! Bitte pruefen."
-          # Hier könntest du auch eine Slack/Teams/Email-Notification einbauen
