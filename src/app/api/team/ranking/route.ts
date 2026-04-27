@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { rateLimit } from '@/lib/rate-limit'
 import { debug, error as logError } from '@/lib/logger'
-import { JSDOM } from 'jsdom'
+import * as cheerio from 'cheerio'
 
 const RANKING_URL =
   'https://www.stuttgarter-kinderstiftung.de/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/alle-teams'
@@ -20,31 +20,26 @@ function parseGermanNumber(raw: string): number {
 }
 
 function extractTeams(html: string): TeamEntry[] {
-  const dom = new JSDOM(html)
-  const doc = dom.window.document
-
-  const table = doc.querySelector('table.team-list')
-  if (!table) return []
-
-  const rows = table.querySelectorAll('tr')
+  const $ = cheerio.load(html)
   const teams: TeamEntry[] = []
 
-  for (const row of rows) {
-    if (row.classList.contains('runnergroup-row')) continue
+  $('table.team-list tr').each((_, row) => {
+    const $row = $(row)
+    if ($row.hasClass('runnergroup-row')) return
 
-    const cells = row.querySelectorAll('td')
-    if (cells.length < 4) continue
+    const cells = $row.find('td')
+    if (cells.length < 4) return
 
-    const nameCell = cells[0]
-    const link = nameCell.querySelector('a.team-link')
-    const name = (link?.textContent ?? nameCell.textContent ?? '').trim()
-    if (!name) continue
+    const nameCell = cells.eq(0)
+    const link = nameCell.find('a.team-link')
+    const name = (link.length ? link.text() : nameCell.text()).trim()
+    if (!name) return
 
-    const distanceText = cells[3]?.textContent ?? '0'
+    const distanceText = cells.eq(3).text()
     const distanceKm = parseGermanNumber(distanceText)
 
     teams.push({ name, distanceKm })
-  }
+  })
 
   return teams
 }
