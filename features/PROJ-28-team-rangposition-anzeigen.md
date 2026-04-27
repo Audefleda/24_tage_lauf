@@ -14,15 +14,14 @@
 - Als Admin möchte ich die gleiche Information wie die Läufer*innen sehen, damit ich den Teamfortschritt verfolgen kann.
 
 ## Acceptance Criteria
-- [ ] Auf der Läufe-Seite wird rechts neben den "Gesamtkilometer BettercallPaul"-Karten ein neues Kästchen "Team-Position" angezeigt
-- [ ] Das Kästchen zeigt die aktuelle Rangposition (z.B. "Platz 5")
-- [ ] Das Kästchen zeigt die Gesamtzahl der Teams (z.B. "von 42 Teams")
-- [ ] Das Kästchen enthält einen Link "Zur kompletten Rangliste", der zur externen Seite https://www.stuttgarter-kinderstiftung.de/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/alle-teams führt
-- [ ] Die Position wird bei jedem Seitenaufruf live aktualisiert (kein Caching)
-- [ ] Bei Scraping-Fehlern wird "Position nicht verfügbar" angezeigt statt eines Fehler-Crash
-- [ ] Das Kästchen ist für alle eingeloggten Nutzer*innen (Läufer*innen und Admin) sichtbar
-- [ ] Der Team-Name "BettercallPaul" wird via Env-Variable `TEAM_NAME` konfiguriert (nicht hardcoded)
-- [ ] Das Design folgt dem BettercallXPaul CI (Montserrat, Schwarz/Weiß/Grün, Dark Mode kompatibel)
+- [x] Auf der Läufe-Seite wird rechts neben den "Team BettercallPaul"-Karten ein neues Kästchen "Team-Position" angezeigt
+- [x] Das Kästchen zeigt die aktuelle Rangposition (z.B. "Platz 15")
+- [x] Die Position wird bei jedem Seitenaufruf live aktualisiert (kein Caching)
+- [x] Bei Scraping-Fehlern wird "nicht verfügbar" angezeigt statt eines Fehler-Crash
+- [x] Das Kästchen ist für alle eingeloggten Nutzer*innen (Läufer*innen und Admin) sichtbar
+- [x] Der Team-Name "BettercallPaul" wird via Env-Variable `TEAM_NAME` konfiguriert (nicht hardcoded)
+- [x] Das Design folgt dem BettercallXPaul CI (Montserrat, Schwarz/Weiß/Grün, Dark Mode kompatibel)
+- [x] Team-Position wird auch auf der Rangliste-Seite angezeigt
 
 ## Edge Cases
 - **Was passiert, wenn die externe Website nicht erreichbar ist?**  

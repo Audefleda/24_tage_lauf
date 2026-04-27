@@ -7,13 +7,12 @@
  * Test-Matrix:
  * - AC-1: Neues Kaestchen "Team-Position" auf der Laeufe-Seite
  * - AC-2: Rangposition wird angezeigt (z.B. "Platz 5")
- * - AC-3: Gesamtzahl der Teams wird angezeigt (z.B. "von 42 Teams")
- * - AC-4: Link "Zur Rangliste" fuehrt zur externen Seite
- * - AC-5: Position wird bei jedem Seitenaufruf live aktualisiert
- * - AC-6: Bei Scraping-Fehlern wird "Position nicht verfuegbar" angezeigt
- * - AC-7: Kaestchen ist fuer alle eingeloggten Nutzer*innen sichtbar
- * - AC-8: Team-Name via Env-Variable (getestet via Unit Test)
- * - AC-9: Design folgt CI (visuell, Grundpruefung)
+ * - AC-3: Position wird bei jedem Seitenaufruf live aktualisiert
+ * - AC-4: Bei Scraping-Fehlern wird "nicht verfuegbar" angezeigt
+ * - AC-5: Kaestchen ist fuer alle eingeloggten Nutzer*innen sichtbar
+ * - AC-6: Team-Name via Env-Variable (getestet via Unit Test)
+ * - AC-7: Design folgt CI (visuell, Grundpruefung)
+ * - AC-8: Team-Position auch auf Rangliste-Seite
  * - EC-1: Externe Website nicht erreichbar
  * - EC-2: Team-Name nicht gefunden
  * - EC-3: Langsame API-Antwort (Timeout)
@@ -33,9 +32,6 @@ const MOCK_RUNNER = {
     { runDate: '2026-04-22 06:00:00', runDistance: '10' },
   ],
 }
-
-const RANKING_LINK_URL =
-  'https://www.stuttgarter-kinderstiftung.de/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/alle-teams'
 
 // ---------- Helper: Mock all APIs needed for /runs ----------
 
@@ -105,7 +101,7 @@ async function mockAllApis(
       return route.fulfill({
         status: rankingStatus,
         contentType: 'application/json',
-        body: JSON.stringify({ error: 'Position nicht verfuegbar' }),
+        body: JSON.stringify({ error: 'Position nicht verfügbar' }),
       })
     }
 
@@ -118,8 +114,7 @@ async function mockAllApis(
 }
 
 /**
- * Locate the team ranking Card. The StatsCard component renders a grid with
- * Card elements. We find the specific Card that contains the "Team-Position" label.
+ * Locate the team ranking Card.
  */
 function rankingCard(page: Page) {
   return page.locator('[class*="bg-card"]', {
@@ -167,34 +162,8 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     await expect(card.getByText('Platz 5')).toBeVisible()
   })
 
-  // AC-3: Gesamtzahl der Teams wird angezeigt (z.B. "von 42 Teams")
-  test('AC-3: zeigt die Gesamtzahl der Teams (z.B. "von 42 Teams")', async ({
-    page,
-  }) => {
-    await mockAllApis(page, { rank: 5, totalTeams: 42 })
-    await page.goto('/runs')
-
-    const card = rankingCard(page)
-    await expect(card).toBeVisible({ timeout: 10_000 })
-    await expect(card.getByText('von 42 Teams')).toBeVisible()
-  })
-
-  // AC-4: Link zur externen Rangliste
-  test('AC-4: enthaelt Link zur externen Rangliste', async ({ page }) => {
-    await mockAllApis(page, { rank: 5, totalTeams: 42 })
-    await page.goto('/runs')
-
-    const card = rankingCard(page)
-    await expect(card).toBeVisible({ timeout: 10_000 })
-
-    const link = card.locator(`a[href="${RANKING_LINK_URL}"]`)
-    await expect(link).toBeVisible()
-    await expect(link).toHaveAttribute('target', '_blank')
-    await expect(link).toHaveAttribute('rel', /noopener/)
-  })
-
-  // AC-5: Position wird bei jedem Seitenaufruf live aktualisiert (kein Caching)
-  test('AC-5: Position wird bei jedem Seitenaufruf live abgefragt', async ({
+  // AC-3: Position wird bei jedem Seitenaufruf live aktualisiert (kein Caching)
+  test('AC-3: Position wird bei jedem Seitenaufruf live abgefragt', async ({
     page,
   }) => {
     let callCount = 0
@@ -261,8 +230,8 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     expect(callCount).toBeGreaterThanOrEqual(2)
   })
 
-  // AC-6: Bei Scraping-Fehlern wird "Position nicht verfuegbar" angezeigt
-  test('AC-6: zeigt "Position nicht verfuegbar" bei API-Fehler', async ({
+  // AC-4: Bei Scraping-Fehlern wird "nicht verfuegbar" angezeigt
+  test('AC-4: zeigt "nicht verfuegbar" bei API-Fehler', async ({
     page,
   }) => {
     await mockAllApis(page, null, 503)
@@ -271,21 +240,20 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 10_000 })
     await expect(
-      card.getByText('Position nicht verfügbar')
+      card.getByText('nicht verfügbar')
     ).toBeVisible({ timeout: 5_000 })
   })
 
-  // AC-7: Kaestchen ist fuer alle eingeloggten Nutzer*innen sichtbar
-  test('AC-7: Kaestchen ist nach Login sichtbar', async ({ page }) => {
+  // AC-5: Kaestchen ist fuer alle eingeloggten Nutzer*innen sichtbar
+  test('AC-5: Kaestchen ist nach Login sichtbar', async ({ page }) => {
     await mockAllApis(page, { rank: 5, totalTeams: 42 })
     await page.goto('/runs')
 
-    // Verify the card is visible for the authenticated user
     await expect(rankingCard(page)).toBeVisible({ timeout: 10_000 })
   })
 
-  // AC-9: Design folgt CI — Trophy-Icon vorhanden
-  test('AC-9: Trophy-Icon ist im Ranking-Kaestchen vorhanden', async ({
+  // AC-7: Design folgt CI — Trophy-Icon vorhanden
+  test('AC-7: Trophy-Icon ist im Ranking-Kaestchen vorhanden', async ({
     page,
   }) => {
     await mockAllApis(page, { rank: 5, totalTeams: 42 })
@@ -294,28 +262,24 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 10_000 })
 
-    // Verify the Trophy icon (lucide-react svg) exists
     const icon = card.locator('svg')
     await expect(icon.first()).toBeVisible()
   })
 
-  // AC-9: Grid-Layout hat 4 Karten
-  test('AC-9: StatsCard-Grid enthaelt 4 Karten', async ({ page }) => {
+  // AC-7: Grid-Layout hat 4 Karten
+  test('AC-7: StatsCard-Grid enthaelt 4 Karten', async ({ page }) => {
     await mockAllApis(page, { rank: 5, totalTeams: 42 })
     await page.goto('/runs')
 
-    // Wait for the page to load
     await expect(page.getByText('Team-Position')).toBeVisible({
       timeout: 10_000,
     })
 
-    // Find the stats grid that contains "Gesamtdistanz" (to distinguish from runs table)
     const statsGrid = page.locator('.xl\\:grid-cols-4', {
       has: page.getByText('Gesamtdistanz'),
     })
     await expect(statsGrid).toBeVisible()
 
-    // Should contain 4 Card elements
     const cards = statsGrid.locator('[class*="bg-card"]')
     await expect(cards).toHaveCount(4)
   })
@@ -326,13 +290,13 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
   test('EC-1: zeigt Fehlertext bei nicht erreichbarer externer Website', async ({
     page,
   }) => {
-    await mockAllApis(page, { error: 'Position nicht verfuegbar' }, 503)
+    await mockAllApis(page, { error: 'Position nicht verfügbar' }, 503)
     await page.goto('/runs')
 
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 10_000 })
     await expect(
-      card.getByText('Position nicht verfügbar')
+      card.getByText('nicht verfügbar')
     ).toBeVisible({ timeout: 5_000 })
 
     // Rest of page should still work
@@ -353,9 +317,8 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
 
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 10_000 })
-    // Error state shows "Position nicht verfuegbar" regardless of specific error
     await expect(
-      card.getByText('Position nicht verfügbar')
+      card.getByText('nicht verfügbar')
     ).toBeVisible({ timeout: 5_000 })
   })
 
@@ -368,18 +331,15 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     })
     await page.goto('/runs')
 
-    // Wait for the page to render runner data (personal stats loaded)
     await expect(page.getByText(MOCK_RUNNER.name)).toBeVisible({
       timeout: 10_000,
     })
 
-    // The ranking card should show a skeleton (animate-pulse class) while loading
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 5_000 })
     const skeleton = card.locator('.animate-pulse')
     await expect(skeleton).toBeVisible({ timeout: 5_000 })
 
-    // After response arrives, value should appear
     await expect(card.getByText('Platz 5')).toBeVisible({ timeout: 10_000 })
   })
 
@@ -390,42 +350,9 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     await mockAllApis(page, null, 503)
     await page.goto('/runs')
 
-    // Personal stats should still display correctly
     await expect(page.getByText(/15,50 km/)).toBeVisible({ timeout: 10_000 })
     await expect(page.getByText('Lauftage')).toBeVisible()
-
-    // Team-Stats should still display correctly
     await expect(page.getByText('332,00 km')).toBeVisible()
-  })
-
-  // Link oeffnet in neuem Tab
-  test('Ranglisten-Link hat rel="noopener noreferrer" (Sicherheit)', async ({
-    page,
-  }) => {
-    await mockAllApis(page, { rank: 5, totalTeams: 42 })
-    await page.goto('/runs')
-
-    const card = rankingCard(page)
-    await expect(card).toBeVisible({ timeout: 10_000 })
-
-    const link = card.locator('a[target="_blank"]')
-    await expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-  })
-
-  // Auth protection: /api/team/ranking nicht erreichbar ohne Auth
-  test('API /api/team/ranking ist ohne Auth nicht erreichbar (redirect zu /login)', async ({
-    browser,
-  }) => {
-    const context = await browser.newContext({
-      storageState: { cookies: [], origins: [] },
-    })
-    const page = await context.newPage()
-
-    const response = await page.request.get('/api/team/ranking')
-    // Without auth, middleware redirects to /login
-    expect(response.url()).toContain('/login')
-
-    await context.close()
   })
 
   // Verschiedene Rang-Positionen korrekt angezeigt
@@ -436,7 +363,6 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 10_000 })
     await expect(card.getByText('Platz 1')).toBeVisible()
-    await expect(card.getByText('von 10 Teams')).toBeVisible()
   })
 
   test('Zeigt letzten Platz korrekt an', async ({ page }) => {
@@ -446,6 +372,20 @@ test.describe('PROJ-28: Team-Rangposition anzeigen', () => {
     const card = rankingCard(page)
     await expect(card).toBeVisible({ timeout: 10_000 })
     await expect(card.getByText('Platz 100')).toBeVisible()
-    await expect(card.getByText('von 100 Teams')).toBeVisible()
+  })
+
+  // Auth protection
+  test('API /api/team/ranking ist ohne Auth nicht erreichbar', async ({
+    browser,
+  }) => {
+    const context = await browser.newContext({
+      storageState: { cookies: [], origins: [] },
+    })
+    const page = await context.newPage()
+
+    const response = await page.request.get('/api/team/ranking')
+    expect(response.url()).toContain('/login')
+
+    await context.close()
   })
 })

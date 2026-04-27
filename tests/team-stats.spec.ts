@@ -5,7 +5,7 @@
  * Es werden KEINE echten Requests an TYPO3 oder andere externe Systeme gesendet.
  *
  * Test-Matrix:
- * - AC-1: Neue StatsCard "Team-Gesamt BettercallPaul" wird angezeigt
+ * - AC-1: Neue StatsCard "Team BettercallPaul" wird angezeigt
  * - AC-2: 3 Karten nebeneinander im Grid
  * - AC-3: 100km-Cap pro Laeufer*in wird angewendet
  * - AC-6: Nur Summe, keine Laeufer*innen-Liste
@@ -93,16 +93,24 @@ async function mockAllApis(
       body: JSON.stringify(teamStats),
     })
   })
+
+  await page.route('**/api/team/ranking', (route) => {
+    return route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ rank: 5, totalTeams: 42 }),
+    })
+  })
 }
 
 /**
  * Locate the team stats Card. The StatsCard component renders a grid with
  * Card elements (div.bg-card). We find the specific Card that contains
- * the "Team-Gesamt BettercallPaul" label.
+ * the "Team BettercallPaul" label.
  */
 function teamCard(page: Page) {
   return page.locator('.bg-card', {
-    has: page.getByText('Team-Gesamt BettercallPaul'),
+    has: page.getByText('Team BettercallPaul'),
   })
 }
 
@@ -117,15 +125,15 @@ test.describe('PROJ-26: Team-Gesamtkilometer in UI', () => {
     test.skip(!hasCredentials, 'E2E_TEST_EMAIL / E2E_TEST_PASSWORD nicht gesetzt')
   })
 
-  // AC-1: StatsCard "Team-Gesamt BettercallPaul" angezeigt
-  test('AC-1: zeigt StatsCard "Team-Gesamt BettercallPaul" auf der /runs-Seite', async ({
+  // AC-1: StatsCard "Team BettercallPaul" angezeigt
+  test('AC-1: zeigt StatsCard "Team BettercallPaul" auf der /runs-Seite', async ({
     page,
   }) => {
     await mockAllApis(page, { totalKm: 332.0 })
     await page.goto('/runs')
 
     await expect(
-      page.getByText('Team-Gesamt BettercallPaul')
+      page.getByText('Team BettercallPaul')
     ).toBeVisible({ timeout: 10_000 })
   })
 
@@ -137,12 +145,12 @@ test.describe('PROJ-26: Team-Gesamtkilometer in UI', () => {
     // All three labels should be visible
     await expect(page.getByText('Gesamtdistanz')).toBeVisible({ timeout: 10_000 })
     await expect(page.getByText('Lauftage')).toBeVisible()
-    await expect(page.getByText('Team-Gesamt BettercallPaul')).toBeVisible()
+    await expect(page.getByText('Team BettercallPaul')).toBeVisible()
 
-    // The stats grid (with xl:grid-cols-3) should contain exactly 3 Card elements
-    const statsGrid = page.locator('.xl\\:grid-cols-3')
+    // The stats grid (with xl:grid-cols-4) should contain exactly 4 Card elements
+    const statsGrid = page.locator('.xl\\:grid-cols-4')
     const cards = statsGrid.locator('.bg-card')
-    await expect(cards).toHaveCount(3)
+    await expect(cards).toHaveCount(4)
   })
 
   // AC-3: 100km-Cap pro Laeufer*in (tested via API response value)
@@ -217,6 +225,14 @@ test.describe('PROJ-26: Team-Gesamtkilometer in UI', () => {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({ totalKm: 332.0 }),
+      })
+    })
+
+    await page.route('**/api/team/ranking', (route) => {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ rank: 5, totalTeams: 42 }),
       })
     })
 
@@ -322,6 +338,14 @@ test.describe('PROJ-26: Team-Gesamtkilometer in UI', () => {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({ visible: true }),
+      })
+    })
+
+    await page.route('**/api/team/ranking', (route) => {
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ rank: 5, totalTeams: 42 }),
       })
     })
 
