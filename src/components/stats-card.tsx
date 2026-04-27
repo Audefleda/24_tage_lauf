@@ -2,7 +2,12 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Activity, Route, Users } from 'lucide-react'
+import { Activity, Route, Users, Trophy, ExternalLink } from 'lucide-react'
+
+interface TeamRanking {
+  rank: number
+  totalTeams: number
+}
 
 interface StatsCardProps {
   totalDistance: number
@@ -13,6 +18,12 @@ interface StatsCardProps {
   teamStatsLoading?: boolean
   /** PROJ-26: Whether team stats failed to load */
   teamStatsError?: boolean
+  /** PROJ-28: Team ranking data (null = not yet loaded) */
+  teamRanking?: TeamRanking | null
+  /** PROJ-28: Whether team ranking is currently loading */
+  teamRankingLoading?: boolean
+  /** PROJ-28: Whether team ranking failed to load */
+  teamRankingError?: boolean
 }
 
 export function StatsCard({
@@ -21,6 +32,9 @@ export function StatsCard({
   teamTotalKm,
   teamStatsLoading,
   teamStatsError,
+  teamRanking,
+  teamRankingLoading,
+  teamRankingError,
 }: StatsCardProps) {
   const formattedDistance = totalDistance.toFixed(2).replace('.', ',')
 
@@ -31,7 +45,7 @@ export function StatsCard({
       : null
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <Card>
         <CardContent className="flex items-center gap-3 pt-6">
           <div className="rounded-none bg-primary/10 p-2">
@@ -70,6 +84,37 @@ export function StatsCard({
             ) : (
               <p className="text-2xl font-bold">{formattedTeamKm} km</p>
             )}
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="flex items-center gap-3 pt-6">
+          <div className="rounded-none bg-primary/10 p-2">
+            <Trophy className="h-5 w-5 text-primary" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Team-Position</p>
+            {teamRankingLoading ? (
+              <Skeleton className="h-8 w-32 mt-1" />
+            ) : teamRankingError || teamRanking == null ? (
+              <p className="text-sm text-muted-foreground mt-1">Position nicht verfügbar</p>
+            ) : (
+              <p className="text-2xl font-bold">
+                Platz {teamRanking.rank}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  von {teamRanking.totalTeams} Teams
+                </span>
+              </p>
+            )}
+            <a
+              href="https://www.stuttgarter-kinderstiftung.de/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/alle-teams"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1"
+            >
+              Zur Rangliste
+              <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            </a>
           </div>
         </CardContent>
       </Card>
