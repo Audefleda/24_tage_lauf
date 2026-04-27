@@ -75,7 +75,7 @@ export function StatsCard({
           </div>
           <div>
             <p className="text-sm text-muted-foreground">
-              Team-Gesamt BettercallPaul
+              Team BettercallPaul
             </p>
             {teamStatsLoading ? (
               <Skeleton className="h-8 w-24 mt-1" />

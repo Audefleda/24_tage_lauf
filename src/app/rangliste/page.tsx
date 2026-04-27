@@ -197,7 +197,7 @@ export default function RanglistePage() {
               <Trophy className="h-5 w-5 text-primary" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Gesamt-km aller Läufer*innen</p>
+              <p className="text-sm text-muted-foreground">Team BettercallPaul</p>
               <p className="text-2xl font-bold">{formatKm(overallTotalKm)} km</p>
             </div>
           </CardContent>
