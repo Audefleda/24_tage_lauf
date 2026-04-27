@@ -10,6 +10,7 @@ const PUBLIC_ROUTES = [
   '/login',
   '/auth/callback',
   '/reset-password',
+  '/api/health',
   '/api/strava/webhook',
   '/api/strava/callback', // Strava OAuth redirect — user session cookie handles auth
   '/api/webhook/external', // PROJ-23: Bearer Token Auth, kein Session-Cookie
