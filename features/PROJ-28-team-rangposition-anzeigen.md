@@ -1,6 +1,6 @@
 # PROJ-28: Team-Rangposition anzeigen
 
-## Status: In Review
+## Status: Deployed
 **Created:** 2026-04-27
 **Last Updated:** 2026-04-27
 

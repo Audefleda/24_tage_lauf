@@ -39,7 +39,7 @@
 | PROJ-25 | Strava UI-Sichtbarkeit Toggle (Admin) | In Review | [PROJ-25](PROJ-25-strava-ui-sichtbarkeit-toggle.md) | 2026-04-17 |
 | PROJ-26 | Team-Gesamtkilometer in UI anzeigen | Deployed | [PROJ-26](PROJ-26-team-gesamtkilometer-ui.md) | 2026-04-20 |
 | PROJ-27 | Rangliste (Admin) | In Progress | [PROJ-27](PROJ-27-rangliste-admin.md) | 2026-04-20 |
-| PROJ-28 | Team-Rangposition anzeigen | In Progress | [PROJ-28](PROJ-28-team-rangposition-anzeigen.md) | 2026-04-27 |
+| PROJ-28 | Team-Rangposition anzeigen | Deployed | [PROJ-28](PROJ-28-team-rangposition-anzeigen.md) | 2026-04-27 |
 
 <!-- Add features above this line -->
 
