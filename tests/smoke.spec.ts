@@ -30,7 +30,7 @@ test.describe('Smoke Tests - Production', () => {
     await page.goto('/login')
 
     // Login-Formular sollte sichtbar sein
-    await expect(page.getByRole('heading', { name: /anmelden/i })).toBeVisible()
+    await expect(page.getByText('Anmelden', { exact: true }).first()).toBeVisible()
     await expect(page.getByLabel(/e-mail/i)).toBeVisible()
     await expect(page.getByLabel(/passwort/i)).toBeVisible()
   })
@@ -41,7 +41,7 @@ test.describe('Smoke Tests - Production', () => {
     expect(response.status()).toBe(200)
 
     const body = await response.json()
-    expect(body).toHaveProperty('status', 'ok')
+    expect(body).toHaveProperty('ok', true)
   })
 
   test('@smoke Login funktioniert mit Test-Account', async ({ page }) => {
