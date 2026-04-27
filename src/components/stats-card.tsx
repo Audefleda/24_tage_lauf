@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Activity, Route, Users, Trophy, ExternalLink } from 'lucide-react'
+import { Activity, Route, Users, Trophy } from 'lucide-react'
 
 interface TeamRanking {
   rank: number
@@ -95,26 +95,12 @@ export function StatsCard({
           <div>
             <p className="text-sm text-muted-foreground">Team-Position</p>
             {teamRankingLoading ? (
-              <Skeleton className="h-8 w-32 mt-1" />
+              <Skeleton className="h-8 w-20 mt-1" />
             ) : teamRankingError || teamRanking == null ? (
-              <p className="text-sm text-muted-foreground mt-1">Position nicht verfügbar</p>
+              <p className="text-sm text-muted-foreground mt-1">nicht verfügbar</p>
             ) : (
-              <p className="text-2xl font-bold">
-                Platz {teamRanking.rank}{' '}
-                <span className="text-sm font-normal text-muted-foreground">
-                  von {teamRanking.totalTeams} Teams
-                </span>
-              </p>
+              <p className="text-2xl font-bold">Platz {teamRanking.rank}</p>
             )}
-            <a
-              href="https://www.stuttgarter-kinderstiftung.de/unsere-arbeit/24-tage-lauf-fuer-kinderrechte/alle-teams"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-1"
-            >
-              Zur Rangliste
-              <ExternalLink className="h-3 w-3" aria-hidden="true" />
-            </a>
           </div>
         </CardContent>
       </Card>

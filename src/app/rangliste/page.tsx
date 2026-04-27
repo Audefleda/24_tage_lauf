@@ -20,7 +20,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertCircle, RefreshCw, Trophy, Users, TrendingUp } from 'lucide-react'
+import { AlertCircle, RefreshCw, Trophy, Users, TrendingUp, Award } from 'lucide-react'
 
 interface RankingEntry {
   rank: number
@@ -42,6 +42,22 @@ function formatKm(km: number): string {
 
 export default function RanglistePage() {
   const [state, setState] = useState<PageState>({ status: 'loading' })
+  const [teamRank, setTeamRank] = useState<number | null>(null)
+  const [teamRankLoading, setTeamRankLoading] = useState(true)
+
+  const fetchTeamRanking = useCallback(async () => {
+    setTeamRankLoading(true)
+    try {
+      const resp = await fetch('/api/team/ranking')
+      if (!resp.ok) { setTeamRank(null); return }
+      const data = await resp.json()
+      setTeamRank(data.rank ?? null)
+    } catch {
+      setTeamRank(null)
+    } finally {
+      setTeamRankLoading(false)
+    }
+  }, [])
 
   const fetchRanking = useCallback(async () => {
     setState({ status: 'loading' })
@@ -68,7 +84,8 @@ export default function RanglistePage() {
 
   useEffect(() => {
     fetchRanking()
-  }, [fetchRanking])
+    fetchTeamRanking()
+  }, [fetchRanking, fetchTeamRanking])
 
   // Loading state
   if (state.status === 'loading') {
@@ -78,7 +95,9 @@ export default function RanglistePage() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-4 w-80" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <Skeleton className="h-20" />
+          <Skeleton className="h-20" />
           <Skeleton className="h-20" />
           <Skeleton className="h-20" />
         </div>
@@ -144,7 +163,7 @@ export default function RanglistePage() {
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <Card>
           <CardContent className="flex items-center gap-3 pt-6">
             <div className="rounded-none bg-primary/10 p-2">
@@ -180,6 +199,23 @@ export default function RanglistePage() {
             <div>
               <p className="text-sm text-muted-foreground">Gesamt-km aller Läufer*innen</p>
               <p className="text-2xl font-bold">{formatKm(overallTotalKm)} km</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="flex items-center gap-3 pt-6">
+            <div className="rounded-none bg-primary/10 p-2">
+              <Award className="h-5 w-5 text-primary" aria-hidden="true" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Team-Position</p>
+              {teamRankLoading ? (
+                <Skeleton className="h-8 w-20 mt-1" />
+              ) : teamRank == null ? (
+                <p className="text-sm text-muted-foreground mt-1">nicht verfügbar</p>
+              ) : (
+                <p className="text-2xl font-bold">Platz {teamRank}</p>
+              )}
             </div>
           </CardContent>
         </Card>
