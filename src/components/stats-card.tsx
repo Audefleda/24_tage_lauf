@@ -2,7 +2,12 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Activity, Route, Users } from 'lucide-react'
+import { Activity, Route, Users, Trophy } from 'lucide-react'
+
+interface TeamRanking {
+  rank: number
+  totalTeams: number
+}
 
 interface StatsCardProps {
   totalDistance: number
@@ -13,6 +18,12 @@ interface StatsCardProps {
   teamStatsLoading?: boolean
   /** PROJ-26: Whether team stats failed to load */
   teamStatsError?: boolean
+  /** PROJ-28: Team ranking data (null = not yet loaded) */
+  teamRanking?: TeamRanking | null
+  /** PROJ-28: Whether team ranking is currently loading */
+  teamRankingLoading?: boolean
+  /** PROJ-28: Whether team ranking failed to load */
+  teamRankingError?: boolean
 }
 
 export function StatsCard({
@@ -21,6 +32,9 @@ export function StatsCard({
   teamTotalKm,
   teamStatsLoading,
   teamStatsError,
+  teamRanking,
+  teamRankingLoading,
+  teamRankingError,
 }: StatsCardProps) {
   const formattedDistance = totalDistance.toFixed(2).replace('.', ',')
 
@@ -31,7 +45,7 @@ export function StatsCard({
       : null
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <Card>
         <CardContent className="flex items-center gap-3 pt-6">
           <div className="rounded-none bg-primary/10 p-2">
@@ -61,7 +75,7 @@ export function StatsCard({
           </div>
           <div>
             <p className="text-sm text-muted-foreground">
-              Team-Gesamt BettercallPaul
+              Team BettercallPaul
             </p>
             {teamStatsLoading ? (
               <Skeleton className="h-8 w-24 mt-1" />
@@ -69,6 +83,23 @@ export function StatsCard({
               <p className="text-2xl font-bold">--</p>
             ) : (
               <p className="text-2xl font-bold">{formattedTeamKm} km</p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="flex items-center gap-3 pt-6">
+          <div className="rounded-none bg-primary/10 p-2">
+            <Trophy className="h-5 w-5 text-primary" aria-hidden="true" />
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Team-Position</p>
+            {teamRankingLoading ? (
+              <Skeleton className="h-8 w-20 mt-1" />
+            ) : teamRankingError || teamRanking == null ? (
+              <p className="text-sm text-muted-foreground mt-1">nicht verfügbar</p>
+            ) : (
+              <p className="text-2xl font-bold">Platz {teamRanking.rank}</p>
             )}
           </div>
         </CardContent>

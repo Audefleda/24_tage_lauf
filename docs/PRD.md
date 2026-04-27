@@ -37,6 +37,7 @@
 | P2 | Externer Webhook-Token (Make.com / Zapier Alternative zu Strava-App) | Planned |
 | P2 | Team-Gesamtkilometer in UI anzeigen (mit 100km-Cap) | Planned |
 | P2 | Rangliste (Admin) — Sortierte Übersicht aller Läufer*innen nach Gesamtkilometern | Planned |
+| P2 | Team-Rangposition anzeigen — Platzierung von BettercallPaul in der öffentlichen Gesamtwertung | Planned |
 
 ## Success Metrics
 - Alle Läufer können sich anmelden und ihre eigenen Läufe eintragen

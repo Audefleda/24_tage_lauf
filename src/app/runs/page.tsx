@@ -46,6 +46,11 @@ export default function RunsPage() {
   const [teamStatsLoading, setTeamStatsLoading] = useState(true)
   const [teamStatsError, setTeamStatsError] = useState(false)
 
+  // PROJ-28: Team ranking from public website
+  const [teamRanking, setTeamRanking] = useState<{ rank: number; totalTeams: number } | null>(null)
+  const [teamRankingLoading, setTeamRankingLoading] = useState(true)
+  const [teamRankingError, setTeamRankingError] = useState(false)
+
   const fetchTeamStats = useCallback(async () => {
     setTeamStatsLoading(true)
     setTeamStatsError(false)
@@ -61,6 +66,24 @@ export default function RunsPage() {
       setTeamStatsError(true)
     } finally {
       setTeamStatsLoading(false)
+    }
+  }, [])
+
+  const fetchTeamRanking = useCallback(async () => {
+    setTeamRankingLoading(true)
+    setTeamRankingError(false)
+    try {
+      const resp = await fetch('/api/team/ranking')
+      if (!resp.ok) {
+        setTeamRankingError(true)
+        return
+      }
+      const data = await resp.json()
+      setTeamRanking({ rank: data.rank, totalTeams: data.totalTeams })
+    } catch {
+      setTeamRankingError(true)
+    } finally {
+      setTeamRankingLoading(false)
     }
   }, [])
 
@@ -148,7 +171,8 @@ export default function RunsPage() {
   useEffect(() => {
     fetchRunner()
     fetchTeamStats()
-  }, [fetchRunner, fetchTeamStats])
+    fetchTeamRanking()
+  }, [fetchRunner, fetchTeamStats, fetchTeamRanking])
 
   // Strava UI-Sichtbarkeit laden (PROJ-25)
   useEffect(() => {
@@ -172,7 +196,8 @@ export default function RunsPage() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-4 w-32" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <Skeleton className="h-24" />
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
@@ -197,7 +222,8 @@ export default function RunsPage() {
           <Skeleton className="h-8 w-48" />
           <Skeleton className="h-4 w-32" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <Skeleton className="h-24" />
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
@@ -218,7 +244,7 @@ export default function RunsPage() {
         <Alert variant="destructive" className="max-w-md">
           <AlertDescription>{state.message}</AlertDescription>
         </Alert>
-        <Button onClick={() => { fetchRunner(); fetchTeamStats() }} variant="outline">
+        <Button onClick={() => { fetchRunner(); fetchTeamStats(); fetchTeamRanking() }} variant="outline">
           <RefreshCw className="h-4 w-4 mr-2" aria-hidden="true" />
           Erneut versuchen
         </Button>
@@ -256,6 +282,9 @@ export default function RunsPage() {
         teamTotalKm={teamTotalKm}
         teamStatsLoading={teamStatsLoading}
         teamStatsError={teamStatsError}
+        teamRanking={teamRanking}
+        teamRankingLoading={teamRankingLoading}
+        teamRankingError={teamRankingError}
       />
       <RunsTable
         days={eventDays}
