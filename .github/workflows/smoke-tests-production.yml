@@ -89,10 +89,10 @@ jobs:
 
           echo "Rollback zu Deployment: $PREVIOUS_DEPLOYMENT_ID"
 
-          # Promote vorheriges Deployment zu Production
+          # Rollback via Vercel Instant Rollback API
           RESULT=$(curl -s -X POST -H "Authorization: Bearer $VERCEL_TOKEN" \
             -H "Content-Type: application/json" \
-            "https://api.vercel.com/v6/deployments/$PREVIOUS_DEPLOYMENT_ID/promote")
+            "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID/rollback/$PREVIOUS_DEPLOYMENT_ID")
 
           echo "Rollback-Ergebnis: $RESULT"
 
