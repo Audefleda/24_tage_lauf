@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
-import { checkConnection } from '@/lib/typo3-client'
 
+// TEMPORARY: Rollback-Test #3 — endgültiger Test
 export async function GET() {
-  const result = await checkConnection()
-  return NextResponse.json(result, { status: result.ok ? 200 : 503 })
+  return NextResponse.json({ ok: false, error: 'Rollback-Test-3' }, { status: 500 })
 }
