@@ -44,7 +44,9 @@ jobs:
 
             if [ "$DEPLOY_STATE" = "READY" ] && [ "$DEPLOY_COMMIT" = "$GITHUB_SHA" ]; then
               echo "Deployment READY fuer Commit $GITHUB_SHA nach $((i * 15))s"
-              sleep 10
+              # Warte auf Edge-Propagation (Serverless Functions brauchen Zeit zum Umschalten)
+              echo "Warte 30s auf Edge-Propagation ..."
+              sleep 30
               exit 0
             fi
             echo "Versuch $i/20: state=$DEPLOY_STATE commit=${DEPLOY_COMMIT:0:7} (erwartet: ${GITHUB_SHA:0:7}) — warte 15s ..."
