@@ -35,23 +35,26 @@ jobs:
       - name: Wait for Vercel Production Deployment
         run: |
           echo "Warte auf Vercel Production Deployment fuer Commit $GITHUB_SHA ..."
-          # Vercel braucht typischerweise 60-120s fuer ein Production Deployment.
-          # Wir pruefen alle 15s ob die Seite erreichbar ist (max 5 Minuten).
+          # Prüfe via Vercel API ob das Deployment für diesen Commit READY ist (max 5 Minuten)
           for i in $(seq 1 20); do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/api/health" || echo "000")
-            if [ "$STATUS" = "200" ]; then
-              echo "Production erreichbar (HTTP $STATUS) nach $((i * 15))s"
-              # Zusaetzlich 15s warten, damit alle Serverless Functions warm sind
-              sleep 15
+            RESPONSE=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&target=production&limit=1")
+            DEPLOY_STATE=$(echo "$RESPONSE" | jq -r '.deployments[0].state')
+            DEPLOY_COMMIT=$(echo "$RESPONSE" | jq -r '.deployments[0].meta.githubCommitSha')
+
+            if [ "$DEPLOY_STATE" = "READY" ] && [ "$DEPLOY_COMMIT" = "$GITHUB_SHA" ]; then
+              echo "Deployment READY fuer Commit $GITHUB_SHA nach $((i * 15))s"
+              sleep 10
               exit 0
             fi
-            echo "Versuch $i/20: HTTP $STATUS — warte 15s ..."
+            echo "Versuch $i/20: state=$DEPLOY_STATE commit=${DEPLOY_COMMIT:0:7} (erwartet: ${GITHUB_SHA:0:7}) — warte 15s ..."
             sleep 15
           done
-          echo "::error::Production nicht erreichbar nach 5 Minuten"
+          echo "::error::Production-Deployment fuer Commit $GITHUB_SHA nicht bereit nach 5 Minuten"
           exit 1
         env:
-          BASE_URL: https://24-tage-lauf.vercel.app
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Run smoke tests on Production
         run: npx playwright test tests/smoke.spec.ts --grep "@smoke" --project chromium
