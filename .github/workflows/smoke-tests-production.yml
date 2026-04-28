@@ -80,29 +80,19 @@ jobs:
             "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&target=production&limit=5&state=READY")
 
           # Zweites Deployment = letztes erfolgreiches (erstes ist das aktuelle, das fehlschlug)
-          PREVIOUS_DEPLOYMENT_ID=$(echo "$DEPLOYMENTS" | jq -r '.deployments[1].uid')
+          PREVIOUS_URL=$(echo "$DEPLOYMENTS" | jq -r '.deployments[1].url')
 
-          if [ "$PREVIOUS_DEPLOYMENT_ID" = "null" ] || [ -z "$PREVIOUS_DEPLOYMENT_ID" ]; then
+          if [ "$PREVIOUS_URL" = "null" ] || [ -z "$PREVIOUS_URL" ]; then
             echo "::error::Kein vorheriges Deployment zum Rollback gefunden"
             exit 1
           fi
 
-          echo "Rollback zu Deployment: $PREVIOUS_DEPLOYMENT_ID"
+          echo "Rollback: Promote $PREVIOUS_URL zu Production"
 
-          # Rollback via Vercel Instant Rollback API
-          RESULT=$(curl -s -X POST -H "Authorization: Bearer $VERCEL_TOKEN" \
-            -H "Content-Type: application/json" \
-            "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID/rollback/$PREVIOUS_DEPLOYMENT_ID")
+          # Vorheriges Deployment zu Production promoten (kein Lock wie bei Instant Rollback)
+          npx vercel promote "https://$PREVIOUS_URL" --token="$VERCEL_TOKEN" --yes
 
-          echo "Rollback-Ergebnis: $RESULT"
-
-          # Prüfe ob Rollback erfolgreich war
-          if echo "$RESULT" | jq -e '.error' > /dev/null 2>&1; then
-            echo "::error::Rollback fehlgeschlagen: $(echo $RESULT | jq -r '.error.message')"
-            exit 1
-          fi
-
-          echo "::notice::Rollback erfolgreich — Production zeigt jetzt das vorherige Deployment"
+          echo "::notice::Rollback erfolgreich — Production zeigt jetzt das vorherige Deployment ($PREVIOUS_URL)"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
