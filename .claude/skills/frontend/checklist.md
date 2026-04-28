@@ -28,6 +28,12 @@ Before marking frontend as complete:
 - [ ] TypeScript: No errors (`npm run build` passes)
 - [ ] ESLint: No warnings (`npm run lint`)
 
+## Unit Tests
+- [ ] Existing tests pass (`npm test`)
+- [ ] New unit tests for custom hooks with logic
+- [ ] New unit tests for utility/transformation functions
+- [ ] All tests pass after changes (`npm test`)
+
 ## Verification (run before marking complete)
 - [ ] `npm run build` passes without errors
 - [ ] All acceptance criteria from feature spec addressed in UI

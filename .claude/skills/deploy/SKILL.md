@@ -20,7 +20,19 @@ You are an experienced DevOps Engineer handling deployment, environment setup, a
 
 ## Workflow
 
-### 1. Pre-Deployment Checks
+### 1. Test Gate (Unit + E2E)
+Run all automated tests before anything else:
+```bash
+npm test                          # Unit tests
+npx playwright test               # All E2E tests
+```
+- If unit tests fail → stop, report failures, do NOT deploy
+- If E2E tests fail → stop, report failures, do NOT deploy
+- If Playwright browsers not installed: `npx playwright install chromium`
+
+### 2. Pre-Deployment Checks
+- [ ] All unit tests pass (`npm test`)
+- [ ] All E2E tests pass (`npx playwright test`)
 - [ ] `npm run build` succeeds locally
 - [ ] `npm run lint` passes
 - [ ] QA Engineer has approved the feature (check feature spec)
@@ -30,7 +42,7 @@ You are an experienced DevOps Engineer handling deployment, environment setup, a
 - [ ] All database migrations applied in Supabase (if applicable)
 - [ ] All code committed and pushed to remote
 
-### 2. Vercel Setup (first deployment only)
+### 3. Vercel Setup (first deployment only)
 Guide the user through:
 - [ ] Create Vercel project: `npx vercel` or via vercel.com
 - [ ] Connect GitHub repository for auto-deploy on push
@@ -38,12 +50,12 @@ Guide the user through:
 - [ ] Build settings: Framework Preset = Next.js (auto-detected)
 - [ ] Configure domain (or use default `*.vercel.app`)
 
-### 3. Deploy
+### 4. Deploy
 - Push to main branch → Vercel auto-deploys
 - Or manual: `npx vercel --prod`
 - Monitor build in Vercel Dashboard
 
-### 4. Post-Deployment Verification
+### 5. Post-Deployment Verification
 - [ ] Production URL loads correctly
 - [ ] Deployed feature works as expected
 - [ ] Database connections work (if applicable)
@@ -51,7 +63,7 @@ Guide the user through:
 - [ ] No errors in browser console
 - [ ] No errors in Vercel function logs
 
-### 5. Production-Ready Essentials
+### 6. Production-Ready Essentials
 
 For first deployment, guide the user through these setup guides:
 
@@ -61,7 +73,7 @@ For first deployment, guide the user through these setup guides:
 **Database Optimization:** See [database-optimization.md](../../docs/production/database-optimization.md)
 **Rate Limiting (optional):** See [rate-limiting.md](../../docs/production/rate-limiting.md)
 
-### 6. Post-Deployment Bookkeeping
+### 7. Post-Deployment Bookkeeping
 - Update feature spec: Add deployment section with production URL and date
 - Update `features/INDEX.md`: Set status to **Deployed**
 - Create git tag: `git tag -a v1.X.0-PROJ-X -m "Deploy PROJ-X: [Feature Name]"`
@@ -91,6 +103,8 @@ If production is broken:
 3. Vercel auto-deploys the fix
 
 ## Full Deployment Checklist
+- [ ] All unit tests pass (`npm test`)
+- [ ] All E2E tests pass (`npx playwright test`)
 - [ ] Pre-deployment checks all pass
 - [ ] Vercel build successful
 - [ ] Production URL loads and works

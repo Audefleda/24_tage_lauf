@@ -53,7 +53,16 @@ Use `AskUserQuestion` for:
 - Replace any mock data or localStorage with API calls
 - Handle loading and error states
 
-### 6. User Review
+### 6. Run & Write Unit Tests
+- Run existing tests: `npm test` — fix any regressions introduced by your changes
+- Write new unit tests for:
+  - API route logic (request validation, error handling, response format)
+  - Utility/helper functions in `src/lib/`
+  - Data transformation logic
+- Mock external dependencies (Supabase client, TYPO3 client) in unit tests
+- Run `npm test` again to confirm all tests pass
+
+### 7. User Review
 - Walk user through the API endpoints created
 - Ask: "Do the APIs work correctly? Any edge cases to test?"
 
@@ -95,9 +104,10 @@ See [checklist.md](checklist.md) for the full implementation checklist.
 
 ## Handoff
 After completion:
-> "Backend is done! Next step: Run `/qa` to test this feature against its acceptance criteria."
+> "Backend ist fertig (inkl. Unit Tests)! Nächster Schritt: `/qa` um das Feature gegen die Akzeptanzkriterien zu testen."
 
 ## Git Commit
 ```
 feat(PROJ-X): Implement backend for [feature name]
+test(PROJ-X): Add unit tests for [feature name]
 ```

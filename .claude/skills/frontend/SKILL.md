@@ -54,7 +54,16 @@ If no design specs exist, ask the user:
 - Set up routing if needed
 - Connect to backend APIs or localStorage as specified in tech design
 
-### 6. User Review
+### 6. Run & Write Unit Tests
+- Run existing tests: `npm test` — fix any regressions introduced by your changes
+- Write new unit tests for:
+  - Custom hooks with non-trivial logic
+  - Pure utility/transformation functions
+  - Complex component logic (conditional rendering, state transitions)
+- Do NOT unit test pure presentational components with no logic
+- Run `npm test` again to confirm all tests pass
+
+### 7. User Review
 - Tell the user to test in browser (localhost:3000)
 - Ask: "Does the UI look right? Any changes needed?"
 - Iterate based on feedback
@@ -76,10 +85,10 @@ Check the feature spec - does this feature need backend?
 **No backend if:** localStorage only, no user accounts, no server communication
 
 If backend is needed:
-> "Frontend is done! This feature needs backend work. Next step: Run `/backend` to build the APIs and database."
+> "Frontend ist fertig (inkl. Unit Tests)! Dieses Feature braucht Backend-Arbeit. Nächster Schritt: `/backend`"
 
 If no backend needed:
-> "Frontend is done! Next step: Run `/qa` to test this feature against its acceptance criteria."
+> "Frontend ist fertig (inkl. Unit Tests)! Nächster Schritt: `/qa` um das Feature gegen die Akzeptanzkriterien zu testen."
 
 ## Checklist
 See [checklist.md](checklist.md) for the full implementation checklist.
@@ -87,4 +96,5 @@ See [checklist.md](checklist.md) for the full implementation checklist.
 ## Git Commit
 ```
 feat(PROJ-X): Implement frontend for [feature name]
+test(PROJ-X): Add unit tests for [feature name]
 ```

@@ -17,6 +17,13 @@
 - [ ] Frontend connected to real API endpoints
 - [ ] User has reviewed and approved
 
+## Unit Tests
+- [ ] Existing tests pass (`npm test`)
+- [ ] New unit tests for API route logic (validation, error handling)
+- [ ] New unit tests for utility/helper functions in `src/lib/`
+- [ ] External dependencies mocked (Supabase, TYPO3)
+- [ ] All tests pass after changes (`npm test`)
+
 ## Verification (run before marking complete)
 - [ ] `npm run build` passes without errors
 - [ ] All acceptance criteria from feature spec addressed in API
